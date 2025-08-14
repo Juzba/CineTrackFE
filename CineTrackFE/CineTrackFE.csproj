@@ -16,7 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="AppServises\" />
     <Folder Include="Common\Converters\" />
   </ItemGroup>
 

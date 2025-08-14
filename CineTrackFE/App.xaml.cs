@@ -1,4 +1,5 @@
-﻿using CineTrackFE.Common;
+﻿using CineTrackFE.AppServises;
+using CineTrackFE.Common;
 using CineTrackFE.ViewModels;
 using CineTrackFE.Views;
 using System.Windows;
@@ -15,10 +16,12 @@ public partial class App : PrismApplication
     {
         containerRegistry.Register<MainWindow>();
         containerRegistry.Register<MainViewModel>();
+        containerRegistry.Register<IApiService, ApiService>();
 
 
         containerRegistry.RegisterForNavigation<LoginView, LoginViewModel>();
         containerRegistry.RegisterForNavigation<RegisterView, RegisterViewModel>();
+        containerRegistry.RegisterForNavigation<HomeView, HomeViewModel>();
     }
 
 

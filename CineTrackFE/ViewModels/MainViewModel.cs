@@ -12,8 +12,8 @@ namespace CineTrackFE.ViewModels
 
         public DelegateCommand NavLoginCommand { get; }
         public DelegateCommand NavRegisterCommand { get; }
+        public DelegateCommand NavHomeCommand { get; }
 
-        // pridat navigaci a on initial pri otevreni stranky //
 
 
         public MainViewModel(IRegionManager regionManager)
@@ -24,6 +24,7 @@ namespace CineTrackFE.ViewModels
 
             NavLoginCommand = new DelegateCommand(() => _regionManager.RequestNavigate(Const.MainRegion, nameof(LoginView)));
             NavRegisterCommand = new DelegateCommand(() => _regionManager.RequestNavigate(Const.MainRegion, nameof(RegisterView)));
+            NavHomeCommand = new DelegateCommand(() => _regionManager.RequestNavigate(Const.MainRegion, nameof(HomeView)));
         }
 
         private void OnInitialize()

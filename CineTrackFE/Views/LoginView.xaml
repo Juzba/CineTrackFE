@@ -50,7 +50,7 @@
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="30*" />
-                <RowDefinition  Height="70*"/>
+                <RowDefinition Height="70*" />
             </Grid.RowDefinitions>
 
 
@@ -100,23 +100,22 @@
 
 
                 <Button
-                
                     Width="200"
                     Height="50"
                     Margin="10"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Background="#DFFBFC"
+                    BorderThickness="2"
                     Command="{Binding LoginCommand}"
                     Content="Přihlásit"
                     FontSize="30"
-                    BorderThickness="2"
                     Foreground="#293241" />
 
                 <Button
-               Margin="10"
                     Width="150"
                     Height="40"
+                    Margin="10"
                     HorizontalAlignment="Left"
                     Panel.ZIndex="10"
                     Background="#DFFBFC"
