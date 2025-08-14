@@ -1,71 +1,130 @@
-﻿<UserControl x:Class="CineTrackFE.Views.RegisterView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:CineTrackFE.Views"
-             mc:Ignorable="d" 
-             FontSize="30"
-             d:DesignHeight="720" d:DesignWidth="1280">
+﻿<UserControl
+    x:Class="CineTrackFE.Views.RegisterView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:CineTrackFE.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:prism="http://prismlibrary.com/"
+    d:DesignHeight="720"
+    d:DesignWidth="1280"
+    prism:ViewModelLocator.AutoWireViewModel="True"
+    FontSize="25"
+    mc:Ignorable="d">
 
-    <Grid Background="#20448C">
+    <Grid Background="#3D5B81">
 
         <Grid.RowDefinitions>
-            <RowDefinition MinHeight="90" />
-            <RowDefinition MinHeight="40" />
-            <RowDefinition Height="330" />
-            <RowDefinition />
+            <RowDefinition Height="25*" />
+            <RowDefinition Height="50*" />
+            <RowDefinition Height="450" />
+            <RowDefinition Height="25*" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition MinWidth="400" />
-            <ColumnDefinition />
+            <ColumnDefinition Width="25*" />
+            <ColumnDefinition Width="550" />
+            <ColumnDefinition Width="75*" />
         </Grid.ColumnDefinitions>
 
         <TextBlock
-         Grid.Row="1"
-         Grid.ColumnSpan="3"
-         HorizontalAlignment="Center"
-         FontSize="20"
-         Foreground="red"
-         Text="{Binding ErrorMessage}" />
+            Grid.Row="1"
+            Grid.ColumnSpan="3"
+            HorizontalAlignment="Center"
+            FontSize="20"
+            Foreground="red"
+            Text="{Binding ErrorMessage}" />
 
-        <StackPanel
-         Grid.Row="2"
-         Grid.Column="1"
-         HorizontalAlignment="Center"
-         VerticalAlignment="Top">
+
+        <Grid Grid.Row="2" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="30*"/>
+                <RowDefinition  Height="70*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock
+                Margin="20,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                FontStyle="Oblique"
+                FontWeight="Bold"
+                Foreground="#293241"
+                Text="User Name:" />
+            <TextBlock
+                Grid.Row="1"
+                Margin="20,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                FontStyle="Oblique"
+                FontWeight="Bold"
+                Foreground="#293241"
+                Text="PassWord:" />
+            <TextBlock
+                Grid.Row="2"
+                Margin="20,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                FontStyle="Oblique"
+                FontWeight="Bold"
+                Foreground="#293241"
+                Text="PassWord:" />
+
             <TextBox
-             Width="350"
-             Margin="10"
-             Text="{Binding Email, Mode=TwoWay}" />
+                Grid.Column="1"
+                Margin="10"
+                Padding="10,5"
+                VerticalAlignment="Center"
+                Background="#DFFBFC"
+                Foreground="#293241"
+                Text="{Binding Email, Mode=TwoWay}" />
 
             <TextBox
-             Width="350"
-             Margin="10"
-             Text="{Binding PasswordA, Mode=TwoWay}" />
+                Grid.Row="1"
+                Grid.Column="1"
+                Margin="10"
+                Padding="10,5"
+                VerticalAlignment="Center"
+                Background="#DFFBFC"
+                Foreground="#293241"
+                Text="{Binding PasswordA, Mode=TwoWay}" />
 
 
             <TextBox
-             Width="350"
-             Margin="10"
-             Text="{Binding PasswordB, Mode=TwoWay}" />
+                Grid.Row="2"
+                Grid.Column="1"
+                Margin="10"
+                Padding="10,5"
+                VerticalAlignment="Center"
+                Background="#DFFBFC"
+                Foreground="#293241"
+                Text="{Binding PasswordB, Mode=TwoWay}" />
 
             <Button
-             Width="200"
-             Height="50"
-             Margin="20"
-             HorizontalAlignment="Center"
-             Background="#FFBC24"
-             Command="{Binding RegisterCommand}"
-             Content="Registrovat"
-             FontSize="30"
-             Foreground="#20448C" />
+                Grid.Row="4"
+                Grid.Column="1"
+                Width="200"
+                Height="50"
+                Margin="10"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Background="#DFFBFC"
+                BorderBrush="#EE6B4D"
+                BorderThickness="2"
+                Command="{Binding RegisterCommand}"
+                Content="Registrovat"
+                FontSize="30"
+                Foreground="#293241" />
 
 
+        </Grid>
 
-        </StackPanel>
     </Grid>
 
 

@@ -1,0 +1,6 @@
+﻿black - #293241
+red - #EE6B4D
+
+light blue - #DFFBFC
+midle blue - #9BC0D9
+dark blue - #3D5B81

@@ -1,4 +1,6 @@
-﻿using CineTrackFE.ViewModels;
+﻿using CineTrackFE.Common;
+using CineTrackFE.ViewModels;
+using CineTrackFE.Views;
 using System.Windows;
 
 namespace CineTrackFE;
@@ -13,6 +15,10 @@ public partial class App : PrismApplication
     {
         containerRegistry.Register<MainWindow>();
         containerRegistry.Register<MainViewModel>();
+
+
+        containerRegistry.RegisterForNavigation<LoginView, LoginViewModel>();
+        containerRegistry.RegisterForNavigation<RegisterView, RegisterViewModel>();
     }
 
 
@@ -29,6 +35,11 @@ public partial class App : PrismApplication
 
     protected override void OnInitialized()
     {
+        var regionManager = Container.Resolve<IRegionManager>();
+
+        regionManager.RequestNavigate(Const.MainRegion, nameof(LoginView));
+
+
         base.OnInitialized();
     }
 
