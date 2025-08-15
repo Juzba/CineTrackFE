@@ -19,4 +19,31 @@
     <Folder Include="Common\Converters\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="Common\Blueprints\Task.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Task.txt</DependentUpon>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Common\Blueprints\Task.txt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Task.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Common\Blueprints\Task.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Task.txt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
 </Project>
