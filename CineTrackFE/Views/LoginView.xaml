@@ -105,12 +105,12 @@
                     Margin="10"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    Background="#DFFBFC"
+                    Background="#293241"
                     BorderThickness="2"
                     Command="{Binding LoginCommand}"
                     Content="Přihlásit"
                     FontSize="30"
-                    Foreground="#293241" />
+                    Foreground="#DFFBFC" />
 
                 <Button
                     Width="150"
@@ -118,12 +118,12 @@
                     Margin="10"
                     HorizontalAlignment="Left"
                     Panel.ZIndex="10"
-                    Background="#DFFBFC"
+                    Background="#293241"
                     BorderBrush="#EE6B4D"
                     BorderThickness="2"
                     Command="{Binding InstaAccessCommand}"
                     Content="Instant Access"
-                    Foreground="#293241" />
+                    Foreground="#DFFBFC" />
             </StackPanel>
 
         </Grid>

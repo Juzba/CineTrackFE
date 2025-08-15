@@ -114,13 +114,12 @@
                 Margin="10"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                Background="#DFFBFC"
-                BorderBrush="#EE6B4D"
+                Background="#293241"
                 BorderThickness="2"
                 Command="{Binding RegisterCommand}"
                 Content="Registrovat"
                 FontSize="30"
-                Foreground="#293241" />
+                Foreground="#DFFBFC" />
 
 
         </Grid>

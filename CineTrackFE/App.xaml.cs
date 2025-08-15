@@ -2,6 +2,7 @@
 using CineTrackFE.Common;
 using CineTrackFE.ViewModels;
 using CineTrackFE.Views;
+using System.Net.Http;
 using System.Windows;
 
 namespace CineTrackFE;
@@ -16,12 +17,22 @@ public partial class App : PrismApplication
     {
         containerRegistry.Register<MainWindow>();
         containerRegistry.Register<MainViewModel>();
-        containerRegistry.Register<IApiService, ApiService>();
+
 
 
         containerRegistry.RegisterForNavigation<LoginView, LoginViewModel>();
         containerRegistry.RegisterForNavigation<RegisterView, RegisterViewModel>();
         containerRegistry.RegisterForNavigation<HomeView, HomeViewModel>();
+        containerRegistry.RegisterForNavigation<FilmView, FilmViewModel>();
+
+
+        // Register HttpClient for API calls
+        var httpClient = new HttpClient
+        {
+            BaseAddress = new Uri("https://localhost:7238/")
+        };
+        containerRegistry.RegisterInstance(httpClient);
+        containerRegistry.Register<IApiService, ApiService>();
     }
 
 

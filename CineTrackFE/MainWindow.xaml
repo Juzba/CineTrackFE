@@ -34,6 +34,17 @@
             Foreground="#DFFBFC"
             Text="Cine Track" />
 
+        <TextBlock
+            Grid.ColumnSpan="2"
+            Padding="30,5"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            FontSize="35"
+            FontStyle="Oblique"
+            FontWeight="Bold"
+            Foreground="#DFFBFC"
+            Text="{Binding Title}" />
+
         <StackPanel Grid.Row="1">
             <Button
                 Height="40"
@@ -48,7 +59,8 @@
                 Height="40"
                 Margin="20,10"
                 Background="#293241"
-                Content="Films"
+                Command="{Binding NavFilmCommand}"
+                Content="Movies"
                 FontSize="20"
                 Foreground="#EE6B4D" />
 

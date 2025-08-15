@@ -1,19 +1,27 @@
 ﻿using CineTrackFE.AppServises;
-using System.Threading.Tasks;
+using CineTrackFE.Common.Events;
+using System.Windows;
 
 namespace CineTrackFE.ViewModels;
 
 public class HomeViewModel : BindableBase
 {
     private readonly IApiService _apiService;
+    private readonly IEventAggregator _eventAggregator;
     public AsyncDelegateCommand ClickCommand { get; }
 
 
 
-    public HomeViewModel(IApiService apiService)
+    public HomeViewModel(IApiService apiService, IEventAggregator eventAggregator)
     {
-        ClickCommand = new AsyncDelegateCommand(Click);
         _apiService = apiService;
+        _eventAggregator = eventAggregator;
+
+        _eventAggregator.GetEvent<MainViewTitleEvent>().Publish("Home Page");
+
+
+
+        ClickCommand = new AsyncDelegateCommand(Click);
     }
 
 
@@ -21,7 +29,8 @@ public class HomeViewModel : BindableBase
 
     private async Task Click()
     {
-        //await _apiService.GetAsync();
+        var neco = await _apiService.GetAsync<IEnumerable<string>>("/api/FilmApi/Test");
+        MessageBox.Show(neco?.FirstOrDefault()?? "Nic nenalezeno");
     }
 
 

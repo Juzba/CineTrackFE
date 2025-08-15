@@ -40,9 +40,11 @@
                 Height="60"
                 Margin="25"
                 HorizontalAlignment="Center"
+                Background="#293241"
                 Command="{Binding ClickCommand}"
                 Content="Click On Me!"
-                FontSize="25" />
+                FontSize="25"
+                Foreground="#DFFBFC" />
 
 
 

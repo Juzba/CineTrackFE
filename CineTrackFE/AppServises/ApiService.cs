@@ -12,18 +12,17 @@ namespace CineTrackFE.AppServises
 
 
 
-    public class ApiService(string baseUrl) : IApiService
+    public class ApiService(HttpClient httpClient) : IApiService
     {
 
-        private readonly HttpClient _httpClient = new HttpClient();
-        private readonly string _baseUrl = baseUrl;
+        private readonly HttpClient _httpClient = httpClient;
 
 
         public async Task<T?> GetAsync<T>(string endpoint)
         {
             try
             {
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_baseUrl}/{endpoint}");
+                HttpResponseMessage response = await _httpClient.GetAsync(endpoint);
 
                 if (response.IsSuccessStatusCode)
                 {
