@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace CineTrackFE.Views
 {
     /// <summary>
-    /// Interakční logika pro HomeView.xaml
+    /// Interakční logika pro DashboardView.xaml
     /// </summary>
-    public partial class HomeView : UserControl
+    public partial class DashboardView : UserControl
     {
-        public HomeView()
+        public DashboardView()
         {
             InitializeComponent();
         }

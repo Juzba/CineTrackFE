@@ -2,6 +2,7 @@
 using CineTrackFE.Common;
 using CineTrackFE.ViewModels;
 using CineTrackFE.Views;
+using Microsoft.Xaml.Behaviors.Core;
 using System.Net.Http;
 using System.Windows;
 
@@ -22,8 +23,8 @@ public partial class App : PrismApplication
 
         containerRegistry.RegisterForNavigation<LoginView, LoginViewModel>();
         containerRegistry.RegisterForNavigation<RegisterView, RegisterViewModel>();
-        containerRegistry.RegisterForNavigation<HomeView, HomeViewModel>();
         containerRegistry.RegisterForNavigation<FilmView, FilmViewModel>();
+        containerRegistry.RegisterForNavigation<DashboardView, DashboardViewModel>();
 
 
         // Register HttpClient for API calls
@@ -51,7 +52,7 @@ public partial class App : PrismApplication
     {
         var regionManager = Container.Resolve<IRegionManager>();
 
-        regionManager.RequestNavigate(Const.MainRegion, nameof(LoginView));
+        regionManager.RequestNavigate(Const.MainRegion, nameof(DashboardView));
 
 
         base.OnInitialized();

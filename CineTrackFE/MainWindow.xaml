@@ -50,8 +50,8 @@
                 Height="40"
                 Margin="20,0,20,10"
                 Background="#293241"
-                Command="{Binding NavHomeCommand}"
-                Content="Home"
+                Command="{Binding NavDashboardCommand}"
+                Content="Dashboard"
                 FontSize="20"
                 Foreground="#EE6B4D" />
 
