@@ -43,7 +43,7 @@ namespace CineTrackFE.ViewModels
 
             try
             {
-                var filmListDb = await _apiService.GetAsync<IEnumerable<Film>>("/api/FilmApi/NewFilms");
+                var filmListDb = await _apiService.GetAsync<IEnumerable<Film>>("/api/FilmApi/LatestFilms");
                 if (filmListDb != null) FilmList = new ObservableCollection<Film>(filmListDb);
 
             }

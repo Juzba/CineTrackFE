@@ -51,7 +51,7 @@
 
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Name}" />
-                <DataGridTextColumn Binding="{Binding Year}" />
+                <DataGridTextColumn Binding="{Binding ReleaseDate, StringFormat={}{0:dd. MM. yyyy}}" />
                 <DataGridTextColumn Binding="{Binding Director}" />
             </DataGrid.Columns>
 
