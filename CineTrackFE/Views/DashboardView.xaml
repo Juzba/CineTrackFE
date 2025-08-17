@@ -19,19 +19,29 @@
     <Grid Background="#3D5B81">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5*" />
+            <ColumnDefinition Width="50*" />
             <ColumnDefinition Width="45*" />
-            <ColumnDefinition Width="45*" />
-            <ColumnDefinition Width="5*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="5*" />
-            <RowDefinition Height="45*" />
-            <RowDefinition Height="45*" />
-            <RowDefinition Height="5*" />
+            <RowDefinition Height="50*" />
+            <RowDefinition Height="50*" />
         </Grid.RowDefinitions>
 
+        <TextBlock
+            Grid.Row="0"
+            Grid.Column="2"
+            Margin="30,0"
+            FontSize="16"
+            Foreground="Red"
+            Text="{Binding ErrorMessage}"
+            TextAlignment="Center"
+            TextWrapping="Wrap" />
+
+
+
+
         <DataGrid
-            Grid.Row="1"
+            Grid.Row="0"
             Grid.Column="1"
             AutoGenerateColumns="False"
             CanUserAddRows="False"

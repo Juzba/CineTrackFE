@@ -39,16 +39,17 @@ namespace CineTrackFE.ViewModels
         // ON INITIALIZE //
         private async Task OnInitializeAsync()
         {
+            ErrorMessage = null;
 
             try
             {
-                var filmListDb = await _apiService.GetAsync<IEnumerable<Film>>("/api/FilmApi/Test");
+                var filmListDb = await _apiService.GetAsync<IEnumerable<Film>>("/api/FilmApi/NewFilms");
                 if (filmListDb != null) FilmList = new ObservableCollection<Film>(filmListDb);
 
             }
             catch (Exception ex)
             {
-                
+                ErrorMessage = ex.Message;
                 // chyba
             }
                 
@@ -65,6 +66,14 @@ namespace CineTrackFE.ViewModels
             set { SetProperty(ref filmList, value); }
         }
 
+
+
+        private string? errorMessage;
+        public string? ErrorMessage
+        {
+            get { return errorMessage; }
+            set { SetProperty(ref errorMessage, value); }
+        }
 
 
 

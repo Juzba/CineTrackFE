@@ -17,12 +17,14 @@
     <Grid Background="#3D5B81">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20*" />
-            <ColumnDefinition Width="80*" />
+            <ColumnDefinition Width="77*" />
+            <ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="10*" />
-            <RowDefinition Height="90*" />
+            <RowDefinition Height="15*" />
+            <RowDefinition Height="80*" />
+            <RowDefinition Height="5*" />
         </Grid.RowDefinitions>
 
         <TextBlock

@@ -9,7 +9,7 @@ public class Film
     public string Name { get; set; }
     public string Description { get; set; }
     public string Director { get; set; }
-    public int Year { get; set; }
+    public DateTime ReleaseDate { get; set; }
     public double AvgRating { get; set; }
     public List<string> Genres { get; set; }
 }
