@@ -1,6 +1,7 @@
 ﻿using CineTrackFE.AppServises;
 using CineTrackFE.Common.Events;
 using CineTrackFE.Models;
+using CineTrackFE.Models.DTO;
 using System.Collections.ObjectModel;
 
 namespace CineTrackFE.ViewModels;
@@ -42,12 +43,12 @@ public class CatalogViewModel : BindableBase, INavigationAware
 
         try
         {
-            //var filmListDb = await _apiService.PostAsync<IEnumerable<Film>, Film >("/api/FilmApi/CatalogSearch",   )
+            var filmListDb = await _apiService.PostAsync<IEnumerable<Film>, SearchParametrsDto>("/api/FilmApi/CatalogSearch", new SearchParametrsDto());
 
 
 
 
-            var filmListDb = await _apiService.GetAsync<IEnumerable<Film>>("/api/FilmApi/AllFilms");
+            //var filmListDb = await _apiService.GetAsync<IEnumerable<Film>>("/api/FilmApi/AllFilms");
             if (filmListDb != null) FilmList = new ObservableCollection<Film>(filmListDb);
 
 
@@ -94,29 +95,29 @@ public class CatalogViewModel : BindableBase, INavigationAware
 
 
     // SELECTED SEARCH ORDER-BY//
-    private string? selectedSearchOrderBy;
-    public string? SelectedSearchOrderBy
+    private string? searchOrder;
+    public string? SearchOrder
     {
-        get { return selectedSearchOrderBy; }
-        set { SetProperty(ref selectedSearchOrderBy, value); }
+        get { return searchOrder; }
+        set { SetProperty(ref searchOrder, value); }
     }
 
 
     // SELECTED GENRE //
-    private Genre? selectedGenre;
-    public Genre? SelectedGenre
+    private Genre? searchByGenre;
+    public Genre? SearchByGenre
     {
-        get { return selectedGenre; }
-        set { SetProperty(ref selectedGenre, value); }
+        get { return searchByGenre; }
+        set { SetProperty(ref searchByGenre, value); }
     }
 
 
-    // SELECTED YEAR //
-    private int? selectedYear;
-    public int? SelectedYear
+    // SEARCH BY YEAR //
+    private int? searchByYear;
+    public int? SearchByYear
     {
-        get { return selectedYear; }
-        set { SetProperty(ref selectedYear, value); }
+        get { return searchByYear; }
+        set { SetProperty(ref searchByYear, value); }
     }
 
 

@@ -104,7 +104,7 @@
                 Margin="10,10,10,40"
                 Padding="10,5"
                 FontSize="14"
-                SelectedValue="{Binding SelectedSearchOrderBy}"
+                SelectedValue="{Binding SearchOrder}"
                 SelectedValuePath="Tag">
                 <ComboBoxItem Content="Názvu sestupně" Tag="NameDesc" />
                 <ComboBoxItem Content="Názvu vzestupně" Tag="NameAsc" />
@@ -120,16 +120,16 @@
                 DisplayMemberPath="Name"
                 FontSize="14"
                 Foreground="#DFFBFC"
-                SelectedItem="{Binding SelectedGenre}"
-                ItemsSource="{Binding GenresList}" />
+                ItemsSource="{Binding GenresList}"
+                SelectedItem="{Binding SearchByGenre}" />
 
             <TextBlock Text="Rok:" TextAlignment="Center" />
             <TextBox
                 Margin="10,10,10,40"
                 Padding="10,5"
                 FontSize="14"
-                Text="{Binding SelectedYear}"
-                Foreground="#DFFBFC" />
+                Foreground="#DFFBFC"
+                Text="{Binding SearchByYear}" />
 
 
 

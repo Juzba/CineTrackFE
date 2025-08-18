@@ -7,7 +7,7 @@ namespace CineTrackFE.AppServises
     public interface IApiService
     {
         Task<T?> GetAsync<T>(string endpoint, CancellationToken cancellationToken = default);
-        Task<T?> PostAsync<T, TRequest>(string endpoint, TRequest data, CancellationToken cancellationToken = default)
+        Task<T?> PostAsync<T, TRequest>(string endpoint, TRequest data, CancellationToken cancellationToken = default);
 
 
     }
