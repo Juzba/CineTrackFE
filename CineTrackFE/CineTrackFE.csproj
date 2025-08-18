@@ -10,21 +10,37 @@
 
   <ItemGroup>
     <None Remove="Common\Images\DarkKnight.jpg" />
+    <None Remove="Common\Images\FightClub.jpg" />
     <None Remove="Common\Images\ForrestGump.jpg" />
+    <None Remove="Common\Images\Gladiator.jpg" />
+    <None Remove="Common\Images\Goodfather.jpg" />
     <None Remove="Common\Images\GoodFellas.jpg" />
     <None Remove="Common\Images\Inception.jpg" />
+    <None Remove="Common\Images\Interstellar.jpg" />
     <None Remove="Common\Images\JohnWick.jpg" />
+    <None Remove="Common\Images\JurassicPark.jpg" />
+    <None Remove="Common\Images\LordOfTheRings.jpg" />
     <None Remove="Common\Images\Matrix.jpg" />
     <None Remove="Common\Images\PulpFiction.jpg" />
     <None Remove="Common\Images\SchindlersList.jpg" />
     <None Remove="Common\Images\StarshipTroopers.jpg" />
+    <None Remove="Common\Images\Titanic.jpg" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Common\Images\DarkKnight.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Common\Images\FightClub.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Common\Images\ForrestGump.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Common\Images\Gladiator.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Common\Images\Goodfather.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Common\Images\GoodFellas.jpg">
@@ -33,7 +49,19 @@
     <Resource Include="Common\Images\Inception.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Common\Images\Interstellar.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Common\Images\JohnWick.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Common\Images\JurassicPark.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Common\Images\JurrassicPark.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Common\Images\LordOfTheRings.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Common\Images\Matrix.jpg">
@@ -49,6 +77,24 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Common\Images\StarshipTroopers.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Common\Images\Avengers.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Common\Images\Godfather.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Common\Images\GreenMile.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Common\Images\LordOfTheRing.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Common\Images\SilenceOfTheLambs.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Common\Images\Titanic.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>

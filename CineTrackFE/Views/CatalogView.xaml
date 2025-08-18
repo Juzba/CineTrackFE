@@ -27,8 +27,7 @@
             <ColumnDefinition Width="19*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="80*" />
-            <RowDefinition Height="20*" />
+            <RowDefinition Height="100*" />
         </Grid.RowDefinitions>
 
         <TextBlock
