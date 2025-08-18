@@ -8,9 +8,5 @@ namespace CineTrackFE.Models
 
         public string Name { get; set; } = null!;
 
-
-        // Film Genre //
-        public ICollection<FilmGenre> FilmGenres { get; set; } = [];
-
     }
 }

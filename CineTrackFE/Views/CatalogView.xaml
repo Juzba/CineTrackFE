@@ -22,7 +22,7 @@
 
     <Grid Background="#3D5B81">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="50" />
+            <ColumnDefinition Width="20" />
             <ColumnDefinition Width="81*" />
             <ColumnDefinition Width="19*" />
         </Grid.ColumnDefinitions>
@@ -30,17 +30,12 @@
             <RowDefinition Height="100*" />
         </Grid.RowDefinitions>
 
-        <TextBlock
-            Grid.Row="0"
-            Grid.Column="2"
-            Margin="30,0"
-            FontSize="16"
-            Foreground="Red"
-            Text="{Binding ErrorMessage}"
-            TextAlignment="Center"
-            TextWrapping="Wrap" />
 
-        <ScrollViewer Grid.Row="0" Grid.Column="1">
+
+        <ScrollViewer
+            Grid.Row="0"
+            Grid.Column="1"
+            Margin="0,0,30,0">
             <ItemsControl Foreground="#DFFBFC" ItemsSource="{Binding FilmList}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -76,10 +71,69 @@
             </ItemsControl>
         </ScrollViewer>
 
+        <TextBlock
+            Grid.Column="1"
+            VerticalAlignment="Bottom"
+            FontSize="16"
+            Foreground="Red"
+            Text="{Binding ErrorMessage}"
+            TextAlignment="Center"
+            TextWrapping="Wrap" />
 
 
 
+        <StackPanel Grid.Column="2">
+            <TextBlock
+                FontStyle="Oblique"
+                FontWeight="Bold"
+                Foreground="#EE6B4D"
+                Text="Vyhledání:"
+                TextAlignment="Center" />
+            <TextBox
+                Margin="10,10,10,120"
+                Padding="10,5"
+                Background="#293241"
+                BorderBrush="#DFFBFC"
+                BorderThickness="2"
+                FontSize="14"
+                Foreground="#DFFBFC"
+                Text="{Binding SearchText, UpdateSourceTrigger=LostFocus}" />
 
+            <TextBlock Text="Řadit Dle:" TextAlignment="Center" />
+            <ComboBox
+                Margin="10,10,10,40"
+                Padding="10,5"
+                FontSize="14"
+                SelectedValue="{Binding SelectedSearchOrderBy}"
+                SelectedValuePath="Tag">
+                <ComboBoxItem Content="Názvu sestupně" Tag="NameDesc" />
+                <ComboBoxItem Content="Názvu vzestupně" Tag="NameAsc" />
+                <ComboBoxItem Content="Roku sestupně" Tag="YearDesc" />
+                <ComboBoxItem Content="Roku vzestupně" Tag="YearAsc" />
+            </ComboBox>
+
+
+            <TextBlock Text="Žánr:" TextAlignment="Center" />
+            <ComboBox
+                Margin="10,10,10,40"
+                Padding="10,5"
+                DisplayMemberPath="Name"
+                FontSize="14"
+                Foreground="#DFFBFC"
+                SelectedItem="{Binding SelectedGenre}"
+                ItemsSource="{Binding GenresList}" />
+
+            <TextBlock Text="Rok:" TextAlignment="Center" />
+            <TextBox
+                Margin="10,10,10,40"
+                Padding="10,5"
+                FontSize="14"
+                Text="{Binding SelectedYear}"
+                Foreground="#DFFBFC" />
+
+
+
+        </StackPanel>
 
 
 

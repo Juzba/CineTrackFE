@@ -1,16 +1,11 @@
 ﻿using CineTrackFE.AppServises;
 using CineTrackFE.Common.Events;
 using CineTrackFE.Models;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CineTrackFE.ViewModels;
 
-public class CatalogViewModel: BindableBase, INavigationAware
+public class CatalogViewModel : BindableBase, INavigationAware
 {
     private readonly IApiService _apiService;
     private readonly IEventAggregator _eventAggregator;
@@ -47,8 +42,17 @@ public class CatalogViewModel: BindableBase, INavigationAware
 
         try
         {
+            //var filmListDb = await _apiService.PostAsync<IEnumerable<Film>, Film >("/api/FilmApi/CatalogSearch",   )
+
+
+
+
             var filmListDb = await _apiService.GetAsync<IEnumerable<Film>>("/api/FilmApi/AllFilms");
             if (filmListDb != null) FilmList = new ObservableCollection<Film>(filmListDb);
+
+
+            var genreListDb = await _apiService.GetAsync<IEnumerable<Genre>>("/api/FilmApi/AllGenres");
+            if (genreListDb != null) GenresList = new ObservableCollection<Genre>(genreListDb);
 
         }
         catch (Exception ex)
@@ -62,13 +66,66 @@ public class CatalogViewModel: BindableBase, INavigationAware
 
     }
 
-
+    // FILM LIST //
     private ObservableCollection<Film> filmList = [];
     public ObservableCollection<Film> FilmList
     {
         get { return filmList; }
         set { SetProperty(ref filmList, value); }
     }
+
+
+    // GENRES //
+    private ObservableCollection<Genre> genresList = [];
+    public ObservableCollection<Genre> GenresList
+    {
+        get { return genresList; }
+        set { SetProperty(ref genresList, value); }
+    }
+
+
+    // SEARCH TEXT //
+    private string? searchText;
+    public string? SearchText
+    {
+        get { return searchText; }
+        set { SetProperty(ref searchText, value); }
+    }
+
+
+    // SELECTED SEARCH ORDER-BY//
+    private string? selectedSearchOrderBy;
+    public string? SelectedSearchOrderBy
+    {
+        get { return selectedSearchOrderBy; }
+        set { SetProperty(ref selectedSearchOrderBy, value); }
+    }
+
+
+    // SELECTED GENRE //
+    private Genre? selectedGenre;
+    public Genre? SelectedGenre
+    {
+        get { return selectedGenre; }
+        set { SetProperty(ref selectedGenre, value); }
+    }
+
+
+    // SELECTED YEAR //
+    private int? selectedYear;
+    public int? SelectedYear
+    {
+        get { return selectedYear; }
+        set { SetProperty(ref selectedYear, value); }
+    }
+
+
+
+
+
+
+
+
 
 
 

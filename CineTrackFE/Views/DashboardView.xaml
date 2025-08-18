@@ -18,7 +18,7 @@
 
     <Grid Background="#3D5B81">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="50" />
+            <ColumnDefinition Width="20" />
             <ColumnDefinition Width="55*" />
             <ColumnDefinition Width="45*" />
         </Grid.ColumnDefinitions>
@@ -27,17 +27,18 @@
             <RowDefinition Height="50*" />
         </Grid.RowDefinitions>
 
+
+
         <TextBlock
-            Grid.Row="0"
-            Grid.Column="2"
-            Margin="30,0"
+            Grid.Row="1"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            VerticalAlignment="Bottom"
             FontSize="16"
             Foreground="Red"
             Text="{Binding ErrorMessage}"
             TextAlignment="Center"
             TextWrapping="Wrap" />
-
-
 
 
         <DataGrid
