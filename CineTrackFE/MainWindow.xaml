@@ -52,6 +52,7 @@
                 Height="40"
                 Margin="20,0,20,10"
                 Background="#293241"
+                BorderBrush="#DFFBFC"
                 Command="{Binding NavDashboardCommand}"
                 Content="Dashboard"
                 FontSize="20"
@@ -61,8 +62,9 @@
                 Height="40"
                 Margin="20,10"
                 Background="#293241"
-                Command="{Binding NavFilmCommand}"
-                Content="Movies"
+                BorderBrush="#DFFBFC"
+                Command="{Binding NavCatalogCommand}"
+                Content="Catalog"
                 FontSize="20"
                 Foreground="#EE6B4D" />
 
@@ -75,12 +77,14 @@
             <Button
                 Margin="10,0"
                 Background="#293241"
+                BorderBrush="#DFFBFC"
                 Command="{Binding NavLoginCommand}"
                 Content="Login"
                 Foreground="#EE6B4D" />
             <Button
                 Margin="10,0"
                 Background="#293241"
+                BorderBrush="#DFFBFC"
                 Command="{Binding NavRegisterCommand}"
                 Content="Register"
                 Foreground="#EE6B4D" />

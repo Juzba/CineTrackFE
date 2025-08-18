@@ -9,14 +9,55 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Common\Images\DarkKnight.jpg" />
+    <None Remove="Common\Images\ForrestGump.jpg" />
+    <None Remove="Common\Images\GoodFellas.jpg" />
+    <None Remove="Common\Images\Inception.jpg" />
+    <None Remove="Common\Images\JohnWick.jpg" />
+    <None Remove="Common\Images\Matrix.jpg" />
+    <None Remove="Common\Images\PulpFiction.jpg" />
+    <None Remove="Common\Images\SchindlersList.jpg" />
+    <None Remove="Common\Images\StarshipTroopers.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Common\Images\DarkKnight.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Common\Images\ForrestGump.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Common\Images\GoodFellas.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Common\Images\Inception.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Common\Images\JohnWick.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Common\Images\Matrix.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Common\Images\PulpFiction.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Common\Images\SchindlersList.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Common\Images\ShawshankRedemption.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Common\Images\StarshipTroopers.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MaterialDesignThemes" Version="5.2.1" />
     <PackageReference Include="Prism.Core" Version="9.0.537" />
     <PackageReference Include="Prism.DryIoc" Version="9.0.537" />
     <PackageReference Include="Prism.Wpf" Version="9.0.537" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Common\Converters\" />
   </ItemGroup>
 
   <ItemGroup>

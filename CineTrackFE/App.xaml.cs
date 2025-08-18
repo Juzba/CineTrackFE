@@ -23,7 +23,7 @@ public partial class App : PrismApplication
 
         containerRegistry.RegisterForNavigation<LoginView, LoginViewModel>();
         containerRegistry.RegisterForNavigation<RegisterView, RegisterViewModel>();
-        containerRegistry.RegisterForNavigation<FilmView, FilmViewModel>();
+        containerRegistry.RegisterForNavigation<CatalogView, CatalogViewModel>();
         containerRegistry.RegisterForNavigation<DashboardView, DashboardViewModel>();
 
 

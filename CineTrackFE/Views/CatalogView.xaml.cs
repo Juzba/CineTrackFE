@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace CineTrackFE.Views
 {
     /// <summary>
-    /// Interakční logika pro FilmView.xaml
+    /// Interakční logika pro CatalogView.xaml
     /// </summary>
-    public partial class FilmView : UserControl
+    public partial class CatalogView : UserControl
     {
-        public FilmView()
+        public CatalogView()
         {
             InitializeComponent();
         }
