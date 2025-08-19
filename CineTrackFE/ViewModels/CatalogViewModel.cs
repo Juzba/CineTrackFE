@@ -1,8 +1,11 @@
 ﻿using CineTrackFE.AppServises;
+using CineTrackFE.Common;
 using CineTrackFE.Common.Events;
 using CineTrackFE.Models;
 using CineTrackFE.Models.DTO;
+using CineTrackFE.Views;
 using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace CineTrackFE.ViewModels;
 
@@ -10,18 +13,27 @@ public class CatalogViewModel : BindableBase, INavigationAware
 {
     private readonly IApiService _apiService;
     private readonly IEventAggregator _eventAggregator;
+    private readonly IRegionManager _regionManager;
 
 
     private readonly AsyncDelegateCommand OnInitializeAsyncCommand;
+    private readonly AsyncDelegateCommand SendSearchDataAsyncCommand;
+
+    public DelegateCommand SearchFilterResetCommand { get; }
 
 
-    public CatalogViewModel(IApiService apiService, IEventAggregator eventAggregator)
+    public CatalogViewModel(IApiService apiService, IEventAggregator eventAggregator, IRegionManager regionManager)
     {
         _apiService = apiService;
         _eventAggregator = eventAggregator;
+        _regionManager = regionManager;
 
 
         OnInitializeAsyncCommand = new AsyncDelegateCommand(OnInitializeAsync);
+        SendSearchDataAsyncCommand = new AsyncDelegateCommand(SendSearchDataAsync);
+        SearchFilterResetCommand = new DelegateCommand(() => _regionManager.RequestNavigate(Const.MainRegion, nameof(CatalogView)));
+
+
         OnInitializeAsyncCommand.Execute();
 
         _eventAggregator.GetEvent<MainViewTitleEvent>().Publish("Catalog Page");
@@ -39,25 +51,51 @@ public class CatalogViewModel : BindableBase, INavigationAware
     // ON INITIALIZE //
     private async Task OnInitializeAsync()
     {
-        ErrorMessage = null;
+        await LoadFilmsFromApi();
+        await LoadGenresFromApi();
+    }
 
+    // LOAD FILMS FROM API - DB //
+    private async Task LoadFilmsFromApi()
+    {
         try
         {
-            var filmListDb = await _apiService.PostAsync<IEnumerable<Film>, SearchParametrsDto>("/api/FilmApi/CatalogSearch", null!);
+            var filmListDb = await _apiService.PostAsync<IEnumerable<Film>, SearchParametrsDto>("/api/FilmApi/CatalogSearch", searchParametrs);
             if (filmListDb != null) FilmList = new ObservableCollection<Film>(filmListDb);
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = ex.Message;
+        }
+
+        FilmCountMessage = FilmList.Count.ToString();
+    }
 
 
+    // LOAD GENRES FROM API - DB //
+    private async Task LoadGenresFromApi()
+    {
+        try
+        {
             var genreListDb = await _apiService.GetAsync<IEnumerable<Genre>>("/api/FilmApi/AllGenres");
-            if (genreListDb != null) GenresList = new ObservableCollection<Genre>(genreListDb);
+            if (genreListDb != null) GenresList.AddRange(new ObservableCollection<Genre>(genreListDb));
 
         }
         catch (Exception ex)
         {
             ErrorMessage = ex.Message;
-            // chyba
         }
+    }
+
+
+    private async Task SendSearchDataAsync()
+    {
+        ErrorMessage = null;
+        await LoadFilmsFromApi();
+        ButtonResetVisibility = Visibility.Visible;
 
     }
+
 
     // FILM LIST //
     private ObservableCollection<Film> filmList = [];
@@ -68,12 +106,21 @@ public class CatalogViewModel : BindableBase, INavigationAware
     }
 
 
-    // GENRES //
-    private ObservableCollection<Genre> genresList = [];
+    // GENRES LIST //
+    private ObservableCollection<Genre> genresList = [new Genre() { Id = 0, Name = "Všechny" }];
     public ObservableCollection<Genre> GenresList
     {
         get { return genresList; }
         set { SetProperty(ref genresList, value); }
+    }
+
+
+    // SEARCH PARAMETRS DTO //
+    private SearchParametrsDto searchParametrs = new();
+    public SearchParametrsDto SearchParametrs
+    {
+        get { return searchParametrs; }
+        set { searchParametrs = value; }
     }
 
 
@@ -82,7 +129,12 @@ public class CatalogViewModel : BindableBase, INavigationAware
     public string? SearchText
     {
         get { return searchText; }
-        set { SetProperty(ref searchText, value); }
+        set
+        {
+            SetProperty(ref searchText, value);
+            searchParametrs.SearchText = searchText;
+            SendSearchDataAsyncCommand.Execute();
+        }
     }
 
 
@@ -91,7 +143,12 @@ public class CatalogViewModel : BindableBase, INavigationAware
     public string? SearchOrder
     {
         get { return searchOrder; }
-        set { SetProperty(ref searchOrder, value); }
+        set
+        {
+            SetProperty(ref searchOrder, value);
+            searchParametrs.SearchOrder = value;
+            SendSearchDataAsyncCommand.Execute();
+        }
     }
 
 
@@ -100,34 +157,65 @@ public class CatalogViewModel : BindableBase, INavigationAware
     public Genre? SearchByGenre
     {
         get { return searchByGenre; }
-        set { SetProperty(ref searchByGenre, value); }
+        set
+        {
+            SetProperty(ref searchByGenre, value);
+            searchParametrs.GenreId = value?.Id;
+            SendSearchDataAsyncCommand.Execute();
+        }
     }
-
 
     // SEARCH BY YEAR //
-    private int? searchByYear;
-    public int? SearchByYear
+    private string? searchByYear;
+    public string? SearchByYear
     {
         get { return searchByYear; }
-        set { SetProperty(ref searchByYear, value); }
+        set
+        {
+            SetProperty(ref searchByYear, value);
+            if (int.TryParse(value, out int intYear))
+            {
+                searchParametrs.SearchByYear = intYear;
+                SendSearchDataAsyncCommand.Execute();
+            }
+            else if (string.IsNullOrWhiteSpace(value))
+            {
+                searchParametrs.SearchByYear = null;
+                SendSearchDataAsyncCommand.Execute();
+            }
+        }
     }
 
-
-
-
-
-
-
-
-
-
-
+    // ERROR MESSAGE //
     private string? errorMessage;
     public string? ErrorMessage
     {
         get { return errorMessage; }
         set { SetProperty(ref errorMessage, value); }
     }
+
+
+    // FILM COUNT MESSAGE //
+    private string? filmCountMessage;
+    public string? FilmCountMessage
+    {
+        get { return filmCountMessage; }
+        set
+        {
+            var result = $"Nalezeno {value} filmů.";
+            SetProperty(ref filmCountMessage, result);
+        }
+    }
+
+
+    // BUTTON FILTER-RESET VISIBILITY //
+    private Visibility buttonResetVisibility = Visibility.Hidden;
+    public Visibility ButtonResetVisibility
+    {
+        get { return buttonResetVisibility; }
+        set { SetProperty(ref buttonResetVisibility, value); }
+    }
+
 
 
 

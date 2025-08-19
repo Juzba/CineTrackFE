@@ -3,6 +3,8 @@ CineTrack je komplexní systém pro správu a hodnocení filmů. Projekt se skl�
 
 ## Klíčové funkce
 
+* automaticka migrace
+
 ### Backend (ASP.NET MVC & Web API)
 1. RESTful API pro CRUD operace s filmy, žánry, hodnoceními a uživateli
 2. Implementace Entity Framework pro práci s SQL databází

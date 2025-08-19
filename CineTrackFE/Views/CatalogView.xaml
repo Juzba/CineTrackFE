@@ -73,9 +73,12 @@
 
         <TextBlock
             Grid.Column="1"
+            Margin="-5"
+            Padding="30"
             VerticalAlignment="Bottom"
             FontSize="16"
-            Foreground="Red"
+            FontWeight="DemiBold"
+            Foreground="White"
             Text="{Binding ErrorMessage}"
             TextAlignment="Center"
             TextWrapping="Wrap" />
@@ -90,25 +93,39 @@
                 Text="Vyhledání:"
                 TextAlignment="Center" />
             <TextBox
-                Margin="10,10,10,120"
+                Margin="10"
                 Padding="10,5"
                 Background="#293241"
                 BorderBrush="#DFFBFC"
                 BorderThickness="2"
                 FontSize="14"
                 Foreground="#DFFBFC"
-                Text="{Binding SearchText, UpdateSourceTrigger=LostFocus}" />
+                Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBlock
+                Margin="10,10,10,10"
+                FontSize="14"
+                Foreground="#DFFBFC"
+                Text="{Binding FilmCountMessage}" />
+
+            <Button
+                Margin="10,10,10,60"
+                Background="#3D5B81"
+                Command="{Binding SearchFilterResetCommand}"
+                Content="Reset filtru"
+                Visibility="{Binding ButtonResetVisibility}" />
+
 
             <TextBlock Text="Řadit Dle:" TextAlignment="Center" />
             <ComboBox
                 Margin="10,10,10,40"
                 Padding="10,5"
                 FontSize="14"
-                SelectedValue="{Binding SearchOrder}"
+                SelectedValue="{Binding SearchOrder, UpdateSourceTrigger=PropertyChanged}"
                 SelectedValuePath="Tag">
-                <ComboBoxItem Content="Názvu sestupně" Tag="NameDesc" />
+                <ComboBoxItem Content="Naposledy přidané" Tag="" />
                 <ComboBoxItem Content="Názvu vzestupně" Tag="NameAsc" />
                 <ComboBoxItem Content="Roku sestupně" Tag="YearDesc" />
+                <ComboBoxItem Content="Názvu sestupně" Tag="NameDesc" />
                 <ComboBoxItem Content="Roku vzestupně" Tag="YearAsc" />
             </ComboBox>
 
@@ -121,7 +138,7 @@
                 FontSize="14"
                 Foreground="#DFFBFC"
                 ItemsSource="{Binding GenresList}"
-                SelectedItem="{Binding SearchByGenre}" />
+                SelectedItem="{Binding SearchByGenre, UpdateSourceTrigger=PropertyChanged}" />
 
             <TextBlock Text="Rok:" TextAlignment="Center" />
             <TextBox
@@ -129,7 +146,7 @@
                 Padding="10,5"
                 FontSize="14"
                 Foreground="#DFFBFC"
-                Text="{Binding SearchByYear}" />
+                Text="{Binding SearchByYear, UpdateSourceTrigger=PropertyChanged}" />
 
 
 
