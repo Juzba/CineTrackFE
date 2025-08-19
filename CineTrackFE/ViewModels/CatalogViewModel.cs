@@ -43,12 +43,7 @@ public class CatalogViewModel : BindableBase, INavigationAware
 
         try
         {
-            var filmListDb = await _apiService.PostAsync<IEnumerable<Film>, SearchParametrsDto>("/api/FilmApi/CatalogSearch", new SearchParametrsDto());
-
-
-
-
-            //var filmListDb = await _apiService.GetAsync<IEnumerable<Film>>("/api/FilmApi/AllFilms");
+            var filmListDb = await _apiService.PostAsync<IEnumerable<Film>, SearchParametrsDto>("/api/FilmApi/CatalogSearch", null!);
             if (filmListDb != null) FilmList = new ObservableCollection<Film>(filmListDb);
 
 
@@ -61,9 +56,6 @@ public class CatalogViewModel : BindableBase, INavigationAware
             ErrorMessage = ex.Message;
             // chyba
         }
-
-
-
 
     }
 
