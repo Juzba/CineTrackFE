@@ -35,6 +35,7 @@ public partial class App : PrismApplication
         };
         containerRegistry.RegisterInstance(httpClient);
         containerRegistry.Register<IApiService, ApiService>();
+        containerRegistry.RegisterSingleton<IAuthService, AuthService>();
     }
 
 
