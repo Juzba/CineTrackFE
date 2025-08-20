@@ -20,6 +20,7 @@ public class CatalogViewModel : BindableBase, INavigationAware
     private readonly AsyncDelegateCommand SendSearchDataAsyncCommand;
 
     public DelegateCommand SearchFilterResetCommand { get; }
+    public DelegateCommand<Film> OpenFilmDetailsCommand { get; }
 
 
     public CatalogViewModel(IApiService apiService, IEventAggregator eventAggregator, IRegionManager regionManager)
@@ -31,6 +32,13 @@ public class CatalogViewModel : BindableBase, INavigationAware
 
         OnInitializeAsyncCommand = new AsyncDelegateCommand(OnInitializeAsync);
         SendSearchDataAsyncCommand = new AsyncDelegateCommand(SendSearchDataAsync);
+        OpenFilmDetailsCommand = new DelegateCommand<Film>(film =>
+        {
+            if (film != null)
+            {
+                _regionManager.RequestNavigate(Const.MainRegion, nameof(FilmDetailView), new NavigationParameters() { {Const.FilmId, film.Id } });
+            }
+        });
         SearchFilterResetCommand = new DelegateCommand(() => _regionManager.RequestNavigate(Const.MainRegion, nameof(CatalogView)));
 
 

@@ -44,28 +44,45 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border
-                            Margin="0,0,20,20"
-                            Padding="10"
-                            Background="#293241"
-                            BorderBrush="#DFFBFC"
-                            BorderThickness="1"
-                            CornerRadius="5">
-                            <StackPanel Width="200">
-                                <Image
-                                    Height="290"
-                                    Source="{Binding ImageFileName, Converter={StaticResource ImagePathC}}"
-                                    Stretch="Uniform" />
 
-                                <TextBlock
-                                    FontWeight="Bold"
-                                    Foreground="#EE6B4D"
-                                    Text="{Binding Name}"
-                                    TextWrapping="Wrap" />
-                                <TextBlock FontSize="12" Text="{Binding ReleaseDate, StringFormat='{}{0:dd. MM. yyyy}'}" />
-                                <TextBlock FontSize="12" Text="{Binding Director}" />
-                            </StackPanel>
-                        </Border>
+
+                        <Button
+                            Height="auto"
+                            Command="{Binding DataContext.OpenFilmDetailsCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                            CommandParameter="{Binding}"
+                            Cursor="Hand">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border
+                                        Margin="0,0,20,20"
+                                        Padding="10"
+                                        Background="#293241"
+                                        BorderBrush="#DFFBFC"
+                                        BorderThickness="1"
+                                        CornerRadius="5">
+                                        <StackPanel Width="200">
+                                            <Image
+                                                Height="290"
+                                                Source="{Binding ImageFileName, Converter={StaticResource ImagePathC}}"
+                                                Stretch="Fill" />
+                                            <TextBlock
+                                                FontWeight="Bold"
+                                                Foreground="#EE6B4D"
+                                                Text="{Binding Name}"
+                                                TextWrapping="Wrap" />
+                                            <TextBlock
+                                                FontSize="12"
+                                                Foreground="#DFFBFC"
+                                                Text="{Binding ReleaseDate, StringFormat='{}{0:dd. MM. yyyy}'}" />
+                                            <TextBlock
+                                                FontSize="12"
+                                                Foreground="#DFFBFC"
+                                                Text="{Binding Director}" />
+                                        </StackPanel>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

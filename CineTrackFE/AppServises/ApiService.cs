@@ -7,6 +7,7 @@ namespace CineTrackFE.AppServises;
 public interface IApiService
 {
     Task<T?> GetAsync<T>(string endpoint, CancellationToken cancellationToken = default);
+    Task<T?> GetAsync<T>(string endpoint, int id, CancellationToken cancellationToken = default);
     Task<T?> PostAsync<T, TRequest>(string endpoint, TRequest data, CancellationToken cancellationToken = default);
 
 
@@ -28,7 +29,7 @@ public class ApiService(HttpClient httpClient) : IApiService
 
             if (response.IsSuccessStatusCode)
             {
-                string content = await response.Content.ReadAsStringAsync();
+                string content = await response.Content.ReadAsStringAsync(cancellationToken);
                 return JsonSerializer.Deserialize<T>(content);
             }
             else
@@ -44,6 +45,29 @@ public class ApiService(HttpClient httpClient) : IApiService
     }
 
 
+
+    public async Task<T?> GetAsync<T>(string endpoint, int id, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            string url = $"{endpoint}/{id}";
+            HttpResponseMessage response = await _httpClient.GetAsync(url, cancellationToken);
+
+            if (response.IsSuccessStatusCode)
+            {
+                string content = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<T>(content);
+            }
+            else
+            {
+                throw new HttpRequestException($"Error: {response.StatusCode}");
+            }
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"An error occurred while making the API request: {ex.Message}", ex);
+        }
+    }
 
 
 

@@ -25,6 +25,7 @@ public partial class App : PrismApplication
         containerRegistry.RegisterForNavigation<RegisterView, RegisterViewModel>();
         containerRegistry.RegisterForNavigation<CatalogView, CatalogViewModel>();
         containerRegistry.RegisterForNavigation<DashboardView, DashboardViewModel>();
+        containerRegistry.RegisterForNavigation<FilmDetailView, FilmDetailViewModel>();
 
 
         // Register HttpClient for API calls
