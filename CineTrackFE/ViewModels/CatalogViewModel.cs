@@ -59,8 +59,10 @@ public class CatalogViewModel : BindableBase, INavigationAware
     // ON INITIALIZE //
     private async Task OnInitializeAsync()
     {
+        IsLOading = true;
         await LoadFilmsFromApi();
         await LoadGenresFromApi();
+        IsLOading = false;
     }
 
     // LOAD FILMS FROM API - DB //
@@ -98,9 +100,16 @@ public class CatalogViewModel : BindableBase, INavigationAware
 
     private async Task SendSearchDataAsync()
     {
+
+        if (IsLOading) return;
+
+        IsLOading = true;
         ErrorMessage = null;
+
         await LoadFilmsFromApi();
         ButtonResetVisibility = Visibility.Visible;
+
+        IsLOading = false;
 
     }
 
@@ -224,6 +233,14 @@ public class CatalogViewModel : BindableBase, INavigationAware
         set { SetProperty(ref buttonResetVisibility, value); }
     }
 
+
+    // IS LOADING FROM DB //
+    private bool _isLoading;
+    public bool IsLOading
+    {
+        get { return _isLoading; }
+        set { _isLoading = value; }
+    }
 
 
 
