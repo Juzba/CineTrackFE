@@ -6,6 +6,8 @@
     xmlns:local="clr-namespace:CineTrackFE.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
+    xmlns:viewmodels="clr-namespace:CineTrackFE.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewmodels:LoginViewModel}"
     d:DesignHeight="720"
     d:DesignWidth="1280"
     prism:ViewModelLocator.AutoWireViewModel="True"
@@ -71,7 +73,7 @@
                 VerticalAlignment="Center"
                 Background="#DFFBFC"
                 Foreground="#293241"
-                Text="{Binding Email, Mode=TwoWay}" />
+                Text="{Binding UserName}" />
 
             <TextBlock
                 Grid.Row="1"
@@ -83,7 +85,7 @@
                 Foreground="#293241"
                 Text="Heslo:" />
 
-            <PasswordBox
+            <TextBox
                 Grid.Row="1"
                 Grid.Column="1"
                 Margin="10"
@@ -91,7 +93,7 @@
                 VerticalAlignment="Center"
                 Background="#DFFBFC"
                 Foreground="#293241"
-                PasswordChar="{Binding Password, Mode=TwoWay}" />
+                Text="{Binding Password}" />
 
             <StackPanel
                 Grid.Row="3"
@@ -107,7 +109,7 @@
                     VerticalAlignment="Top"
                     Background="#293241"
                     BorderThickness="2"
-                    Command="{Binding LoginCommand}"
+                    Command="{Binding LoginAsyncCommand}"
                     Content="Přihlásit"
                     FontSize="30"
                     Foreground="#DFFBFC" />
