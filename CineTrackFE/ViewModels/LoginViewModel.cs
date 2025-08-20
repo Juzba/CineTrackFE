@@ -23,7 +23,9 @@ public class LoginViewModel : BindableBase
     {
         try
         {
-            var result = _authService.LoginAsync(UserName, Password);
+            var result = await _authService.LoginAsync(UserName, Password);
+
+            // dalsi logika pro prihlaseni 
         }
         catch (Exception)
         {

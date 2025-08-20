@@ -33,7 +33,7 @@ namespace CineTrackFE.AppServises
 
             try
             {
-                var response = await _httpClient.PostAsJsonAsync("api/AuthApi/login", loginDto);
+                var response = await _httpClient.PostAsJsonAsync("/api/AuthApi/login", loginDto);
 
                 if (response.IsSuccessStatusCode)
                 {
