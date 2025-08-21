@@ -107,6 +107,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\CineTrackBE\CineTrackBE\CineTrackBE.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="Common\Blueprints\Task.txt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Task.cs</LastGenOutput>

@@ -4,62 +4,91 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
-namespace CineTrackFE.AppServises
+namespace CineTrackFE.AppServises;
+
+public interface IAuthService
 {
-    public interface IAuthService
+    Task<bool> LoginAsync(string username, string password, bool rememberMe = false);
+    Task<bool> RegisterAsync(string username, string password);
+    void Logout();
+    bool IsAuthenticated { get; }
+}
+
+
+public class AuthService(HttpClient httpClient, UserStore userStore) : IAuthService
+{
+    private string? _token;
+    private readonly HttpClient _httpClient = httpClient;
+    private readonly UserStore _userStore = userStore;
+
+    public bool IsAuthenticated => !string.IsNullOrEmpty(_token);
+
+
+    // LOGIN ASYNC //
+    public async Task<bool> LoginAsync(string username, string password, bool rememberMe = false)
     {
-        Task<bool> LoginAsync(string username, string password, bool rememberMe = false);
-        void Logout();
-        bool IsAuthenticated { get; }
-    }
+        ArgumentException.ThrowIfNullOrWhiteSpace(username);
+        ArgumentException.ThrowIfNullOrWhiteSpace(password);
 
-    public class AuthService(HttpClient httpClient, UserStore userStore) : IAuthService
-    {
-        private string? _token;
-        private readonly HttpClient _httpClient = httpClient;
-        private readonly UserStore _userStore = userStore;
+        var loginDto = new LoginDto() { UserName = username, Password = password, RememberMe = rememberMe };
 
-        public bool IsAuthenticated => !string.IsNullOrEmpty(_token);
-
-        public async Task<bool> LoginAsync(string username, string password, bool rememberMe = false)
+        try
         {
-            ArgumentException.ThrowIfNullOrWhiteSpace(username);
-            ArgumentException.ThrowIfNullOrWhiteSpace(password);
+            var response = await _httpClient.PostAsJsonAsync("/api/AuthApi/login", loginDto);
 
-            var loginDto = new LoginDto() { UserName = username, Password = password, RememberMe = rememberMe };
-
-            try
+            if (response.IsSuccessStatusCode)
             {
-                var response = await _httpClient.PostAsJsonAsync("/api/AuthApi/login", loginDto);
+                var result = await response.Content.ReadFromJsonAsync<LoginResponse>();
+                _token = result?.Token;
+                _userStore.User = result?.User;
 
-                if (response.IsSuccessStatusCode)
-                {
-                    var result = await response.Content.ReadFromJsonAsync<LoginResponse>();
-                    _token = result?.Token;
-                    _userStore.User = result?.User;
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token);
 
-                    _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token);
-
-                    return true;
-                }
+                return true;
             }
-            catch (Exception ex)
-            {
-                throw new Exception($"An error occurred while making the API request: {ex.Message}", ex);
-            }
-            return false;
         }
-
-        public void Logout()
+        catch (Exception ex)
         {
-            _token = null;
-            _httpClient.DefaultRequestHeaders.Authorization = null;
+            throw new Exception($"An error occurred while making the API request: {ex.Message}", ex);
         }
+        return false;
     }
 
-    public class LoginResponse
+
+    // REGISTER ASYNC //
+    public async Task<bool> RegisterAsync(string username, string password)
     {
-        public string Token { get; set; } = string.Empty;
-        public User User { get; set; } = default!;
+        ArgumentException.ThrowIfNullOrWhiteSpace(username);
+        ArgumentException.ThrowIfNullOrWhiteSpace(password);
+
+        try
+        {
+            var response = await _httpClient.PostAsJsonAsync("/api/AuthApi/register", new RegisterDto() { UserName = username, Password = password}  );
+
+            if (response.IsSuccessStatusCode) return true;
+            else if (response.StatusCode == System.Net.HttpStatusCode.Conflict)
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Registration failed: {error}");
+            }
+
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"An error occurred while making the API request: {ex.Message}", ex);
+        }
+        return false;
     }
+
+    public void Logout()
+    {
+        _token = null;
+        _httpClient.DefaultRequestHeaders.Authorization = null;
+    }
+}
+
+public class LoginResponse
+{
+    public string Token { get; set; } = string.Empty;
+    public User User { get; set; } = default!;
 }

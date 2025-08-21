@@ -6,6 +6,8 @@
     xmlns:local="clr-namespace:CineTrackFE.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
+    xmlns:viewmodels="clr-namespace:CineTrackFE.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewmodels:RegisterViewModel}"
     d:DesignHeight="720"
     d:DesignWidth="1280"
     prism:ViewModelLocator.AutoWireViewModel="True"
@@ -31,9 +33,10 @@
             Grid.Row="1"
             Grid.ColumnSpan="3"
             HorizontalAlignment="Center"
-            FontSize="20"
+            FontSize="16"
             Foreground="red"
-            Text="{Binding ErrorMessage}" />
+            Text="{Binding ErrorMessage}"
+            TextWrapping="Wrap" />
 
 
         <Grid Grid.Row="2" Grid.Column="1">
@@ -83,7 +86,7 @@
                 VerticalAlignment="Center"
                 Background="#DFFBFC"
                 Foreground="#293241"
-                Text="{Binding Email, Mode=TwoWay}" />
+                Text="{Binding UserName, Mode=TwoWay}" />
 
             <TextBox
                 Grid.Row="1"
@@ -93,7 +96,7 @@
                 VerticalAlignment="Center"
                 Background="#DFFBFC"
                 Foreground="#293241"
-                Text="{Binding PasswordA, Mode=TwoWay}" />
+                Text="{Binding Password, Mode=TwoWay}" />
 
 
             <TextBox
@@ -104,7 +107,7 @@
                 VerticalAlignment="Center"
                 Background="#DFFBFC"
                 Foreground="#293241"
-                Text="{Binding PasswordB, Mode=TwoWay}" />
+                Text="{Binding ConfirmPassword, Mode=TwoWay}" />
 
             <Button
                 Grid.Row="4"

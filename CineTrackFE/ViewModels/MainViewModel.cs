@@ -1,4 +1,5 @@
-﻿using CineTrackFE.Common;
+﻿using CineTrackFE.AppServises;
+using CineTrackFE.Common;
 using CineTrackFE.Common.Events;
 using CineTrackFE.Models;
 using CineTrackFE.Views;
@@ -9,23 +10,23 @@ namespace CineTrackFE.ViewModels
     {
         private readonly IRegionManager _regionManager;
         private readonly IEventAggregator _eventAggregator;
+        private readonly IAuthService _authService;
 
 
-        private readonly DelegateCommand OnInitializeCommand;
 
         public DelegateCommand NavLoginCommand { get; }
         public DelegateCommand NavRegisterCommand { get; }
         public DelegateCommand NavDashboardCommand { get; }
         public DelegateCommand NavCatalogCommand { get; }
+        public DelegateCommand LogoutCommand { get; }
 
 
 
-        public MainViewModel(IRegionManager regionManager, IEventAggregator eventAggregator)
+        public MainViewModel(IRegionManager regionManager, IEventAggregator eventAggregator, IAuthService authService)
         {
             _regionManager = regionManager;
             _eventAggregator = eventAggregator;
-            OnInitializeCommand = new DelegateCommand(OnInitialize);
-            OnInitializeCommand.Execute();
+            _authService = authService;
 
             _eventAggregator.GetEvent<MainViewTitleEvent>().Subscribe((string titleParametr) => Title = titleParametr);
             _eventAggregator.GetEvent<MainViewLoginEvent>().Subscribe((User? user) => Login(user));
@@ -34,19 +35,41 @@ namespace CineTrackFE.ViewModels
             NavRegisterCommand = new DelegateCommand(() => _regionManager.RequestNavigate(Const.MainRegion, nameof(RegisterView)));
             NavDashboardCommand = new DelegateCommand(() => _regionManager.RequestNavigate(Const.MainRegion, nameof(DashboardView)));
             NavCatalogCommand = new DelegateCommand(() => _regionManager.RequestNavigate(Const.MainRegion, nameof(CatalogView)));
+            LogoutCommand = new DelegateCommand(Logout);
+
+
         }
 
 
 
-        private void OnInitialize()
-        {
-
-        }
         private void Login(User? user)
         {
-            // login logika
+            if (user == null) return;
+
+            UserName = user.UserName;
+            IsVisible = false;
+
+            if (user.Roles.Contains("Admin"))
+            {
+                Role = "Admin";
+            }
+            else
+            {
+                Role = "User";
+            }
+
+
         }
 
+        private void Logout()
+        {
+            UserName = null;
+            Role = null;
+            IsVisible = true;
+
+            _authService.Logout();
+            _regionManager.RequestNavigate(Const.MainRegion, nameof(LoginView));
+        }
 
 
 
@@ -68,7 +91,23 @@ namespace CineTrackFE.ViewModels
             set { SetProperty(ref userName, value); }
         }
 
+        // ROLE //
+        private string? role;
+        public string? Role
+        {
+            get { return role; }
+            set { SetProperty(ref role, value); }
+        }
 
+
+        // LOGIN VISIBILITY //
+        private bool isVisible = true;
+        public bool IsVisible
+        {
+            get { return isVisible; }
+            set { SetProperty(ref isVisible, value); }
+
+        }
 
 
 

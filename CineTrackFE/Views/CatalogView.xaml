@@ -95,7 +95,7 @@
             VerticalAlignment="Bottom"
             FontSize="16"
             FontWeight="DemiBold"
-            Foreground="White"
+            Foreground="Red"
             Text="{Binding ErrorMessage}"
             TextAlignment="Center"
             TextWrapping="Wrap" />

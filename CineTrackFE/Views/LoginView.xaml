@@ -38,9 +38,10 @@
             Grid.Row="1"
             Grid.ColumnSpan="3"
             HorizontalAlignment="Center"
-            FontSize="20"
+            FontSize="16"
             Foreground="red"
-            Text="{Binding ErrorMessage}" />
+            Text="{Binding ErrorMessage}"
+            TextWrapping="Wrap" />
 
         <Grid Grid.Row="2" Grid.Column="1">
             <Grid.ColumnDefinitions>
@@ -123,7 +124,7 @@
                     Background="#293241"
                     BorderBrush="#EE6B4D"
                     BorderThickness="2"
-                    Command="{Binding InstaAccessCommand}"
+                    Command="{Binding InstaLoginAsyncCommand}"
                     Content="Instant Access"
                     Foreground="#DFFBFC" />
             </StackPanel>

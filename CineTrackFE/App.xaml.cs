@@ -3,6 +3,7 @@ using CineTrackFE.Common;
 using CineTrackFE.ViewModels;
 using CineTrackFE.Views;
 using Microsoft.Xaml.Behaviors.Core;
+using System;
 using System.Net.Http;
 using System.Windows;
 
@@ -44,9 +45,9 @@ public partial class App : PrismApplication
     protected override Window CreateShell()
     {
         var mainWindow = Container.Resolve<MainWindow>();
+        mainWindow.DataContext = Container.Resolve<MainViewModel>();
         mainWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
         mainWindow.Show();
-        mainWindow.DataContext = Container.Resolve<MainViewModel>();
 
         return mainWindow;
     }
@@ -54,12 +55,13 @@ public partial class App : PrismApplication
     protected override void OnInitialized()
     {
         var regionManager = Container.Resolve<IRegionManager>();
-
-        regionManager.RequestNavigate(Const.MainRegion, nameof(DashboardView));
+        //first page to show
+        regionManager.RequestNavigate(Const.MainRegion, nameof(LoginView));
 
 
         base.OnInitialized();
     }
+
 
 
     protected override void ConfigureViewModelLocator()
