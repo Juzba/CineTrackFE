@@ -12,14 +12,19 @@ namespace CineTrackFE.ViewModels
 
         private readonly AsyncDelegateCommand<int> GetFilmFromApiAsyncCommand;
 
+        public AsyncDelegateCommand ToggleFavoriteCommand { get; }
+
         public FilmDetailViewModel(IApiService apiService, IEventAggregator eventAggregator)
         {
+            _eventAggregator = eventAggregator;
             _apiService = apiService;
             GetFilmFromApiAsyncCommand = new AsyncDelegateCommand<int>(GetFilmFromApiAsync);
-            _eventAggregator = eventAggregator;
+            ToggleFavoriteCommand = new AsyncDelegateCommand(ToggleFavoriteAsync);
 
             _eventAggregator.GetEvent<MainViewTitleEvent>().Publish("Film Details");
         }
+
+
 
 
 
@@ -37,11 +42,31 @@ namespace CineTrackFE.ViewModels
             }
             else
             {
-                ErrorMessage = "FilmId parametr is null or wrong format!"; // Error handling if FilmId is not valid
+                ErrorMessage = "FilmId parametr is null or wrong format!"; 
             }
 
         }
         public void OnNavigatedFrom(NavigationContext navigationContext) { }
+
+
+
+
+        // TOGGLE FAVORITE //
+        private async Task ToggleFavoriteAsync()
+        {
+            //if (Film == null) return;
+            //try
+            //{
+            //    Film.IsMyFavorite = !Film.IsMyFavorite;
+            //    await _apiService.PostAsync("/api/FilmApi/ToggleFavorite", Film.Id);
+            //}
+            //catch (Exception ex)
+            //{
+            //    ErrorMessage = ex.Message;
+            //}
+        }
+
+
 
 
 
