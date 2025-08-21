@@ -74,6 +74,15 @@
             Grid.Column="1"
             HorizontalAlignment="Right"
             Orientation="Horizontal">
+
+            <TextBlock
+                Margin="10,0"
+                VerticalAlignment="Center"
+                Text="{Binding UserName}"
+                FontSize="20"
+                Foreground="#DFFBFC" />
+
+
             <Button
                 Margin="10,0"
                 Background="#293241"

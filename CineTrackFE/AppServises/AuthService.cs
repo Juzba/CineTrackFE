@@ -1,4 +1,5 @@
-﻿using CineTrackFE.Models.DTO;
+﻿using CineTrackFE.Models;
+using CineTrackFE.Models.DTO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -12,15 +13,11 @@ namespace CineTrackFE.AppServises
         bool IsAuthenticated { get; }
     }
 
-    public class AuthService : IAuthService
+    public class AuthService(HttpClient httpClient, UserStore userStore) : IAuthService
     {
         private string? _token;
-        private readonly HttpClient _httpClient;
-
-        public AuthService(HttpClient httpClient)
-        {
-            _httpClient = httpClient;
-        }
+        private readonly HttpClient _httpClient = httpClient;
+        private readonly UserStore _userStore = userStore;
 
         public bool IsAuthenticated => !string.IsNullOrEmpty(_token);
 
@@ -39,10 +36,9 @@ namespace CineTrackFE.AppServises
                 {
                     var result = await response.Content.ReadFromJsonAsync<LoginResponse>();
                     _token = result?.Token;
+                    _userStore.User = result?.User;
 
-                    // Přidejte token do hlavičky pro všechny následující requesty
-                    _httpClient.DefaultRequestHeaders.Authorization =
-                        new AuthenticationHeaderValue("Bearer", _token);
+                    _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token);
 
                     return true;
                 }
@@ -64,5 +60,6 @@ namespace CineTrackFE.AppServises
     public class LoginResponse
     {
         public string Token { get; set; } = string.Empty;
+        public User User { get; set; } = default!;
     }
 }

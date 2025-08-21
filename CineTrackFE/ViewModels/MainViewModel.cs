@@ -1,5 +1,6 @@
 ﻿using CineTrackFE.Common;
 using CineTrackFE.Common.Events;
+using CineTrackFE.Models;
 using CineTrackFE.Views;
 
 namespace CineTrackFE.ViewModels
@@ -27,6 +28,7 @@ namespace CineTrackFE.ViewModels
             OnInitializeCommand.Execute();
 
             _eventAggregator.GetEvent<MainViewTitleEvent>().Subscribe((string titleParametr) => Title = titleParametr);
+            _eventAggregator.GetEvent<MainViewLoginEvent>().Subscribe((User? user) => Login(user));
 
             NavLoginCommand = new DelegateCommand(() => _regionManager.RequestNavigate(Const.MainRegion, nameof(LoginView)));
             NavRegisterCommand = new DelegateCommand(() => _regionManager.RequestNavigate(Const.MainRegion, nameof(RegisterView)));
@@ -40,9 +42,16 @@ namespace CineTrackFE.ViewModels
         {
 
         }
+        private void Login(User? user)
+        {
+            // login logika
+        }
 
 
 
+
+
+        // TITLE //
         private string title = "";
         public string Title
         {
@@ -50,6 +59,14 @@ namespace CineTrackFE.ViewModels
             set { SetProperty(ref title, value); }
         }
 
+
+        // USERNAME //
+        private string? userName;
+        public string? UserName
+        {
+            get { return userName; }
+            set { SetProperty(ref userName, value); }
+        }
 
 
 
