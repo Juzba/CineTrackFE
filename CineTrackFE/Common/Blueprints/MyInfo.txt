@@ -1,4 +1,6 @@
-﻿
+﻿// předělat user v mvc na usermanager, rolemanager
+
+
 // Nekonečné scrollování //
 
 <UserControl
