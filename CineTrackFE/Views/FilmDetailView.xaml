@@ -160,8 +160,8 @@
             Height="auto"
             HorizontalAlignment="Stretch"
             AllowsTransparency="True"
+            IsOpen="{Binding IsPopupOpen, Mode=TwoWay}"
             Placement="Center"
-             IsOpen="{Binding IsPopupOpen, Mode=TwoWay}"
             PlacementTarget="{Binding ElementName=ShowPopupButton}"
             StaysOpen="False">
             <Border
@@ -273,21 +273,26 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition />
                                         <ColumnDefinition />
+                                        <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
                                         <RowDefinition />
                                         <RowDefinition />
                                     </Grid.RowDefinitions>
 
-                                    <TextBlock Text="Autor" />
+                                    <TextBlock Text="{Binding AuthorName}" />
                                     <TextBlock
-                                        Grid.Column="1"
+                                        Grid.Column="2"
                                         HorizontalAlignment="Right"
-                                        Text="100%" />
+                                        Text="{Binding SendDate, StringFormat={}{0: dd.MM.yyyy}}" />
+                                    <TextBlock
+                                        Grid.Column="2"
+                                        HorizontalAlignment="Right"
+                                        Text="{Binding Rating}" />
                                     <TextBlock
                                         Grid.Row="1"
-                                        Grid.ColumnSpan="2"
-                                        Text="{Binding}"
+                                        Grid.ColumnSpan="3"
+                                        Text="{Binding Text}"
                                         TextWrapping="Wrap" />
 
                                 </Grid>

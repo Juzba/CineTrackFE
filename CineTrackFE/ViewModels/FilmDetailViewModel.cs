@@ -12,6 +12,7 @@ namespace CineTrackFE.ViewModels
         private readonly IEventAggregator _eventAggregator;
 
         private readonly AsyncDelegateCommand<int> GetFilmFromApiAsyncCommand;
+        private readonly AsyncDelegateCommand<int> GetCommentsFromApiAsyncCommand;
 
         public AsyncDelegateCommand ToggleFavoriteCommand { get; }
         public AsyncDelegateCommand SendCommentAsyncCommand { get; }
@@ -21,6 +22,7 @@ namespace CineTrackFE.ViewModels
             _eventAggregator = eventAggregator;
             _apiService = apiService;
             GetFilmFromApiAsyncCommand = new AsyncDelegateCommand<int>(GetFilmFromApiAsync);
+            GetCommentsFromApiAsyncCommand = new AsyncDelegateCommand<int>(GetCommentsFromApiAsync);
             ToggleFavoriteCommand = new AsyncDelegateCommand(ToggleFavoriteAsync);
             SendCommentAsyncCommand = new AsyncDelegateCommand(SendCommentAsync);
 
@@ -40,6 +42,7 @@ namespace CineTrackFE.ViewModels
             {
                 FilmId = intFilmId;
                 GetFilmFromApiAsyncCommand.Execute(intFilmId);
+                GetCommentsFromApiAsyncCommand.Execute(intFilmId);
             }
 
             else ErrorMessage = "FilmId parametr is null or wrong format!";
@@ -56,6 +59,22 @@ namespace CineTrackFE.ViewModels
             {
                 var result = await _apiService.GetAsync<Film>("/api/FilmApi/FilmDetails", id);
                 if (result != null) Film = result;
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = ex.Message;
+            }
+        }
+
+        // GET COMMENTS FROM API //
+        private async Task GetCommentsFromApiAsync(int id)
+        {
+            if (id == 0) return;
+
+            try
+            {
+                var resultComments = await _apiService.GetAsync<ICollection<Comment>>("/api/FilmApi/GetComments", id);
+                if (resultComments != null) Comments = new ObservableCollection<Comment>(resultComments);
             }
             catch (Exception ex)
             {
@@ -106,7 +125,7 @@ namespace CineTrackFE.ViewModels
                     Rating = null;
                     CommentFormText = null;
 
-                    await GetFilmFromApiAsyncCommand.Execute(FilmId);
+                    await GetCommentsFromApiAsyncCommand.Execute(FilmId);
                 }
                 else ErrorMessage = "Chyba, komentář nebyl uložen!";
             }
@@ -141,14 +160,8 @@ namespace CineTrackFE.ViewModels
 
 
         // COMMENTS //
-        private ObservableCollection<string> comments = [
-            "Nejlepší film na světě",
-            "Hrůza,už jsem viděl lepší, toto bude uplne nejdelsi komentar na svete aby bylo videt jak to funguje!",
-            "Hrůza,už jsem viděl lepší",
-            "Hrůza,už jsem viděl lepší",
-            "Hrůza,už jsem viděl lepší",
-            ];
-        public ObservableCollection<string> Comments
+        private ObservableCollection<Comment> comments = [];
+        public ObservableCollection<Comment> Comments
         {
             get { return comments; }
             set { SetProperty(ref comments, value); }

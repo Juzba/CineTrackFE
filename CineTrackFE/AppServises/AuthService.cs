@@ -30,7 +30,7 @@ public class AuthService(HttpClient httpClient, UserStore userStore) : IAuthServ
         ArgumentException.ThrowIfNullOrWhiteSpace(username);
         ArgumentException.ThrowIfNullOrWhiteSpace(password);
 
-        var loginDto = new LoginDto() { UserName = username, Password = password, RememberMe = rememberMe };
+        var loginDto = new { UserName = username, Password = password, RememberMe = rememberMe };
 
         try
         {
@@ -63,7 +63,7 @@ public class AuthService(HttpClient httpClient, UserStore userStore) : IAuthServ
 
         try
         {
-            var response = await _httpClient.PostAsJsonAsync("/api/AuthApi/register", new RegisterDto() { UserName = username, Password = password}  );
+            var response = await _httpClient.PostAsJsonAsync("/api/AuthApi/register", new { UserName = username, Password = password}  );
 
             if (response.IsSuccessStatusCode) return true;
             else if (response.StatusCode == System.Net.HttpStatusCode.Conflict)
