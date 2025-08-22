@@ -42,34 +42,14 @@ namespace CineTrackFE.ViewModels
             }
             else
             {
-                ErrorMessage = "FilmId parametr is null or wrong format!"; 
+                ErrorMessage = "FilmId parametr is null or wrong format!";
             }
 
         }
         public void OnNavigatedFrom(NavigationContext navigationContext) { }
 
 
-
-
-        // TOGGLE FAVORITE //
-        private async Task ToggleFavoriteAsync()
-        {
-            //if (Film == null) return;
-            //try
-            //{
-            //    Film.IsMyFavorite = !Film.IsMyFavorite;
-            //    await _apiService.PostAsync("/api/FilmApi/ToggleFavorite", Film.Id);
-            //}
-            //catch (Exception ex)
-            //{
-            //    ErrorMessage = ex.Message;
-            //}
-        }
-
-
-
-
-
+        // GET FILM FROM API //
         private async Task GetFilmFromApiAsync(int id)
         {
             if (id == 0) return;
@@ -84,6 +64,26 @@ namespace CineTrackFE.ViewModels
                 ErrorMessage = ex.Message;
             }
         }
+
+
+
+        // TOGGLE FAVORITE //
+        private async Task ToggleFavoriteAsync()
+        {
+            if (Film == null) return;
+            try
+            {
+                Film.IsMyFavorite = !Film.IsMyFavorite;
+                var result = await _apiService.GetAsync<bool>("/api/FilmApi/ToggleFavorite", Film.Id);
+                if (result) Film.IsMyFavorite = !Film.IsMyFavorite;
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = ex.Message;
+            }
+        }
+
+
 
 
 
