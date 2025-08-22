@@ -161,7 +161,7 @@
             HorizontalAlignment="Stretch"
             AllowsTransparency="True"
             Placement="Center"
-             IsOpen="{Binding}"
+             IsOpen="{Binding IsPopupOpen, Mode=TwoWay}"
             PlacementTarget="{Binding ElementName=ShowPopupButton}"
             StaysOpen="False">
             <Border

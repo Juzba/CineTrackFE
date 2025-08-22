@@ -114,6 +114,8 @@ namespace CineTrackFE.ViewModels
             {
                 ErrorMessage = ex.Message;
             }
+
+            IsPopupOpen = false;
         }
 
 
@@ -187,9 +189,6 @@ namespace CineTrackFE.ViewModels
             get { return errorMessage; }
             set { SetProperty(ref errorMessage, value); }
         }
-
-
-
 
 
         // POPUP IS OPEN //
