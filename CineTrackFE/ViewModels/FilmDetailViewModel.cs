@@ -2,6 +2,7 @@
 using CineTrackFE.Common;
 using CineTrackFE.Common.Events;
 using CineTrackFE.Models;
+using System.Collections.ObjectModel;
 
 namespace CineTrackFE.ViewModels
 {
@@ -13,6 +14,7 @@ namespace CineTrackFE.ViewModels
         private readonly AsyncDelegateCommand<int> GetFilmFromApiAsyncCommand;
 
         public AsyncDelegateCommand ToggleFavoriteCommand { get; }
+        public AsyncDelegateCommand SendCommentAsyncCommand { get; }
 
         public FilmDetailViewModel(IApiService apiService, IEventAggregator eventAggregator)
         {
@@ -20,31 +22,27 @@ namespace CineTrackFE.ViewModels
             _apiService = apiService;
             GetFilmFromApiAsyncCommand = new AsyncDelegateCommand<int>(GetFilmFromApiAsync);
             ToggleFavoriteCommand = new AsyncDelegateCommand(ToggleFavoriteAsync);
+            SendCommentAsyncCommand = new AsyncDelegateCommand(SendCommentAsync);
+
 
             _eventAggregator.GetEvent<MainViewTitleEvent>().Publish("Film Details");
         }
-
-
-
-
 
 
         // I-NAVIGATION-AWARE //
         public bool IsNavigationTarget(NavigationContext navigationContext) => false;
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-
             var inputFilmId = navigationContext.Parameters[Const.FilmId]?.ToString();
 
+            // if parametr film-id is int then get film from api
             if (int.TryParse(inputFilmId, out int intFilmId))
             {
+                FilmId = intFilmId;
                 GetFilmFromApiAsyncCommand.Execute(intFilmId);
             }
-            else
-            {
-                ErrorMessage = "FilmId parametr is null or wrong format!";
-            }
 
+            else ErrorMessage = "FilmId parametr is null or wrong format!";
         }
         public void OnNavigatedFrom(NavigationContext navigationContext) { }
 
@@ -66,7 +64,6 @@ namespace CineTrackFE.ViewModels
         }
 
 
-
         // TOGGLE FAVORITE //
         private async Task ToggleFavoriteAsync()
         {
@@ -84,6 +81,51 @@ namespace CineTrackFE.ViewModels
         }
 
 
+        // SEND COMMENT AND RATING //
+        private async Task SendCommentAsync()
+        {
+            FormErrorMessage = null;
+
+            if (string.IsNullOrWhiteSpace(commentFormText) || string.IsNullOrWhiteSpace(Rating))
+            {
+                FormErrorMessage = "Chybějící údaje ve formuláři!";
+                return;
+            }
+
+            if (!int.TryParse(Rating, out int ratingInt) || ratingInt < 0 || ratingInt > 100)
+            {
+                FormErrorMessage = "Hodnocení může být od 0 do 100%";
+                return;
+            }
+
+            try
+            {
+                var IsCommentSend = await _apiService.PostAsync<bool, object>("/api/FilmApi/AddComment", new { FilmId = FilmId, Text = commentFormText, Rating = ratingInt });
+                if (IsCommentSend)
+                {
+                    Rating = null;
+                    CommentFormText = null;
+
+                    await GetFilmFromApiAsyncCommand.Execute(FilmId);
+                }
+                else ErrorMessage = "Chyba, komentář nebyl uložen!";
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = ex.Message;
+            }
+        }
+
+
+
+        // FILM ID PARAMETR //
+        private int filmId;
+        public int FilmId
+        {
+            get { return filmId; }
+            set { filmId = value; }
+        }
+
 
 
 
@@ -96,6 +138,48 @@ namespace CineTrackFE.ViewModels
         }
 
 
+        // COMMENTS //
+        private ObservableCollection<string> comments = [
+            "Nejlepší film na světě",
+            "Hrůza,už jsem viděl lepší, toto bude uplne nejdelsi komentar na svete aby bylo videt jak to funguje!",
+            "Hrůza,už jsem viděl lepší",
+            "Hrůza,už jsem viděl lepší",
+            "Hrůza,už jsem viděl lepší",
+            ];
+        public ObservableCollection<string> Comments
+        {
+            get { return comments; }
+            set { SetProperty(ref comments, value); }
+        }
+
+
+        // COMMENT TEXT //
+        private string? commentFormText;
+        public string? CommentFormText
+        {
+            get { return commentFormText; }
+            set { SetProperty(ref commentFormText, value); }
+        }
+
+
+        // RATING //
+        private string? rating;
+        public string? Rating
+        {
+            get { return rating; }
+            set { SetProperty(ref rating, value); }
+        }
+
+
+        // FORM ERROR MESSAGE //
+        private string? formErrorMessage;
+        public string? FormErrorMessage
+        {
+            get { return formErrorMessage; }
+            set { SetProperty(ref formErrorMessage, value); }
+        }
+
+
         // ERROR MESSAGE //
         private string? errorMessage;
         public string? ErrorMessage
@@ -103,6 +187,27 @@ namespace CineTrackFE.ViewModels
             get { return errorMessage; }
             set { SetProperty(ref errorMessage, value); }
         }
+
+
+
+
+
+        // POPUP IS OPEN //
+
+        private bool isPopupOpen;
+        public bool IsPopupOpen
+        {
+            get { return isPopupOpen; }
+            set { SetProperty(ref isPopupOpen, value); }
+        }
+
+
+
+
+
+
+
+
 
 
     }

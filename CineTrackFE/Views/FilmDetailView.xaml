@@ -18,22 +18,6 @@
 
     <UserControl.Resources>
         <converters:ImagePathConverter x:Key="ImagePathC" />
-        <Style x:Key="FavoriteToggleButtonStyle" TargetType="ToggleButton">
-
-            <Setter Property="Padding" Value="12,8" />
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="Margin" Value="0,8" />
-            <Style.Triggers>
-                <Trigger Property="IsChecked" Value="True">
-                    <Setter Property="Background" Value="Transparent" />
-                    <Setter Property="Foreground" Value="Yellow" />
-                </Trigger>
-                <Trigger Property="IsChecked" Value="False">
-                    <Setter Property="Background" Value="Transparent" />
-                    <Setter Property="Foreground" Value="Gray" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
     </UserControl.Resources>
 
     <Grid Background="#3D5B81">
@@ -43,47 +27,55 @@
             <ColumnDefinition Width="45*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="70*" />
-            <RowDefinition Height="30*" />
+            <RowDefinition Height="60*" />
+            <RowDefinition Height="40*" />
         </Grid.RowDefinitions>
 
 
-
-        <TextBlock
-            Grid.Row="1"
-            Grid.Column="0"
-            Grid.ColumnSpan="3"
-            VerticalAlignment="Bottom"
-            FontSize="16"
-            Foreground="Red"
-            Text="{Binding ErrorMessage}"
-            TextAlignment="Center"
-            TextWrapping="Wrap" />
 
         <ToggleButton
             Grid.Column="1"
             Width="100"
             Height="100"
-            Margin="0"
+            Margin="0,0,30,0"
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
             Panel.ZIndex="10"
             Command="{Binding ToggleFavoriteCommand}"
-            IsChecked="{Binding Film.IsMyFavorite}"
-            Style="{StaticResource FavoriteToggleButtonStyle}">
-            <ToggleButton.Content>
-                <materialDesign:PackIcon
-                    Width="80"
-                    Height="80"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Kind="Star" />
-
-            </ToggleButton.Content>
+            IsChecked="{Binding Film.IsMyFavorite}">
+            <ToggleButton.Style>
+                <Style TargetType="ToggleButton">
+                    <Style.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="Foreground" Value="Yellow" />
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="False">
+                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="Foreground" Value="#9BC0D9" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ToggleButton.Style>
+            <ToggleButton.Template>
+                <ControlTemplate>
+                    <Border
+                        BorderBrush="#9BC0D9"
+                        BorderThickness="1"
+                        CornerRadius="50">
+                        <materialDesign:PackIcon
+                            Width="80"
+                            Height="80"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Kind="StarAdd" />
+                    </Border>
+                </ControlTemplate>
+            </ToggleButton.Template>
         </ToggleButton>
 
 
-        <StackPanel Grid.Column="1" Margin="20,0">
+        <StackPanel Grid.Column="1" Margin="0,0,30,0">
             <TextBlock
                 FontSize="35"
                 FontWeight="Bold"
@@ -91,11 +83,6 @@
                 Text="{Binding Film.Name}" />
             <TextBlock Margin="0,10" Text="{Binding Film.Director}" />
             <TextBlock Margin="0,10" Text="{Binding Film.ReleaseDate, StringFormat={}{0:dd. MM. yyyy}}" />
-            <TextBlock
-                Margin="0,10"
-                FontWeight="Bold"
-                Text="My Favorite!"
-                Visibility="{Binding Film.IsMyFavorite}" />
             <TextBlock
                 Margin="0,10"
                 Text="{Binding Film.Description}"
@@ -141,23 +128,184 @@
         </Image>
 
 
-
-
-
-
         <TextBlock
-            Grid.Row="1"
+            Grid.Row="0"
             Grid.Column="1"
-            Grid.ColumnSpan="2"
-            Margin="-5"
             Padding="30"
             VerticalAlignment="Bottom"
             FontSize="16"
             FontWeight="DemiBold"
-            Foreground="White"
+            Foreground="Red"
             Text="{Binding ErrorMessage}"
             TextAlignment="Center"
             TextWrapping="Wrap" />
+
+
+
+
+
+
+        <Button
+            Name="ShowPopupButton"
+            Grid.Column="1"
+            Margin="0,0,30,0"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Click="ShowPopupButton_Click"
+            Content="Napsat recenzi" />
+
+        <Popup
+            Name="MyPopup"
+            Width="600"
+            Height="auto"
+            HorizontalAlignment="Stretch"
+            AllowsTransparency="True"
+            Placement="Center"
+             IsOpen="{Binding}"
+            PlacementTarget="{Binding ElementName=ShowPopupButton}"
+            StaysOpen="False">
+            <Border
+                Padding="20"
+                Background="#DFFBFC"
+                BorderBrush="Gray"
+                BorderThickness="1"
+                CornerRadius="5">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+
+                    <TextBlock
+                        Grid.ColumnSpan="2"
+                        FontSize="20"
+                        FontWeight="Bold"
+                        Foreground="#293241"
+                        Text="Moje recenze"
+                        TextAlignment="Center" />
+
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.ColumnSpan="2"
+                        Margin="0,10"
+                        FontSize="16"
+                        Foreground="red"
+                        Text="{Binding FormErrorMessage}"
+                        TextAlignment="Center"
+                        TextWrapping="Wrap" />
+
+                    <TextBlock
+                        Grid.Row="2"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        FontWeight="Bold"
+                        Foreground="#293241"
+                        Text="Komentář:" />
+                    <TextBox
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Height="100"
+                        Margin="0,0,0,10"
+                        Padding="10,5"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
+                        VerticalContentAlignment="Top"
+                        Background="#9BC0D9"
+                        Foreground="#293241"
+                        MaxLength="500"
+                        Text="{Binding CommentFormText}"
+                        TextWrapping="Wrap" />
+
+                    <TextBlock
+                        Grid.Row="3"
+                        Margin="0,0,20,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontWeight="Bold"
+                        Foreground="#293241"
+                        Text="Hodnocení:" />
+                    <TextBox
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        Width="auto"
+                        Margin="0,0,0,10"
+                        Padding="10,5"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
+                        Background="#9BC0D9"
+                        Foreground="#293241"
+                        Text="{Binding Rating}" />
+
+                    <Button
+                        Grid.Row="4"
+                        Grid.ColumnSpan="2"
+                        Background="#293241"
+                        Command="{Binding SendCommentAsyncCommand}"
+                        Content="Odeslat"
+                        Foreground="#EE6B4D" />
+                </Grid>
+            </Border>
+        </Popup>
+
+
+
+        <Border
+            Grid.Row="1"
+            Grid.Column="1"
+            Margin="0,0,30,0"
+            BorderBrush="#DFFBFC"
+            BorderThickness="1"
+            CornerRadius="2">
+            <ScrollViewer>
+                <ItemsControl ItemsSource="{Binding Comments}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="White" BorderThickness="0">
+                                <Grid Margin="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock Text="Autor" />
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        HorizontalAlignment="Right"
+                                        Text="100%" />
+                                    <TextBlock
+                                        Grid.Row="1"
+                                        Grid.ColumnSpan="2"
+                                        Text="{Binding}"
+                                        TextWrapping="Wrap" />
+
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Border>
+
+
+
+
+
+
+
+
+
 
 
     </Grid>
