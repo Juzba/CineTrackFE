@@ -42,7 +42,7 @@
 
 
         <TextBlock
-            Grid.Row="1"
+            Grid.Row="0"
             Grid.Column="0"
             Grid.ColumnSpan="3"
             VerticalAlignment="Bottom"
@@ -84,7 +84,7 @@
                                 <Image
                                     Width="150"
                                     Height="150"
-                                    Source="{Binding ImageUrl, Converter={StaticResource ImagePathConv}}" />
+                                    Source="{Binding ImagePath, Converter={StaticResource ImagePathConv}}" />
 
                                 <TextBlock
                                     Margin="0,10,0,0"
@@ -126,11 +126,11 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn
                         Width="auto"
-                        Binding="{Binding MovieTitle}"
+                        Binding="{Binding FilmTitle}"
                         Header="Název" />
                     <DataGridTextColumn
-                        Width="260"
-                        Binding="{Binding Comment}"
+                        Width="220"
+                        Binding="{Binding CommentText}"
                         Header="Komentář" />
                     <DataGridTextColumn Binding="{Binding CommentDate, StringFormat={}{0:dd. MM. yyyy}}" Header="Datum" />
                     <DataGridTextColumn Binding="{Binding Rating, StringFormat={}{0}%}" Header="Hodnocení" />
@@ -139,17 +139,87 @@
         </StackPanel>
 
 
-        <StackPanel Grid.Row="1" Grid.Column="2">
+        <Grid Grid.Row="1" Grid.Column="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="25" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+
             <TextBlock
-                Margin="0,0,0,20"
+                Grid.ColumnSpan="2"
                 FontSize="25"
                 FontWeight="Bold"
                 Text="Další statistika" />
 
+            <TextBlock
+                Grid.Row="2"
+                Padding="0,5"
+                FontSize="16"
+                Text="Průměr Rating:" />
+            <TextBlock
+                Grid.Row="2"
+                Grid.Column="1"
+                Padding="0,5"
+                FontSize="16"
+                Text="{Binding AvgRating}" />
 
+            <TextBlock
+                Grid.Row="3"
+                Padding="0,5"
+                FontSize="16"
+                Text="Nejvyšší Rating:" />
+            <TextBlock
+                Grid.Row="3"
+                Grid.Column="1"
+                Padding="0,5"
+                FontSize="16"
+                Text="{Binding TopRating}" />
 
-        </StackPanel>
+            <TextBlock
+                Grid.Row="4"
+                Padding="0,5"
+                FontSize="16"
+                Text="Komentářů:" />
+            <TextBlock
+                Grid.Row="4"
+                Grid.Column="1"
+                Padding="0,5"
+                FontSize="16"
+                Text="{Binding TotalComments}" />
 
+            <TextBlock
+                Grid.Row="5"
+                Padding="0,5"
+                FontSize="16"
+                Text="Oblibených filmů:" />
+            <TextBlock
+                Grid.Row="5"
+                Grid.Column="1"
+                Padding="0,5"
+                FontSize="16"
+                Text="{Binding FavoriteFilmsCount}" />
+
+            <TextBlock
+                Grid.Row="6"
+                Padding="0,5"
+                FontSize="16"
+                Text="Poslední obl. film:" />
+            <TextBlock
+                Grid.Row="6"
+                Grid.Column="1"
+                Padding="0,5"
+                FontSize="16"
+                Text="{Binding LastFavoriteFilmTitle}" />
+        </Grid>
 
 
     </Grid>

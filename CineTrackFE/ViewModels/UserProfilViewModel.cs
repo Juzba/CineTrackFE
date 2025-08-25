@@ -1,5 +1,6 @@
 ﻿using CineTrackFE.AppServises;
 using CineTrackFE.Common.Events;
+using CineTrackFE.Models;
 using System.Collections.ObjectModel;
 
 namespace CineTrackFE.ViewModels;
@@ -7,11 +8,6 @@ namespace CineTrackFE.ViewModels;
 public class UserProfilViewModel : BindableBase, IRegionAware
 {
 
-    // 4. Uživatelský profil
-    //- Přehled aktivit uživatele(nedávná hodnocení, komentáře)
-    //- Seznam oblíbených filmů
-    //- Statistiky uživatele(počet zhlédnutých filmů, průměrné hodnocení)
-    //- Možnost upravit osobní údaje a preference
 
 
     private readonly IApiService _apiService;
@@ -45,64 +41,103 @@ public class UserProfilViewModel : BindableBase, IRegionAware
     // ON INITIALIZE //
     private async Task OnInitializeAsync()
     {
+        await GetUserData();
+    }
 
+
+    // GET USER DATA //
+    private async Task GetUserData()
+    {
+        try
+        {
+            var userData = await _apiService.GetAsync<UserProfilData>("/Api/FilmApi/UserProfilData");
+            if (userData != null)
+            {
+                UserFavoriteFilms = new ObservableCollection<FavoriteFilms>(userData.FavoriteFilms);
+                UserLatestComments = new ObservableCollection<LatestComment>(userData.LatestComments);
+                AvgRating = userData.AvgRating;
+                TopRating = userData.TopRating;
+                TotalComments = userData.TotalComments;
+                FavoriteFilmsCount = userData.FavoriteFilmsCount;
+                LastFavoriteFilmTitle = userData.LastFavoriteFilmTitle;
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = ex.Message;
+
+        }
     }
 
 
     // USER FAVORITE FILMS //
-    private ObservableCollection<FavFilms> userFavoriteFilms = [
-        new FavFilms { Id = 1, Title = "Inception", ImageUrl = "JohnWick.jpg" },
-        new FavFilms { Id = 2, Title = "The Dark Knight", ImageUrl = "DarkKnight.jpg" },
-        new FavFilms { Id = 3, Title = "Interstellar", ImageUrl = "Godfather.jpg" },
-        new FavFilms { Id = 4, Title = "The Matrix", ImageUrl = "Avengers.jpg" },
-        new FavFilms { Id = 5, Title = "Pulp Fiction", ImageUrl = "Gladiator.jpg" },
-        new FavFilms { Id = 6, Title = "Fight Club", ImageUrl = "ForrestGump.jpg" },
-        new FavFilms { Id = 7, Title = "The Lord of the Rings", ImageUrl = "Inception.jpg" },
-        new FavFilms { Id = 8, Title = "Star Wars", ImageUrl = "Matrix.jpg" },
-        new FavFilms { Id = 9, Title = "The Shawshank Redemption", ImageUrl = "PulpFiction.jpg" },
-        new FavFilms { Id = 10, Title = "The Godfather", ImageUrl = "Interstellar.jpg" }
-        ];
-    public ObservableCollection<FavFilms> UserFavoriteFilms
+    private ObservableCollection<FavoriteFilms> userFavoriteFilms = [];
+    public ObservableCollection<FavoriteFilms> UserFavoriteFilms
     {
         get { return userFavoriteFilms; }
         set { SetProperty(ref userFavoriteFilms, value); }
     }
 
 
-
     // USER LAST COMMENTS //
-    private ObservableCollection<LatestComments> userLatestComments = [ 
-        new LatestComments { Id = 1, Comment = "Amazing movie with a mind-bending plot!", MovieTitle = "Inception", CommentDate = DateTime.Now.AddDays(-1), Rating = 5 },
-        new LatestComments { Id = 2, Comment = "A thrilling ride from start to finish.", MovieTitle = "The Dark Knight", CommentDate = DateTime.Now.AddDays(-2), Rating = 5 },
-        new LatestComments { Id = 3, Comment = "A visually stunning masterpiece.", MovieTitle = "Interstellar", CommentDate = DateTime.Now.AddDays(-3), Rating = 4 },
-        new LatestComments { Id = 4, Comment = "A revolutionary sci-fi classic.", MovieTitle = "The Matrix", CommentDate = DateTime.Now.AddDays(-4), Rating = 5 },
-        new LatestComments { Id = 5, Comment = "A cult classic with unforgettable characters.", MovieTitle = "Pulp Fiction", CommentDate = DateTime.Now.AddDays(-5), Rating = 5 }
-
-        ];
-    public ObservableCollection<LatestComments> UserLatestComments
+    private ObservableCollection<LatestComment> userLatestComments = [];
+    public ObservableCollection<LatestComment> UserLatestComments
     {
         get { return userLatestComments; }
         set { SetProperty(ref userLatestComments, value); }
     }
 
 
+    // ERROR MESSAGE //
+    private string errorMessage = string.Empty;
+    public string ErrorMessage
+    {
+        get { return errorMessage; }
+        set { SetProperty(ref errorMessage, value); }
+    }
+
+
+    // AVG RATING //
+    private int avgRating;
+    public int AvgRating
+    {
+        get { return avgRating; }
+        set { SetProperty(ref avgRating, value); }
+    }
+
+
+    // TOP RATING //
+    private int topRating;
+    public int TopRating
+    {
+        get { return topRating; }
+        set { SetProperty(ref topRating, value); }
+    }
+
+    // TOTAL COMMENTS //
+    private int totalComments;
+    public int TotalComments
+    {
+        get { return totalComments; }
+        set { SetProperty(ref totalComments, value); }
+    }
+
+    // FAVORITE FILMS COUNT //
+    private int favoriteFilmsCount;
+    public int FavoriteFilmsCount
+    {
+        get { return favoriteFilmsCount; }
+        set { SetProperty(ref favoriteFilmsCount, value); }
+    }
+
+    // LAST FAVORITE FILM //
+    private string lastFavoriteFilmTitle = string.Empty;
+    public string LastFavoriteFilmTitle
+    {
+        get { return lastFavoriteFilmTitle; }
+        set { SetProperty(ref lastFavoriteFilmTitle, value); }
+    }
 
 
 
-}
-
-public class FavFilms
-{
-    public int Id { get; set; }
-    public string Title { get; set; } = string.Empty;
-    public string ImageUrl { get; set; } = string.Empty;
-}
-
-public class LatestComments
-{
-    public int Id { get; set; }
-    public string Comment { get; set; } = string.Empty;
-    public string MovieTitle { get; set; } = string.Empty;
-    public DateTime CommentDate { get; set; }
-    public int Rating { get; set; }
 }

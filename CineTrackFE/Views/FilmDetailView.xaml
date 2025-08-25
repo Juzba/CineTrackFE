@@ -284,7 +284,7 @@
                                         <RowDefinition />
                                     </Grid.RowDefinitions>
 
-                                    <TextBlock Text="{Binding AuthorName}" />
+                                    <TextBlock FontWeight="Bold" Text="{Binding AuthorName}" />
                                     <TextBlock
                                         Grid.Column="2"
                                         HorizontalAlignment="Right"
@@ -296,6 +296,8 @@
                                     <TextBlock
                                         Grid.Row="1"
                                         Grid.ColumnSpan="3"
+                                        FontWeight="DemiBold"
+                                        Foreground="#293241"
                                         Text="{Binding Text}"
                                         TextWrapping="Wrap" />
 
