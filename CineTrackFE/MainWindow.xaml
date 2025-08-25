@@ -77,6 +77,17 @@
                 Foreground="#EE6B4D"
                 Visibility="{Binding IsVisible, Converter={StaticResource BoolToVisibilityConv}}" />
 
+            <Button
+                Height="40"
+                Margin="20,10"
+                Background="#293241"
+                BorderBrush="#DFFBFC"
+                Command="{Binding NavUserProfilCommand}"
+                Content="User Profil"
+                FontSize="20"
+                Foreground="#EE6B4D"
+                Visibility="{Binding IsVisible, Converter={StaticResource BoolToVisibilityConv}}" />
+
         </StackPanel>
 
         <StackPanel

@@ -18,6 +18,7 @@ namespace CineTrackFE.ViewModels
         public DelegateCommand NavRegisterCommand { get; }
         public DelegateCommand NavDashboardCommand { get; }
         public DelegateCommand NavCatalogCommand { get; }
+        public DelegateCommand NavUserProfilCommand { get; }
         public DelegateCommand LogoutCommand { get; }
 
 
@@ -35,6 +36,7 @@ namespace CineTrackFE.ViewModels
             NavRegisterCommand = new DelegateCommand(() => _regionManager.RequestNavigate(Const.MainRegion, nameof(RegisterView)));
             NavDashboardCommand = new DelegateCommand(() => _regionManager.RequestNavigate(Const.MainRegion, nameof(DashboardView)));
             NavCatalogCommand = new DelegateCommand(() => _regionManager.RequestNavigate(Const.MainRegion, nameof(CatalogView)));
+            NavUserProfilCommand = new DelegateCommand(() => _regionManager.RequestNavigate(Const.MainRegion, nameof(UserProfilView)));
             LogoutCommand = new DelegateCommand(Logout);
 
 

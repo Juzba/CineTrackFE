@@ -35,7 +35,8 @@
         <ScrollViewer
             Grid.Row="0"
             Grid.Column="1"
-            Margin="0,0,30,0">
+            Margin="0,0,30,0"
+            Panel.ZIndex="10">
             <ItemsControl Foreground="#DFFBFC" ItemsSource="{Binding FilmList}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>

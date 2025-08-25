@@ -81,6 +81,10 @@
                 FontWeight="Bold"
                 Foreground="#DFFBFC"
                 Text="{Binding Film.Name}" />
+            <TextBlock
+                FontSize="30"
+                Foreground="#DFFBFC"
+                Text="{Binding Film.AvgRating, StringFormat={}{0:0}%}" />
             <TextBlock Margin="0,10" Text="{Binding Film.Director}" />
             <TextBlock Margin="0,10" Text="{Binding Film.ReleaseDate, StringFormat={}{0:dd. MM. yyyy}}" />
             <TextBlock
@@ -286,9 +290,9 @@
                                         HorizontalAlignment="Right"
                                         Text="{Binding SendDate, StringFormat={}{0: dd.MM.yyyy}}" />
                                     <TextBlock
-                                        Grid.Column="2"
+                                        Grid.Column="1"
                                         HorizontalAlignment="Right"
-                                        Text="{Binding Rating}" />
+                                        Text="{Binding Rating, StringFormat={}{0}%}" />
                                     <TextBlock
                                         Grid.Row="1"
                                         Grid.ColumnSpan="3"
