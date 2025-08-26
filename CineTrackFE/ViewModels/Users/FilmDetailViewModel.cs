@@ -4,7 +4,7 @@ using CineTrackFE.Common.Events;
 using CineTrackFE.Models;
 using System.Collections.ObjectModel;
 
-namespace CineTrackFE.ViewModels
+namespace CineTrackFE.ViewModels.Users
 {
     public class FilmDetailViewModel : BindableBase, INavigationAware
     {
@@ -119,7 +119,7 @@ namespace CineTrackFE.ViewModels
 
             try
             {
-                var IsCommentSend = await _apiService.PostAsync<bool, object>("/api/FilmApi/AddComment", new { FilmId = FilmId, Text = commentFormText, Rating = ratingInt });
+                var IsCommentSend = await _apiService.PostAsync<bool, object>("/api/FilmApi/AddComment", new { FilmId, Text = commentFormText, Rating = ratingInt });
                 if (IsCommentSend)
                 {
                     Rating = null;

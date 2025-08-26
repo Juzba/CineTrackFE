@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace CineTrackFE.Views
+namespace CineTrackFE.Views.Admin
 {
     /// <summary>
-    /// Interakční logika pro UserProfilView.xaml
+    /// Interakční logika pro MainAdminView.xaml
     /// </summary>
-    public partial class UserProfilView : UserControl
+    public partial class MainAdminView : UserControl
     {
-        public UserProfilView()
+        public MainAdminView()
         {
             InitializeComponent();
         }

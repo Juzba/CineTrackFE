@@ -4,7 +4,7 @@ using CineTrackFE.Models;
 using System.Collections.ObjectModel;
 using System.Numerics;
 
-namespace CineTrackFE.ViewModels
+namespace CineTrackFE.ViewModels.Users
 {
     public class DashboardViewModel : BindableBase, INavigationAware
     {

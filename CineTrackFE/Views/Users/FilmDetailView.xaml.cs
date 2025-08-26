@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace CineTrackFE.Views
+namespace CineTrackFE.Views.Users
 {
     /// <summary>
     /// Interakční logika pro FilmDetailView.xaml

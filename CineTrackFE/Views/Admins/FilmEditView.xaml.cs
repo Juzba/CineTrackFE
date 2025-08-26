@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace CineTrackFE.Views
+namespace CineTrackFE.Views.Admin
 {
     /// <summary>
-    /// Interakční logika pro RegisterView.xaml
+    /// Interakční logika pro FilmEditView.xaml
     /// </summary>
-    public partial class RegisterView : UserControl
+    public partial class FilmEditView : UserControl
     {
-        public RegisterView()
+        public FilmEditView()
         {
             InitializeComponent();
         }

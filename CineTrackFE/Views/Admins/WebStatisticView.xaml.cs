@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace CineTrackFE.Views
+namespace CineTrackFE.Views.Admin
 {
     /// <summary>
-    /// Interakční logika pro DashboardView.xaml
+    /// Interakční logika pro WebStatisticView.xaml
     /// </summary>
-    public partial class DashboardView : UserControl
+    public partial class WebStatisticView : UserControl
     {
-        public DashboardView()
+        public WebStatisticView()
         {
             InitializeComponent();
         }

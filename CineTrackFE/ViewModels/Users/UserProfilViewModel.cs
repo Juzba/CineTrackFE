@@ -3,7 +3,7 @@ using CineTrackFE.Common.Events;
 using CineTrackFE.Models;
 using System.Collections.ObjectModel;
 
-namespace CineTrackFE.ViewModels;
+namespace CineTrackFE.ViewModels.Users;
 
 public class UserProfilViewModel : BindableBase, IRegionAware
 {

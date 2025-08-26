@@ -1,9 +1,9 @@
 ﻿using CineTrackFE.AppServises;
 using CineTrackFE.Common;
 using CineTrackFE.Common.Events;
-using CineTrackFE.Views;
+using CineTrackFE.Views.Users;
 
-namespace CineTrackFE.ViewModels;
+namespace CineTrackFE.ViewModels.Login;
 
 public class LoginViewModel : BindableBase, INavigationAware
 {

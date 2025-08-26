@@ -2,7 +2,10 @@
 using CineTrackFE.Common;
 using CineTrackFE.Common.Events;
 using CineTrackFE.Models;
-using CineTrackFE.Views;
+using CineTrackFE.Views.Users;
+using CineTrackFE.Views.Admin;
+using CineTrackFE.Views.Login;
+using System.Windows;
 
 namespace CineTrackFE.ViewModels
 {
@@ -19,6 +22,7 @@ namespace CineTrackFE.ViewModels
         public DelegateCommand NavDashboardCommand { get; }
         public DelegateCommand NavCatalogCommand { get; }
         public DelegateCommand NavUserProfilCommand { get; }
+        public DelegateCommand NavMainAdminCommand { get; }
         public DelegateCommand LogoutCommand { get; }
 
 
@@ -37,6 +41,7 @@ namespace CineTrackFE.ViewModels
             NavDashboardCommand = new DelegateCommand(() => _regionManager.RequestNavigate(Const.MainRegion, nameof(DashboardView)));
             NavCatalogCommand = new DelegateCommand(() => _regionManager.RequestNavigate(Const.MainRegion, nameof(CatalogView)));
             NavUserProfilCommand = new DelegateCommand(() => _regionManager.RequestNavigate(Const.MainRegion, nameof(UserProfilView)));
+            NavMainAdminCommand = new DelegateCommand(() => _regionManager.RequestNavigate(Const.MainRegion, nameof(MainAdminView)));
             LogoutCommand = new DelegateCommand(Logout);
 
 
@@ -54,6 +59,7 @@ namespace CineTrackFE.ViewModels
             if (user.Roles.Contains("Admin"))
             {
                 Role = "Admin";
+                AdminVisibility = Visibility.Visible;
             }
             else
             {
@@ -67,6 +73,7 @@ namespace CineTrackFE.ViewModels
         {
             UserName = null;
             Role = null;
+            AdminVisibility = Visibility.Collapsed;
             IsVisible = true;
 
             _authService.Logout();
@@ -108,7 +115,14 @@ namespace CineTrackFE.ViewModels
         {
             get { return isVisible; }
             set { SetProperty(ref isVisible, value); }
+        }
 
+        // ADMIN VISIBILITY //
+        private Visibility adminVisibility = Visibility.Collapsed;
+        public Visibility AdminVisibility
+        {
+            get { return adminVisibility; }
+            set { SetProperty(ref adminVisibility, value); }
         }
 
 

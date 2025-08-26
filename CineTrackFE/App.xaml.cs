@@ -1,11 +1,17 @@
 ﻿using CineTrackFE.AppServises;
 using CineTrackFE.Common;
 using CineTrackFE.ViewModels;
-using CineTrackFE.Views;
+using CineTrackFE.ViewModels.Admin;
+using CineTrackFE.ViewModels.Login;
+using CineTrackFE.ViewModels.Users;
+using CineTrackFE.Views.Login;
+using CineTrackFE.Views.Admin;
+using CineTrackFE.Views.Users;
 using Microsoft.Xaml.Behaviors.Core;
 using System;
 using System.Net.Http;
 using System.Windows;
+using CineTrackFE.Views;
 
 namespace CineTrackFE;
 
@@ -29,6 +35,12 @@ public partial class App : PrismApplication
         containerRegistry.RegisterForNavigation<DashboardView, DashboardViewModel>();
         containerRegistry.RegisterForNavigation<FilmDetailView, FilmDetailViewModel>();
         containerRegistry.RegisterForNavigation<UserProfilView, UserProfilViewModel>();
+        containerRegistry.RegisterForNavigation<MainAdminView, MainAdminViewModel>();
+        // Admin Views
+        containerRegistry.RegisterForNavigation<FilmEditView, FilmEditViewModel>();
+        containerRegistry.RegisterForNavigation<GenreEditView, GenreEditViewModel>();
+        containerRegistry.RegisterForNavigation<UsersEditView, UsersEditViewModel>();
+        containerRegistry.RegisterForNavigation<WebStatisticView, WebStatisticViewModel>();
 
 
         // Register HttpClient for API calls

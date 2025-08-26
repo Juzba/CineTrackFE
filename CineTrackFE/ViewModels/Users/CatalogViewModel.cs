@@ -3,11 +3,11 @@ using CineTrackFE.Common;
 using CineTrackFE.Common.Events;
 using CineTrackFE.Models;
 using CineTrackFE.Models.DTO;
-using CineTrackFE.Views;
+using CineTrackFE.Views.Users;
 using System.Collections.ObjectModel;
 using System.Windows;
 
-namespace CineTrackFE.ViewModels;
+namespace CineTrackFE.ViewModels.Users;
 
 public class CatalogViewModel : BindableBase, INavigationAware
 {

@@ -1,10 +1,10 @@
 ﻿<Window
-    x:Class="CineTrackFE.MainWindow"
+    x:Class="CineTrackFE.Views.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:converters="clr-namespace:CineTrackFE.Common.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:CineTrackFE"
+    xmlns:local="clr-namespace:CineTrackFE.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:viewmodels="clr-namespace:CineTrackFE.ViewModels"
@@ -87,6 +87,17 @@
                 FontSize="20"
                 Foreground="#EE6B4D"
                 Visibility="{Binding IsVisible, Converter={StaticResource BoolToVisibilityConv}}" />
+
+            <Button
+                Height="40"
+                Margin="20,10"
+                Background="#293241"
+                BorderBrush="#DFFBFC"
+                Command="{Binding NavMainAdminCommand}"
+                Content="Admin Page"
+                FontSize="20"
+                Foreground="#EE6B4D"
+                Visibility="{Binding AdminVisibility}" />
 
         </StackPanel>
 

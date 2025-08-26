@@ -13,17 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace CineTrackFE.Views
+namespace CineTrackFE.Views.Admin
 {
     /// <summary>
-    /// Interakční logika pro CatalogView.xaml
+    /// Interakční logika pro GenreEditView.xaml
     /// </summary>
-    public partial class CatalogView : UserControl
+    public partial class GenreEditView : UserControl
     {
-        public CatalogView()
+        public GenreEditView()
         {
             InitializeComponent();
         }
-
     }
 }

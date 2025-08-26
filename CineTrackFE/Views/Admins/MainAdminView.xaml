@@ -1,0 +1,65 @@
+﻿<UserControl
+    x:Class="CineTrackFE.Views.Admin.MainAdminView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:admin="clr-namespace:CineTrackFE.ViewModels.Admin"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:CineTrackFE.Views.Admin"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:prism="http://prismlibrary.com/"
+    d:DataContext="{d:DesignInstance Type=admin:MainAdminViewModel}"
+    d:DesignHeight="546"
+    d:DesignWidth="975"
+    prism:ViewModelLocator.AutoWireViewModel="True"
+    FontSize="25"
+    mc:Ignorable="d">
+
+
+
+
+
+    <Grid Background="#3D5B81">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+
+        <StackPanel
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Orientation="Horizontal">
+            <Button
+                Margin="10,0,10,10"
+                Background="#293241"
+                BorderBrush="Transparent"
+                Command="{Binding NavFilmEditCommand}"
+                Content="Editace Filmů"
+                Foreground="#DFFBFC" />
+            <Button
+                Margin="10,0,10,10"
+                Background="#293241"
+                BorderBrush="Transparent"
+                Command="{Binding NavGenreEditCommand}"
+                Content="Editace žánrů"
+                Foreground="#DFFBFC" />
+            <Button
+                Margin="10,0,10,10"
+                Background="#293241"
+                BorderBrush="Transparent"
+                Command="{Binding NavWebStatisticCommand}"
+                Content="Web Statistiky"
+                Foreground="#DFFBFC" />
+            <Button
+                Margin="10,0,10,10"
+                Background="#293241"
+                BorderBrush="Transparent"
+                Command="{Binding NavUsersEditCommand}"
+                Content="Uživatelé"
+                Foreground="#DFFBFC" />
+        </StackPanel>
+
+        <ContentControl Grid.Row="1" prism:RegionManager.RegionName="AdminRegion" />
+    </Grid>
+</UserControl>
