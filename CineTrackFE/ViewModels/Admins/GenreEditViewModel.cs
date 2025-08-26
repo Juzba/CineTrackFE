@@ -9,7 +9,7 @@ public class GenreEditViewModel : BindableBase, INavigationAware
 {
     private readonly IApiService _apiService;
 
-    private AsyncDelegateCommand GetGenresAsyncCommand;
+    private readonly AsyncDelegateCommand GetGenresAsyncCommand;
 
     public DelegateCommand OpenNewFormCommand { get; }
     public AsyncDelegateCommand EditGenreCommand { get; }
@@ -45,8 +45,8 @@ public class GenreEditViewModel : BindableBase, INavigationAware
     {
         try
         {
-            var genres = await _apiService.GetAsync<ICollection<Genre>>("/Api/AdminApi/GetGenres");
-            if (genres != null) GenreList = new ObservableCollection<Genre>(genres);
+            var responseGenres = await _apiService.GetAsync<ICollection<Genre>>("/Api/AdminApi/GetGenres");
+            if (responseGenres != null) GenreList = new ObservableCollection<Genre>(responseGenres);
         }
         catch (Exception ex)
         {
@@ -61,36 +61,32 @@ public class GenreEditViewModel : BindableBase, INavigationAware
     {
         ErrorMessage = null;
 
-        if (SelectedGenre == null)
+        if (SelectedGenre == null || SelectedGenre.Id <= 0)
         {
             ErrorMessage = "No genre selected.";
             return;
         }
-        //if (string.IsNullOrWhiteSpace(Name))
-        //{
-        //    ErrorMessage = "Name cannot be empty.";
-        //    return;
-        //}
+        if (string.IsNullOrWhiteSpace(SelectedGenre.Name))
+        {
+            ErrorMessage = "Name cannot be empty.";
+            return;
+        }
 
         try
         {
-            //var response = await _apiService.PutAsync<Genre>($"genres/{updatedGenre.Id}", updatedGenre);
-            //if (response != null)
-            //{
-            //    var index = GenreList.IndexOf(SelectedGenre);
-            //    if (index >= 0)
-            //    {
-            //        GenreList[index] = response;
-            //        SelectedGenre = null;
-            //        Name = string.Empty;
-            //        ErrorMessage = string.Empty;
-            //        IsPopupOpen = false;
-            //    }
-            //}
-            //else
-            //{
-            //    ErrorMessage = "Failed to update genre.";
-            //}
+            var response = await _apiService.PutAsync<bool, Genre>("/Api/AdminApi/EditGenre", SelectedGenre.Id, SelectedGenre);
+            if (response)
+            {
+                SelectedGenre = new();
+                ErrorMessage = string.Empty;
+                IsPopupOpen = false;
+
+                await GetGenresAsync();
+            }
+            else
+            {
+                ErrorMessage = "Failed to update genre.";
+            }
         }
         catch (Exception ex)
         {
@@ -113,16 +109,20 @@ public class GenreEditViewModel : BindableBase, INavigationAware
 
         try
         {
-            var result = await _apiService.PostAsync<bool, Genre>("/Api/AdminApi/AddGenre", SelectedGenre);
-            if (result)
+            var response = await _apiService.PostAsync<bool, Genre>("/Api/AdminApi/AddGenre", SelectedGenre);
+            if (response)
             {
                 IsPopupOpen = false;
                 await GetGenresAsync();
             }
+            else
+            {
+                ErrorMessage = "Failed to add genre.";
+            }
         }
         catch (Exception ex)
         {
-            ErrorMessage = ex.Message;
+            FormErrorMessage = ex.Message;
         }
 
     }
@@ -133,6 +133,30 @@ public class GenreEditViewModel : BindableBase, INavigationAware
     private async Task RemoveGenre()
     {
         ErrorMessage = null;
+
+        if (SelectedGenre == null || SelectedGenre.Id <= 0)
+        {
+            ErrorMessage = "Selected Genre is null or wrong!";
+            return;
+        }
+
+        try
+        {
+            var response = await _apiService.PostAsync<bool, Genre>("/Api/AdminApi/RemoveGenre", SelectedGenre);
+            if (response)
+            {
+                IsPopupOpen = false;
+                await GetGenresAsync();
+            }
+            else
+            {
+                ErrorMessage = "Failed to Remove genre.";
+            }
+        }
+        catch (Exception ex)
+        {
+            FormErrorMessage = ex.Message;
+        }
 
 
     }
