@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace CineTrackFE.Views.Admin
+namespace CineTrackFE.Views.Admins
 {
     /// <summary>
     /// Interakční logika pro FilmEditView.xaml

@@ -1,7 +1,7 @@
 ﻿using CineTrackFE.Common;
-using CineTrackFE.Views.Admin;
+using CineTrackFE.Views.Admins;
 
-namespace CineTrackFE.ViewModels.Admin
+namespace CineTrackFE.ViewModels.Admins
 {
     public class MainAdminViewModel : BindableBase, IRegionAware
     {

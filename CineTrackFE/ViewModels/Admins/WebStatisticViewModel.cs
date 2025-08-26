@@ -1,4 +1,4 @@
-﻿namespace CineTrackFE.ViewModels.Admin
+﻿namespace CineTrackFE.ViewModels.Admins
 {
     public class WebStatisticViewModel : BindableBase
     {

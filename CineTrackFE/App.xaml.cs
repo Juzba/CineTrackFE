@@ -1,17 +1,15 @@
 ﻿using CineTrackFE.AppServises;
 using CineTrackFE.Common;
 using CineTrackFE.ViewModels;
-using CineTrackFE.ViewModels.Admin;
+using CineTrackFE.ViewModels.Admins;
 using CineTrackFE.ViewModels.Login;
 using CineTrackFE.ViewModels.Users;
+using CineTrackFE.Views;
+using CineTrackFE.Views.Admins;
 using CineTrackFE.Views.Login;
-using CineTrackFE.Views.Admin;
 using CineTrackFE.Views.Users;
-using Microsoft.Xaml.Behaviors.Core;
-using System;
 using System.Net.Http;
 using System.Windows;
-using CineTrackFE.Views;
 
 namespace CineTrackFE;
 

@@ -2,9 +2,9 @@
 using CineTrackFE.Common;
 using CineTrackFE.Common.Events;
 using CineTrackFE.Models;
-using CineTrackFE.Views.Users;
-using CineTrackFE.Views.Admin;
+using CineTrackFE.Views.Admins;
 using CineTrackFE.Views.Login;
+using CineTrackFE.Views.Users;
 using System.Windows;
 
 namespace CineTrackFE.ViewModels

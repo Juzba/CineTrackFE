@@ -8,7 +8,7 @@ public interface IApiService
 {
     Task<T?> GetAsync<T>(string endpoint, CancellationToken cancellationToken = default);
     Task<T?> GetAsync<T>(string endpoint, int id, CancellationToken cancellationToken = default);
-    Task<T?> PostAsync<T, TRequest>(string endpoint, TRequest data, CancellationToken cancellationToken = default);
+    Task<T?> PostAsync<T, TRequest>(string endpoint, TRequest dataOutput, CancellationToken cancellationToken = default);
 
 
 }
@@ -71,11 +71,11 @@ public class ApiService(HttpClient httpClient) : IApiService
 
 
 
-    public async Task<T?> PostAsync<T, TRequest>(string endpoint, TRequest data, CancellationToken cancellationToken = default)
+    public async Task<T?> PostAsync<T, TRequest>(string endpoint, TRequest dataOutput, CancellationToken cancellationToken = default)
     {
         try
         {
-            var json = JsonSerializer.Serialize(data);
+            var json = JsonSerializer.Serialize(dataOutput);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
             HttpResponseMessage response = await _httpClient.PostAsync(endpoint, content, cancellationToken);
