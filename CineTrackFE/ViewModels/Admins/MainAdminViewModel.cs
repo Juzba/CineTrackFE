@@ -25,7 +25,7 @@ namespace CineTrackFE.ViewModels.Admins
 
         // I-NAVIGATION-AWARE //
         public bool IsNavigationTarget(NavigationContext navigationContext) => false;
-        public void OnNavigatedTo(NavigationContext navigationContext) { }
+        public void OnNavigatedTo(NavigationContext navigationContext) { _regionManager.RequestNavigate(Const.AdminRegion, nameof(FilmEditView)); }
         public void OnNavigatedFrom(NavigationContext navigationContext) { _regionManager.Regions.Remove(Const.AdminRegion); }
 
 
