@@ -45,7 +45,7 @@ public class GenreEditViewModel : BindableBase, INavigationAware
     {
         try
         {
-            var responseGenres = await _apiService.GetAsync<ICollection<Genre>>("/Api/AdminApi/GetGenres");
+            var responseGenres = await _apiService.GetAsync<ICollection<Genre>>("/api/FilmApi/AllGenres");
             if (responseGenres != null) GenreList = new ObservableCollection<Genre>(responseGenres);
         }
         catch (Exception ex)
@@ -74,7 +74,7 @@ public class GenreEditViewModel : BindableBase, INavigationAware
 
         try
         {
-            var response = await _apiService.PutAsync<bool, Genre>("/Api/AdminApi/EditGenre", SelectedGenre.Id, SelectedGenre);
+            var response = await _apiService.PutAsync<bool, Genre>("/api/AdminApi/EditGenre", SelectedGenre.Id, SelectedGenre);
             if (response)
             {
                 SelectedGenre = new();
@@ -85,12 +85,12 @@ public class GenreEditViewModel : BindableBase, INavigationAware
             }
             else
             {
-                ErrorMessage = "Failed to update genre.";
+                FormErrorMessage = "Failed to update genre.";
             }
         }
         catch (Exception ex)
         {
-            ErrorMessage = $"Error: {ex.Message}";
+            FormErrorMessage = $"Error: {ex.Message}";
         }
     }
 
@@ -103,13 +103,13 @@ public class GenreEditViewModel : BindableBase, INavigationAware
 
         if (string.IsNullOrWhiteSpace(SelectedGenre.Name))
         {
-            ErrorMessage = "New Genre name is null!";
+            FormErrorMessage = "New Genre name is null!";
             return;
         }
 
         try
         {
-            var response = await _apiService.PostAsync<bool, Genre>("/Api/AdminApi/AddGenre", SelectedGenre);
+            var response = await _apiService.PostAsync<bool, Genre>("/api/AdminApi/AddGenre", SelectedGenre);
             if (response)
             {
                 IsPopupOpen = false;
@@ -142,7 +142,7 @@ public class GenreEditViewModel : BindableBase, INavigationAware
 
         try
         {
-            var response = await _apiService.PostAsync<bool, Genre>("/Api/AdminApi/RemoveGenre", SelectedGenre);
+            var response = await _apiService.DeleteAsync<bool>("/api/AdminApi/RemoveGenre", SelectedGenre.Id);
             if (response)
             {
                 IsPopupOpen = false;
@@ -157,8 +157,6 @@ public class GenreEditViewModel : BindableBase, INavigationAware
         {
             FormErrorMessage = ex.Message;
         }
-
-
     }
 
 
@@ -184,13 +182,7 @@ public class GenreEditViewModel : BindableBase, INavigationAware
 
 
     // GENRE LIST //
-    private ObservableCollection<Genre> genreList = [
-        new Genre { Id = 1, Name = "Action" },
-        new Genre { Id = 2, Name = "Comedy" },
-        new Genre { Id = 3, Name = "Drama" },
-        new Genre { Id = 4, Name = "Horror" },
-        new Genre { Id = 5, Name = "Sci-Fi" }
-        ];
+    private ObservableCollection<Genre> genreList = [];
     public ObservableCollection<Genre> GenreList
     {
         get { return genreList; }
@@ -207,7 +199,7 @@ public class GenreEditViewModel : BindableBase, INavigationAware
         set
         {
             SetProperty(ref selectedGenre, value);
-            if (value != null)
+            if (value != null && value.Id > 0)
                 OpenEditForm();
         }
     }

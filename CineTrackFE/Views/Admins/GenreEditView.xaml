@@ -90,8 +90,7 @@
             HorizontalAlignment="Stretch"
             AllowsTransparency="True"
             IsOpen="{Binding IsPopupOpen, Mode=TwoWay}"
-            Placement="Center"
-            PlacementTarget="{Binding ElementName=ShowPopupButton}">
+            Placement="Center">
             <Border
                 Padding="20"
                 Background="#DFFBFC"
@@ -123,11 +122,12 @@
                     <TextBlock
                         Grid.Row="1"
                         Grid.ColumnSpan="2"
+                        Height="50"
                         Margin="0,10"
-                        FontSize="16"
+                        VerticalAlignment="Top"
+                        FontSize="12"
                         Foreground="red"
                         Text="{Binding FormErrorMessage}"
-                        TextAlignment="Center"
                         TextWrapping="Wrap" />
 
                     <TextBlock

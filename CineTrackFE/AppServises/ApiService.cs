@@ -10,6 +10,7 @@ public interface IApiService
     Task<T?> GetAsync<T>(string endpoint, int id, CancellationToken cancellationToken = default);
     Task<T?> PostAsync<T, TRequest>(string endpoint, TRequest dataOutput, CancellationToken cancellationToken = default);
     Task<T?> PutAsync<T, TRequest>(string endpoint, int id, TRequest dataOutput, CancellationToken cancellationToken = default);
+    Task<T?> DeleteAsync<T>(string endpoint, int id, CancellationToken cancellationToken = default);
 }
 
 
@@ -128,6 +129,39 @@ public class ApiService(HttpClient httpClient) : IApiService
         catch (Exception ex)
         {
             throw new Exception($"An error occurred while making the PUT request: {ex.Message}", ex);
+        }
+    }
+
+
+    public async Task<T?> DeleteAsync<T>(string endpoint, int id, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            string url = $"{endpoint}/{id}";
+            HttpResponseMessage response = await _httpClient.DeleteAsync(url, cancellationToken);
+
+            if (response.IsSuccessStatusCode)
+            {
+                string responseContent = await response.Content.ReadAsStringAsync(cancellationToken);
+                return JsonSerializer.Deserialize<T>(responseContent);
+            }
+            else
+            {
+                string errorContent = await response.Content.ReadAsStringAsync(cancellationToken);
+                throw new HttpRequestException($"Error: {response.StatusCode}. Details: {errorContent}");
+            }
+        }
+        catch (HttpRequestException ex)
+        {
+            throw new HttpRequestException($"HTTP request failed: {ex.Message}", ex);
+        }
+        catch (JsonException ex)
+        {
+            throw new JsonException($"Failed to deserialize response: {ex.Message}", ex);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"An unexpected error occurred while making the DELETE request: {ex.Message}", ex);
         }
     }
 }
