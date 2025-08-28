@@ -9,6 +9,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:viewmodels="clr-namespace:CineTrackFE.ViewModels.Users"
+    d:DataContext="{d:DesignInstance Type=viewmodels:FilmDetailViewModel}"
     d:DesignHeight="450"
     d:DesignWidth="800"
     prism:ViewModelLocator.AutoWireViewModel="True"
@@ -108,7 +109,7 @@
                                 Padding="10,5"
                                 FontSize="16"
                                 Foreground="#DFFBFC"
-                                Text="{Binding}" />
+                                Text="{Binding Name}" />
                         </Border>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>

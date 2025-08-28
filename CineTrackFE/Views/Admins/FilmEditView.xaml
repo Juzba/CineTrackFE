@@ -99,7 +99,7 @@
                 <DataGridTemplateColumn Header="Žánry">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ItemsControl ItemsSource="{Binding Genres}">
+                            <ItemsControl DisplayMemberPath="Name" ItemsSource="{Binding Genres}">
                                 <ItemsControl.ItemContainerStyle>
                                     <Style TargetType="ContentPresenter">
                                         <Setter Property="Margin" Value="0,0,15,0" />
@@ -267,7 +267,6 @@
                         Foreground="#293241"
                         Text="Žánry:" />
 
-
                     <ComboBox
                         Grid.Row="6"
                         Grid.Column="1"
@@ -280,33 +279,7 @@
                         DisplayMemberPath="Name"
                         Foreground="#DFFBFC"
                         ItemsSource="{Binding GenreList}"
-                        SelectedItem="{Binding SelectedFilm.Genres[0]}" />
-
-                    <ComboBox
-                        Grid.Row="7"
-                        Grid.Column="1"
-                        Margin="0,0,0,10"
-                        Padding="10,5"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Center"
-                        VerticalContentAlignment="Top"
-                        Background="#293241"
-                        DisplayMemberPath="Name"
-                        Foreground="#DFFBFC"
-                        ItemsSource="{Binding GenreList}" />
-                    <ComboBox
-                        Grid.Row="8"
-                        Grid.Column="1"
-                        Margin="0,0,0,10"
-                        Padding="10,5"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Center"
-                        VerticalContentAlignment="Top"
-                        Background="#293241"
-                        DisplayMemberPath="Name"
-                        Foreground="#DFFBFC"
-                        ItemsSource="{Binding GenreList}" />
-
+                        SelectedItem="{Binding SelectedGenre, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <TextBlock
                         Grid.Row="9"

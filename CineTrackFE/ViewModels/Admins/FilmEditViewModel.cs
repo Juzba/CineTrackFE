@@ -44,6 +44,8 @@ namespace CineTrackFE.ViewModels.Admins
         // GET FILM LIST FROM DB //
         private async Task GetFilmAsync()
         {
+
+           await GetGenreAsync(); // smazat!!
             try
             {
                 var response = await _apiService.GetAsync<ICollection<Film>>("/api/AdminApi/AllFilms");
@@ -53,7 +55,7 @@ namespace CineTrackFE.ViewModels.Admins
             {
                 ErrorMessage = ex.Message;
             }
-        }
+        } 
 
         // GET GENRE LIST FROM DB //
         private async Task GetGenreAsync()
@@ -68,7 +70,6 @@ namespace CineTrackFE.ViewModels.Admins
                 ErrorMessage = ex.Message;
             }
         }
-
 
 
         // EDIT FILM //
@@ -122,7 +123,6 @@ namespace CineTrackFE.ViewModels.Admins
         }
 
 
-
         // ADD FILM //
         private async Task AddFilm()
         {
@@ -165,7 +165,6 @@ namespace CineTrackFE.ViewModels.Admins
             }
 
         }
-
 
 
         // REMOVE FILM //
@@ -254,6 +253,17 @@ namespace CineTrackFE.ViewModels.Admins
                     OpenEditForm();
             }
         }
+
+
+
+        // SELECTED GENRE //
+        private Genre selectedGenre = new() { Id = 3, Name = "Comedy" };
+        public Genre SelectedGenre
+        {
+            get { return selectedGenre; }
+            set { SetProperty(ref selectedGenre, value); }
+        }
+
 
 
         // FORM ERROR MESSAGE //
