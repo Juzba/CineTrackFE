@@ -278,6 +278,7 @@
                         Background="#293241"
                         DisplayMemberPath="Name"
                         Foreground="#DFFBFC"
+                         
                         ItemsSource="{Binding GenreList}"
                         SelectedItem="{Binding SelectedGenre, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 

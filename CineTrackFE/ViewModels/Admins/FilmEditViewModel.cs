@@ -45,7 +45,6 @@ namespace CineTrackFE.ViewModels.Admins
         private async Task GetFilmAsync()
         {
 
-           await GetGenreAsync(); // smazat!!
             try
             {
                 var response = await _apiService.GetAsync<ICollection<Film>>("/api/AdminApi/AllFilms");
@@ -218,6 +217,7 @@ namespace CineTrackFE.ViewModels.Admins
             FormErrorMessage = null;
             EditVisibility = Visibility.Visible;
 
+            SelectedGenre = new() { Id = 3, Name = "Comedy" };
             IsPopupOpen = true;
         }
 
@@ -257,7 +257,7 @@ namespace CineTrackFE.ViewModels.Admins
 
 
         // SELECTED GENRE //
-        private Genre selectedGenre = new() { Id = 3, Name = "Comedy" };
+        private Genre selectedGenre = new();
         public Genre SelectedGenre
         {
             get { return selectedGenre; }
