@@ -60,7 +60,7 @@ namespace CineTrackFE.ViewModels.Admins
         {
             try
             {
-                var response = await _apiService.GetAsync<ICollection<Genre>>("/api/AdminApi/AllGenres");
+                var response = await _apiService.GetAsync<ICollection<Genre>>("/api/FilmApi/AllGenres");
                 if (response != null) GenreList = new ObservableCollection<Genre>(response);
             }
             catch (Exception ex)
@@ -147,22 +147,22 @@ namespace CineTrackFE.ViewModels.Admins
             }
 
             try
+            {
+                var response = await _apiService.PostAsync<bool, Film>("/api/AdminApi/AddFilm", SelectedFilm);
+                if (response)
                 {
-                    var response = await _apiService.PostAsync<bool, Film>("/api/AdminApi/AddFilm", SelectedFilm);
-                    if (response)
-                    {
-                        IsPopupOpen = false;
-                        await GetFilmAsync();
-                    }
-                    else
-                    {
-                        ErrorMessage = "Failed to add film.";
-                    }
+                    IsPopupOpen = false;
+                    await GetFilmAsync();
                 }
-                catch (Exception ex)
+                else
                 {
-                    FormErrorMessage = ex.Message;
+                    ErrorMessage = "Failed to add film.";
                 }
+            }
+            catch (Exception ex)
+            {
+                FormErrorMessage = ex.Message;
+            }
 
         }
 
@@ -200,8 +200,10 @@ namespace CineTrackFE.ViewModels.Admins
 
 
         // OPEN NEW FORM //
-        private void OpenNewForm()
+        private async void OpenNewForm()
         {
+            if (GenreList == null) await GetGenreAsync();
+
             FormErrorMessage = null;
             EditVisibility = Visibility.Collapsed;
             SelectedFilm = new();
@@ -210,8 +212,10 @@ namespace CineTrackFE.ViewModels.Admins
         }
 
         // OPEN EDIT FORM //
-        private void OpenEditForm()
+        private async void OpenEditForm()
         {
+            if (GenreList == null) await GetGenreAsync();
+
             FormErrorMessage = null;
             EditVisibility = Visibility.Visible;
 
@@ -229,7 +233,7 @@ namespace CineTrackFE.ViewModels.Admins
         }
 
         // GENRE LIST //
-        private ObservableCollection<Genre> genreList = [];
+        private ObservableCollection<Genre> genreList = null!;
         public ObservableCollection<Genre> GenreList
         {
             get { return genreList; }

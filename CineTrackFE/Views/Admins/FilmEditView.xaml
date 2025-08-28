@@ -20,6 +20,7 @@
 
     <UserControl.Resources>
         <converters:VisibilityInverterConvertor x:Key="VisibilityInverterConvert" />
+        <converters:GenreConverter x:Key="GenreConverter" />
     </UserControl.Resources>
 
     <Grid Background="#3D5B81">
@@ -66,11 +67,11 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Top"
             AutoGenerateColumns="False"
-            Background="#3D5B81"
+            Background="#293241"
             CanUserAddRows="False"
             CanUserDeleteRows="False"
             FontSize="17"
-            Foreground="#FFD340"
+            Foreground="#DFFBFC"
             IsReadOnly="True"
             ItemsSource="{Binding FilmList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             SelectedItem="{Binding SelectedFilm}">
@@ -127,7 +128,7 @@
             <Border
                 Padding="20"
                 Background="#DFFBFC"
-                BorderBrush="Gray"
+                BorderBrush="#EE6B4D"
                 BorderThickness="1"
                 CornerRadius="5">
                 <Grid>
@@ -152,7 +153,7 @@
 
                     <TextBlock
                         Grid.ColumnSpan="2"
-                        FontSize="20"
+                        FontSize="25"
                         FontWeight="Bold"
                         Foreground="#293241"
                         Text="Formulář Filmu"
@@ -185,8 +186,8 @@
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Center"
                         VerticalContentAlignment="Top"
-                        Background="#9BC0D9"
-                        Foreground="#293241"
+                        Background="#293241"
+                        Foreground="#DFFBFC"
                         MaxLength="20"
                         Text="{Binding SelectedFilm.Name}"
                         TextWrapping="Wrap" />
@@ -207,8 +208,8 @@
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Center"
                         VerticalContentAlignment="Top"
-                        Background="#9BC0D9"
-                        Foreground="#293241"
+                        Background="#293241"
+                        Foreground="#DFFBFC"
                         MaxLength="20"
                         Text="{Binding SelectedFilm.Director}"
                         TextWrapping="Wrap" />
@@ -230,7 +231,8 @@
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Center"
                         VerticalContentAlignment="Top"
-                        Foreground="#3D5B81"
+                        Background="Wheat"
+                        Foreground="Black"
                         Text="{Binding SelectedFilm.ReleaseDate}" />
 
 
@@ -250,8 +252,8 @@
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Center"
                         VerticalContentAlignment="Top"
-                        Background="#9BC0D9"
-                        Foreground="#293241"
+                        Background="#293241"
+                        Foreground="#DFFBFC"
                         MaxLength="20"
                         Text="{Binding SelectedFilm.ImageFileName}"
                         TextWrapping="Wrap" />
@@ -274,9 +276,12 @@
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Center"
                         VerticalContentAlignment="Top"
-                        Background="#9BC0D9"
-                        Foreground="#293241"
-                        ItemsSource="{Binding SelectedFilm.Genres}" />
+                        Background="#293241"
+                        DisplayMemberPath="Name"
+                        Foreground="#DFFBFC"
+                        ItemsSource="{Binding GenreList}"
+                        SelectedItem="{Binding SelectedFilm.Genres[0]}" />
+
                     <ComboBox
                         Grid.Row="7"
                         Grid.Column="1"
@@ -285,9 +290,10 @@
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Center"
                         VerticalContentAlignment="Top"
-                        Background="#9BC0D9"
-                        Foreground="#293241"
-                        ItemsSource="{Binding SelectedFilm.Genres}" />
+                        Background="#293241"
+                        DisplayMemberPath="Name"
+                        Foreground="#DFFBFC"
+                        ItemsSource="{Binding GenreList}" />
                     <ComboBox
                         Grid.Row="8"
                         Grid.Column="1"
@@ -296,9 +302,10 @@
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Center"
                         VerticalContentAlignment="Top"
-                        Background="#9BC0D9"
-                        Foreground="#293241"
-                        ItemsSource="{Binding SelectedFilm.Genres}" />
+                        Background="#293241"
+                        DisplayMemberPath="Name"
+                        Foreground="#DFFBFC"
+                        ItemsSource="{Binding GenreList}" />
 
 
                     <TextBlock
@@ -317,8 +324,8 @@
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Center"
                         VerticalContentAlignment="Top"
-                        Background="#9BC0D9"
-                        Foreground="#293241"
+                        Background="#293241"
+                        Foreground="#DFFBFC"
                         MaxLength="200"
                         Text="{Binding SelectedFilm.Description}"
                         TextWrapping="Wrap" />
@@ -328,11 +335,11 @@
                         Height="auto"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top"
-                        Background="#9BC0D9"
+                        Background="#293241"
                         Command="{Binding ClosePopUpCommand}"
                         Content="X"
                         FontSize="20"
-                        Foreground="Black" />
+                        Foreground="white" />
 
                     <StackPanel
                         Grid.Row="10"
