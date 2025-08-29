@@ -13,6 +13,7 @@ namespace CineTrackFE.ViewModels.Admins
         private readonly AsyncDelegateCommand GetFilmsAsyncCommand;
 
         public DelegateCommand OpenNewFormCommand { get; }
+        public DelegateCommand TestCommand { get; }
         public AsyncDelegateCommand EditFilmCommand { get; }
         public AsyncDelegateCommand AddFilmCommand { get; }
         public AsyncDelegateCommand RemoveFilmCommand { get; }
@@ -29,6 +30,7 @@ namespace CineTrackFE.ViewModels.Admins
             RemoveFilmCommand = new AsyncDelegateCommand(RemoveFilm);
             AddFilmCommand = new AsyncDelegateCommand(AddFilm);
             OpenNewFormCommand = new DelegateCommand(OpenNewForm);
+            TestCommand = new DelegateCommand(Test);
 
             GetFilmsAsyncCommand.Execute();
         }
@@ -39,6 +41,12 @@ namespace CineTrackFE.ViewModels.Admins
         public void OnNavigatedTo(NavigationContext navigationContext) { }
         public void OnNavigatedFrom(NavigationContext navigationContext) { }
 
+
+
+        private void Test()
+        {
+            SelectedGenreOne = GenreList[5];
+        }
 
 
         // GET FILM LIST FROM DB //
@@ -54,7 +62,7 @@ namespace CineTrackFE.ViewModels.Admins
             {
                 ErrorMessage = ex.Message;
             }
-        } 
+        }
 
         // GET GENRE LIST FROM DB //
         private async Task GetGenreAsync()
@@ -212,12 +220,18 @@ namespace CineTrackFE.ViewModels.Admins
         // OPEN EDIT FORM //
         private async void OpenEditForm()
         {
+            if (selectedFilm == null) return;
+
             if (GenreList == null) await GetGenreAsync();
 
             FormErrorMessage = null;
             EditVisibility = Visibility.Visible;
 
-            SelectedGenre = new() { Id = 3, Name = "Comedy" };
+
+            var genreOne = GenreList?.FirstOrDefault(p => p.Id == SelectedFilm.Genres[0].Id);
+            if (genreOne != null) SelectedGenreOne = genreOne;
+
+
             IsPopupOpen = true;
         }
 
@@ -256,12 +270,28 @@ namespace CineTrackFE.ViewModels.Admins
 
 
 
-        // SELECTED GENRE //
-        private Genre selectedGenre = new();
-        public Genre SelectedGenre
+        // SELECTED GENRE ONE //
+        private Genre selectedGenreOne = new();
+        public Genre SelectedGenreOne
         {
-            get { return selectedGenre; }
-            set { SetProperty(ref selectedGenre, value); }
+            get { return selectedGenreOne; }
+            set { SetProperty(ref selectedGenreOne, value); }
+        }
+
+        // SELECTED GENRE TWO //
+        private Genre selectedGenreTwo = new();
+        public Genre SelectedGenreTwo
+        {
+            get { return selectedGenreTwo; }
+            set { SetProperty(ref selectedGenreTwo, value); }
+        }
+
+        // SELECTED GENRE THREE //
+        private Genre selectedGenreThree = new();
+        public Genre SelectedGenreThree
+        {
+            get { return selectedGenreThree; }
+            set { SetProperty(ref selectedGenreThree, value); }
         }
 
 
