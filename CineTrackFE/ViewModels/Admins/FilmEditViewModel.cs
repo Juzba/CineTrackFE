@@ -13,7 +13,6 @@ namespace CineTrackFE.ViewModels.Admins
         private readonly AsyncDelegateCommand GetFilmsAsyncCommand;
 
         public DelegateCommand OpenNewFormCommand { get; }
-        public DelegateCommand TestCommand { get; }
         public AsyncDelegateCommand EditFilmCommand { get; }
         public AsyncDelegateCommand AddFilmCommand { get; }
         public AsyncDelegateCommand RemoveFilmCommand { get; }
@@ -30,7 +29,6 @@ namespace CineTrackFE.ViewModels.Admins
             RemoveFilmCommand = new AsyncDelegateCommand(RemoveFilm);
             AddFilmCommand = new AsyncDelegateCommand(AddFilm);
             OpenNewFormCommand = new DelegateCommand(OpenNewForm);
-            TestCommand = new DelegateCommand(Test);
 
             GetFilmsAsyncCommand.Execute();
         }
@@ -41,12 +39,6 @@ namespace CineTrackFE.ViewModels.Admins
         public void OnNavigatedTo(NavigationContext navigationContext) { }
         public void OnNavigatedFrom(NavigationContext navigationContext) { }
 
-
-
-        private void Test()
-        {
-            SelectedGenreOne = GenreList[5];
-        }
 
 
         // GET FILM LIST FROM DB //
@@ -101,11 +93,17 @@ namespace CineTrackFE.ViewModels.Admins
                 return;
             }
 
-            if (SelectedFilm.Genres.Count <= 0 || SelectedFilm.Genres.Count > 3)
+            if (SelectedGenreOne != null || SelectedGenreTwo != null || SelectedGenreThree != null)
             {
                 FormErrorMessage = "Genres count must be between 1 - 3";
                 return;
             }
+
+            SelectedFilm.Genres = [];
+            if (SelectedGenreOne != null) SelectedFilm.Genres.Add(SelectedGenreOne);
+            if (SelectedGenreTwo != null) SelectedFilm.Genres.Add(SelectedGenreTwo);
+            if (SelectedGenreThree != null) SelectedFilm.Genres.Add(SelectedGenreThree);
+
 
             try
             {
@@ -147,11 +145,17 @@ namespace CineTrackFE.ViewModels.Admins
                 return;
             }
 
-            if (SelectedFilm.Genres.Count <= 0 || SelectedFilm.Genres.Count > 3)
+            if (SelectedGenreOne == null && SelectedGenreTwo == null && SelectedGenreThree == null)
             {
                 FormErrorMessage = "Genres count must be between 1 - 3";
                 return;
             }
+
+            // filter genres -> if they are same or null
+            SelectedFilm.Genres = [];
+            if (SelectedGenreOne != null) SelectedFilm.Genres.Add(SelectedGenreOne);
+            if (SelectedGenreTwo != null && !SelectedFilm.Genres.Contains(selectedGenreTwo)) SelectedFilm.Genres.Add(SelectedGenreTwo);
+            if (SelectedGenreThree != null && !SelectedFilm.Genres.Contains(selectedGenreThree)) SelectedFilm.Genres.Add(SelectedGenreThree);
 
             try
             {
@@ -212,7 +216,14 @@ namespace CineTrackFE.ViewModels.Admins
 
             FormErrorMessage = null;
             EditVisibility = Visibility.Collapsed;
-            SelectedFilm = new();
+            SelectedFilm = new()
+            {
+                ReleaseDate = DateTime.Now
+            };
+
+            SelectedGenreOne = null;
+            SelectedGenreTwo = null;
+            SelectedGenreThree = null;
 
             IsPopupOpen = true;
         }
@@ -228,9 +239,23 @@ namespace CineTrackFE.ViewModels.Admins
             EditVisibility = Visibility.Visible;
 
 
-            var genreOne = GenreList?.FirstOrDefault(p => p.Id == SelectedFilm.Genres[0].Id);
-            if (genreOne != null) SelectedGenreOne = genreOne;
+            if (selectedFilm.Genres.Count >= 1)
+            {
+                var genreOne = GenreList?.FirstOrDefault(p => p.Id == SelectedFilm.Genres[0].Id);
+                if (genreOne != null) SelectedGenreOne = genreOne;
+            }
 
+            if (selectedFilm.Genres.Count >= 2)
+            {
+                var genreTwo = GenreList?.FirstOrDefault(p => p.Id == SelectedFilm.Genres[1].Id);
+                if (genreTwo != null) SelectedGenreTwo = genreTwo;
+            }
+
+            if (selectedFilm.Genres.Count >= 3)
+            {
+                var genreThree = GenreList?.FirstOrDefault(p => p.Id == SelectedFilm.Genres[2].Id);
+                if (genreThree != null) SelectedGenreThree = genreThree;
+            }
 
             IsPopupOpen = true;
         }
@@ -271,24 +296,24 @@ namespace CineTrackFE.ViewModels.Admins
 
 
         // SELECTED GENRE ONE //
-        private Genre selectedGenreOne = new();
-        public Genre SelectedGenreOne
+        private Genre? selectedGenreOne;
+        public Genre? SelectedGenreOne
         {
             get { return selectedGenreOne; }
             set { SetProperty(ref selectedGenreOne, value); }
         }
 
         // SELECTED GENRE TWO //
-        private Genre selectedGenreTwo = new();
-        public Genre SelectedGenreTwo
+        private Genre? selectedGenreTwo;
+        public Genre? SelectedGenreTwo
         {
             get { return selectedGenreTwo; }
             set { SetProperty(ref selectedGenreTwo, value); }
         }
 
         // SELECTED GENRE THREE //
-        private Genre selectedGenreThree = new();
-        public Genre SelectedGenreThree
+        private Genre? selectedGenreThree;
+        public Genre? SelectedGenreThree
         {
             get { return selectedGenreThree; }
             set { SetProperty(ref selectedGenreThree, value); }
