@@ -2,15 +2,399 @@
     x:Class="CineTrackFE.Views.Admins.UsersEditView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:admins="clr-namespace:CineTrackFE.ViewModels.Admins"
+    xmlns:converters="clr-namespace:CineTrackFE.Common.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:CineTrackFE.Views.Admins"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
+    d:DataContext="{d:DesignInstance Type=admins:UsersEditViewModel}"
     d:DesignHeight="505"
     d:DesignWidth="975"
     prism:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
-    <Grid>
-        <Button Content="Users Edit" />
+
+
+
+
+
+
+    <UserControl.Resources>
+        <converters:VisibilityInverterConvertor x:Key="VisibilityInverterConvert" />
+        <converters:GenreConverter x:Key="GenreConverter" />
+    </UserControl.Resources>
+
+    <Grid Background="#3D5B81">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" MinHeight="60" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="70*" />
+            <ColumnDefinition Width="25*" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+
+
+        <TextBlock
+            Width="auto"
+            Padding="10"
+            FontSize="16"
+            Foreground="Red"
+            Text="{Binding ErrorMessage}"
+            TextWrapping="Wrap" />
+        <Button
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Height="auto"
+            Margin="0,20"
+            Padding="10,5"
+            HorizontalAlignment="Right"
+            Background="#293241"
+            BorderBrush="Transparent"
+            Command="{Binding OpenNewFormCommand}"
+            Content="Přidat nový Film"
+            FontSize="20"
+            Foreground="#DFFBFC" />
+
+
+
+
+        <DataGrid
+            Grid.Row="1"
+            Grid.ColumnSpan="2"
+            Margin="0,0,0,55"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            AutoGenerateColumns="False"
+            Background="#293241"
+            CanUserAddRows="False"
+            CanUserDeleteRows="False"
+            FontSize="17"
+            Foreground="#DFFBFC"
+            IsReadOnly="True"
+            ItemsSource="{Binding UserList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            SelectedItem="{Binding SelectedUser}">
+            <DataGrid.Columns>
+                <DataGridTextColumn
+                    Width="180"
+                    MinWidth="150"
+                    Binding="{Binding UserName}"
+                    Header="Name" />
+                <DataGridTextColumn
+                    Width="180"
+                    MinWidth="150"
+                    Binding="{Binding Email}"
+                    Header="Email" />
+                <DataGridTextColumn
+                    Width="180"
+                    MinWidth="150"
+                    Binding="{Binding PhoneNumber}"
+                    Header="PhoneNumber" />
+                <DataGridTemplateColumn Header="Role">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ItemsControl DisplayMemberPath="Name" ItemsSource="{Binding Genres}">
+                                <ItemsControl.ItemContainerStyle>
+                                    <Style TargetType="ContentPresenter">
+                                        <Setter Property="Margin" Value="0,0,15,0" />
+                                    </Style>
+                                </ItemsControl.ItemContainerStyle>
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Popup
+            Name="MyPopup"
+            Width="600"
+            Height="auto"
+            HorizontalAlignment="Stretch"
+            AllowsTransparency="True"
+            IsOpen="{Binding IsPopupOpen, Mode=TwoWay}"
+            Placement="Center">
+            <Border
+                Padding="20"
+                Background="#DFFBFC"
+                BorderBrush="#EE6B4D"
+                BorderThickness="1"
+                CornerRadius="5">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+
+                    <TextBlock
+                        Grid.ColumnSpan="2"
+                        FontSize="25"
+                        FontWeight="Bold"
+                        Foreground="#293241"
+                        Text="Formulář uživatele"
+                        TextAlignment="Left" />
+
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.ColumnSpan="2"
+                        Height="50"
+                        Margin="0,10"
+                        VerticalAlignment="Top"
+                        FontSize="12"
+                        Foreground="red"
+                        Text="{Binding FormErrorMessage}"
+                        TextWrapping="Wrap" />
+
+                    <TextBlock
+                        Grid.Row="2"
+                        Margin="0,0,30,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        FontWeight="Bold"
+                        Foreground="#293241"
+                        Text="UserName:" />
+                    <TextBox
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Margin="0,0,0,10"
+                        Padding="10,5"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
+                        VerticalContentAlignment="Top"
+                        Background="#293241"
+                        Foreground="#DFFBFC"
+                        MaxLength="40"
+                        Text="{Binding SelectedUser.UserName}"
+                        TextWrapping="Wrap" />
+
+                    <TextBlock
+                        Grid.Row="3"
+                        Margin="0,0,30,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        FontWeight="Bold"
+                        Foreground="#293241"
+                        Text="Email:" />
+                    <TextBox
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        Margin="0,0,0,10"
+                        Padding="10,5"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
+                        VerticalContentAlignment="Top"
+                        Background="#293241"
+                        Foreground="#DFFBFC"
+                        MaxLength="40"
+                        Text="{Binding SelectedUser.Email}"
+                        TextWrapping="Wrap" />
+
+                    <TextBlock
+                        Grid.Row="4"
+                        Margin="0,0,30,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        FontWeight="Bold"
+                        Foreground="#293241"
+                        Text="Phone:" />
+
+                    <TextBox
+                        Grid.Row="4"
+                        Grid.Column="1"
+                        Margin="0,0,0,10"
+                        Padding="10,5"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
+                        VerticalContentAlignment="Top"
+                        Background="#293241"
+                        Foreground="#DFFBFC"
+                        Text="{Binding SelectedUser.PhoneNumber, Mode=TwoWay}" />
+
+
+                    <TextBlock
+                        Grid.Row="5"
+                        Margin="0,0,30,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        FontWeight="Bold"
+                        Foreground="#293241"
+                        Text="Email Conf:" />
+                    <CheckBox
+                        Grid.Row="5"
+                        Grid.Column="1"
+                        Margin="0,0,0,10"
+                        Padding="10,5"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Background="#293241"
+                        Foreground="#DFFBFC"
+                        IsChecked="{Binding SelectedUser.EmailConfirmed}"
+                        Style="{StaticResource MaterialDesignActionDarkCheckBox}" />
+
+                    <TextBlock
+                        Grid.Row="6"
+                        Margin="0,0,30,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        FontWeight="Bold"
+                        Foreground="#293241"
+                        Text="Role:" />
+
+                    <ComboBox
+                        Grid.Row="6"
+                        Grid.Column="1"
+                        Margin="0,0,0,10"
+                        Padding="10,5"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
+                        VerticalContentAlignment="Top"
+                        Background="#293241"
+                        Foreground="#DFFBFC"
+                        ItemsSource="{Binding RoleList}"
+                        SelectedItem="{Binding SelectedRoleOne, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <ComboBox
+                        Grid.Row="7"
+                        Grid.Column="1"
+                        Margin="0,0,0,10"
+                        Padding="10,5"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
+                        VerticalContentAlignment="Top"
+                        Background="#293241"
+                        Foreground="#DFFBFC"
+                        ItemsSource="{Binding RoleList}"
+                        SelectedItem="{Binding SelectedRoleTwo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+
+                    <TextBlock
+                        Grid.Row="8"
+                        Margin="0,0,30,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        FontWeight="Bold"
+                        Foreground="#293241"
+                        Text="PassWord:" />
+                    <TextBox
+                        Grid.Row="8"
+                        Grid.Column="1"
+                        Margin="0,0,0,10"
+                        Padding="10,5"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
+                        VerticalContentAlignment="Top"
+                        Background="#293241"
+                        Foreground="#DFFBFC"
+                        MaxLength="200"
+                        Text="{Binding SelectedUser.NewPassword}"
+                        TextWrapping="Wrap" />
+                    
+                    <TextBlock
+                        Grid.Row="9"
+                        Margin="0,0,30,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        FontWeight="Bold"
+                        Foreground="#293241"
+                        Text="P. Confirm:" />
+                    <TextBox
+                        Grid.Row="9"
+                        Grid.Column="1"
+                        Margin="0,0,0,10"
+                        Padding="10,5"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
+                        VerticalContentAlignment="Top"
+                        Background="#293241"
+                        Foreground="#DFFBFC"
+                        MaxLength="200"
+                        Text="{Binding PasswordConfirmation}"
+                        TextWrapping="Wrap" />
+
+                    <Button
+                        Grid.Column="1"
+                        Height="auto"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Background="#293241"
+                        Command="{Binding ClosePopUpCommand}"
+                        Content="X"
+                        FontSize="20"
+                        Foreground="white" />
+
+                    <StackPanel
+                        Grid.Row="10"
+                        Grid.ColumnSpan="2"
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal">
+
+                        <Button
+                            Margin="10"
+                            Background="#293241"
+                            Command="{Binding AddUserCommand}"
+                            Content="Přidat"
+                            Foreground="#EE6B4D"
+                            Visibility="{Binding EditVisibility, Converter={StaticResource VisibilityInverterConvert}}" />
+
+                        <Button
+                            Margin="10"
+                            Background="#293241"
+                            Command="{Binding EditUserCommand}"
+                            Content="Editovat"
+                            Foreground="#EE6B4D"
+                            Visibility="{Binding EditVisibility}" />
+
+                        <Button
+                            Margin="10"
+                            Background="#EE6B4D"
+                            Command="{Binding RemoveUserCommand}"
+                            Content="Smazat"
+                            Foreground="#293241"
+                            Visibility="{Binding EditVisibility}" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Popup>
+
+
+
+
+
+
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+
+        </Grid>
     </Grid>
+
+
+
+
+
+
 </UserControl>

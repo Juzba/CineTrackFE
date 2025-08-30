@@ -36,4 +36,27 @@ public static class ModelMappingService
 
         return clone;
     }
+
+
+    public static User CloneUser(User source)
+    {
+        source.Roles ??= [];
+
+        var clone = new User
+        {
+            Id = source.Id,
+            UserName = source.UserName,
+            Email = source.Email,
+            PhoneNumber = source.PhoneNumber,
+            EmailConfirmed = source.EmailConfirmed,
+            Roles = [.. source.Roles]
+
+
+        };
+        return clone;
+    }
+
+
+
+
 }
