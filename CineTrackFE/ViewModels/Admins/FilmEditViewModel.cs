@@ -63,6 +63,7 @@ namespace CineTrackFE.ViewModels.Admins
             {
                 var response = await _apiService.GetAsync<ICollection<Genre>>("/api/FilmApi/AllGenres");
                 if (response != null) GenreList = new ObservableCollection<Genre>(response);
+                GenreList.Add(new Genre { Id = 0, Name = "----" });
             }
             catch (Exception ex)
             {
@@ -93,17 +94,14 @@ namespace CineTrackFE.ViewModels.Admins
                 return;
             }
 
-            if (SelectedGenreOne == null && SelectedGenreTwo == null && SelectedGenreThree == null)
+            if (!(SelectedGenreOne?.Id > 0 || SelectedGenreTwo?.Id > 0 || SelectedGenreThree?.Id > 0))
             {
                 FormErrorMessage = "Genres count must be between 1 - 3";
                 return;
             }
 
-            SelectedFilm.Genres = [];
-            if (SelectedGenreOne != null) SelectedFilm.Genres.Add(SelectedGenreOne);
-            if (SelectedGenreTwo != null) SelectedFilm.Genres.Add(SelectedGenreTwo);
-            if (SelectedGenreThree != null) SelectedFilm.Genres.Add(SelectedGenreThree);
-
+            // filter genres -> if they are same or null
+            GenresFromComboboxToSelectedFilm();
 
             try
             {
@@ -152,17 +150,14 @@ namespace CineTrackFE.ViewModels.Admins
                 return;
             }
 
-            if (SelectedGenreOne == null && SelectedGenreTwo == null && SelectedGenreThree == null)
+            if (!(SelectedGenreOne?.Id > 0 || SelectedGenreTwo?.Id > 0 || SelectedGenreThree?.Id > 0))
             {
                 FormErrorMessage = "Genres count must be between 1 - 3";
                 return;
             }
 
             // filter genres -> if they are same or null
-            SelectedFilm.Genres = [];
-            if (SelectedGenreOne != null) SelectedFilm.Genres.Add(SelectedGenreOne);
-            if (SelectedGenreTwo != null && !SelectedFilm.Genres.Contains(selectedGenreTwo)) SelectedFilm.Genres.Add(SelectedGenreTwo);
-            if (SelectedGenreThree != null && !SelectedFilm.Genres.Contains(selectedGenreThree)) SelectedFilm.Genres.Add(SelectedGenreThree);
+            GenresFromComboboxToSelectedFilm();
 
             try
             {
@@ -376,6 +371,28 @@ namespace CineTrackFE.ViewModels.Admins
             get { return editVisibility; }
             set { SetProperty(ref editVisibility, value); }
         }
+
+
+
+        private void GenresFromComboboxToSelectedFilm()
+        {
+            // ComboBox Genres to SelectedFilm -> if not null, empty or same
+            SelectedFilm.Genres = [];
+            if (SelectedGenreOne?.Id > 0)
+            {
+                SelectedFilm.Genres.Add(SelectedGenreOne);
+            }
+            if (SelectedGenreTwo?.Id > 0 && !SelectedFilm.Genres.Any(p => p.Id == selectedGenreTwo?.Id))
+            {
+                SelectedFilm.Genres.Add(SelectedGenreTwo);
+            }
+            if (SelectedGenreThree?.Id > 0 && !SelectedFilm.Genres.Any(p => p.Id == selectedGenreThree?.Id))
+            {
+                SelectedFilm.Genres.Add(SelectedGenreThree);
+            }
+
+        }
+
 
     }
 }
