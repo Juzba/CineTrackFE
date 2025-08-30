@@ -60,28 +60,41 @@ public class GenreEditViewModel : BindableBase, INavigationAware
     private async Task EditGenre()
     {
         ErrorMessage = null;
+        FormErrorMessage = null;
 
         if (SelectedGenre == null || SelectedGenre.Id <= 0)
         {
-            ErrorMessage = "No genre selected.";
+            FormErrorMessage = "No genre selected.";
             return;
         }
         if (string.IsNullOrWhiteSpace(SelectedGenre.Name))
         {
-            ErrorMessage = "Name cannot be empty.";
+            FormErrorMessage = "Name cannot be empty.";
+            return;
+        }
+
+        if (GenreList.Any(p => p.Name == selectedGenre.Name))
+        {
+            FormErrorMessage = "Name is same or another genre has this name!";
             return;
         }
 
         try
         {
-            var response = await _apiService.PutAsync<bool, Genre>("/api/AdminApi/EditGenre", SelectedGenre.Id, SelectedGenre);
-            if (response)
+            var response = await _apiService.PutAsync<Genre, Genre>("/api/AdminApi/EditGenre", SelectedGenre.Id, SelectedGenre);
+            if (response != null)
             {
+
+                var genre = GenreList.FirstOrDefault(p => p.Id == response.Id);
+                if (genre != null)
+                {
+                    genre.Name = response.Name;
+                    GenreList = new ObservableCollection<Genre>(GenreList);
+                }
+
                 SelectedGenre = new();
                 ErrorMessage = string.Empty;
                 IsPopupOpen = false;
-
-                await GetGenresAsync();
             }
             else
             {
@@ -109,16 +122,13 @@ public class GenreEditViewModel : BindableBase, INavigationAware
 
         try
         {
-            var response = await _apiService.PostAsync<bool, Genre>("/api/AdminApi/AddGenre", SelectedGenre);
-            if (response)
+            var response = await _apiService.PostAsync<Genre, Genre>("/api/AdminApi/AddGenre", SelectedGenre);
+            if (response != null)
             {
+                GenreList.Add(response);
                 IsPopupOpen = false;
-                await GetGenresAsync();
             }
-            else
-            {
-                ErrorMessage = "Failed to add genre.";
-            }
+
         }
         catch (Exception ex)
         {
@@ -142,9 +152,12 @@ public class GenreEditViewModel : BindableBase, INavigationAware
 
         try
         {
-            var response = await _apiService.DeleteAsync<bool>("/api/AdminApi/RemoveGenre", SelectedGenre.Id);
+            var response = await _apiService.DeleteAsync("/api/AdminApi/RemoveGenre", SelectedGenre.Id);
             if (response)
             {
+                var genre = GenreList.FirstOrDefault(g => g.Id == SelectedGenre.Id);
+                if (genre != null) GenreList.Remove(genre);
+
                 IsPopupOpen = false;
                 await GetGenresAsync();
             }
@@ -198,8 +211,10 @@ public class GenreEditViewModel : BindableBase, INavigationAware
         get { return selectedGenre; }
         set
         {
-            SetProperty(ref selectedGenre, value);
-            if (value != null && value.Id > 0)
+            var genreCopy = ModelMappingService.CloneGenre(value ?? new Genre());
+
+            SetProperty(ref selectedGenre, genreCopy);
+            if (genreCopy.Id > 0)
                 OpenEditForm();
         }
     }

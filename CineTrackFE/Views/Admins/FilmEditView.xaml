@@ -188,7 +188,7 @@
                         VerticalContentAlignment="Top"
                         Background="#293241"
                         Foreground="#DFFBFC"
-                        MaxLength="20"
+                        MaxLength="40"
                         Text="{Binding SelectedFilm.Name}"
                         TextWrapping="Wrap" />
 
@@ -210,7 +210,7 @@
                         VerticalContentAlignment="Top"
                         Background="#293241"
                         Foreground="#DFFBFC"
-                        MaxLength="20"
+                        MaxLength="40"
                         Text="{Binding SelectedFilm.Director}"
                         TextWrapping="Wrap" />
 
@@ -254,7 +254,7 @@
                         VerticalContentAlignment="Top"
                         Background="#293241"
                         Foreground="#DFFBFC"
-                        MaxLength="20"
+                        MaxLength="40"
                         Text="{Binding SelectedFilm.ImageFileName}"
                         TextWrapping="Wrap" />
 

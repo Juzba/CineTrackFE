@@ -10,7 +10,7 @@ public interface IApiService
     Task<T?> GetAsync<T>(string endpoint, int id, CancellationToken cancellationToken = default);
     Task<T?> PostAsync<T, TRequest>(string endpoint, TRequest dataOutput, CancellationToken cancellationToken = default);
     Task<T?> PutAsync<T, TRequest>(string endpoint, int id, TRequest dataOutput, CancellationToken cancellationToken = default);
-    Task<T?> DeleteAsync<T>(string endpoint, int id, CancellationToken cancellationToken = default);
+    Task<bool> DeleteAsync(string endpoint, int id, CancellationToken cancellationToken = default);
 }
 
 
@@ -133,7 +133,7 @@ public class ApiService(HttpClient httpClient) : IApiService
     }
 
 
-    public async Task<T?> DeleteAsync<T>(string endpoint, int id, CancellationToken cancellationToken = default)
+    public async Task<bool> DeleteAsync(string endpoint, int id, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -142,8 +142,7 @@ public class ApiService(HttpClient httpClient) : IApiService
 
             if (response.IsSuccessStatusCode)
             {
-                string responseContent = await response.Content.ReadAsStringAsync(cancellationToken);
-                return JsonSerializer.Deserialize<T>(responseContent);
+                return true;
             }
             else
             {
@@ -151,13 +150,9 @@ public class ApiService(HttpClient httpClient) : IApiService
                 throw new HttpRequestException($"Error: {response.StatusCode}. Details: {errorContent}");
             }
         }
-        catch (HttpRequestException ex)
+        catch (HttpRequestException)
         {
-            throw new HttpRequestException($"HTTP request failed: {ex.Message}", ex);
-        }
-        catch (JsonException ex)
-        {
-            throw new JsonException($"Failed to deserialize response: {ex.Message}", ex);
+            throw;
         }
         catch (Exception ex)
         {

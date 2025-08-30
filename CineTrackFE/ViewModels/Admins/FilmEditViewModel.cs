@@ -93,7 +93,7 @@ namespace CineTrackFE.ViewModels.Admins
                 return;
             }
 
-            if (SelectedGenreOne != null || SelectedGenreTwo != null || SelectedGenreThree != null)
+            if (SelectedGenreOne == null && SelectedGenreTwo == null && SelectedGenreThree == null)
             {
                 FormErrorMessage = "Genres count must be between 1 - 3";
                 return;
@@ -107,14 +107,21 @@ namespace CineTrackFE.ViewModels.Admins
 
             try
             {
-                var response = await _apiService.PutAsync<bool, Film>("/api/AdminApi/EditGenre", SelectedFilm.Id, SelectedFilm);
-                if (response)
+                var response = await _apiService.PutAsync<Film, Film>("/api/AdminApi/EditFilm", SelectedFilm.Id, SelectedFilm);
+
+                if (response != null)
                 {
+                    var film = FilmList.FirstOrDefault(p => p.Id == response.Id);
+                    if (film != null)
+                    {
+                        FilmList.Remove(film);
+                        FilmList.Add(response);
+                        GenreList = new ObservableCollection<Genre>(GenreList);
+                    }
+
                     SelectedFilm = new();
                     ErrorMessage = string.Empty;
                     IsPopupOpen = false;
-
-                    await GetFilmAsync();
                 }
                 else
                 {
@@ -159,11 +166,11 @@ namespace CineTrackFE.ViewModels.Admins
 
             try
             {
-                var response = await _apiService.PostAsync<bool, Film>("/api/AdminApi/AddFilm", SelectedFilm);
-                if (response)
+                var response = await _apiService.PostAsync<Film, Film>("/api/AdminApi/AddFilm", SelectedFilm);
+                if (response != null)
                 {
                     IsPopupOpen = false;
-                    await GetFilmAsync();
+                    FilmList.Add(response);
                 }
                 else
                 {
@@ -191,11 +198,11 @@ namespace CineTrackFE.ViewModels.Admins
 
             try
             {
-                var response = await _apiService.DeleteAsync<bool>("/api/AdminApi/RemoveGenre", SelectedFilm.Id);
+                var response = await _apiService.DeleteAsync("/api/AdminApi/RemoveFilm", SelectedFilm.Id);
                 if (response)
                 {
                     IsPopupOpen = false;
-                    await GetFilmAsync();
+                    FilmList.Remove(filmList.First(p => p.Id == selectedFilm.Id));
                 }
                 else
                 {
@@ -244,18 +251,23 @@ namespace CineTrackFE.ViewModels.Admins
                 var genreOne = GenreList?.FirstOrDefault(p => p.Id == SelectedFilm.Genres[0].Id);
                 if (genreOne != null) SelectedGenreOne = genreOne;
             }
+            else SelectedGenreOne = null;
 
             if (selectedFilm.Genres.Count >= 2)
             {
                 var genreTwo = GenreList?.FirstOrDefault(p => p.Id == SelectedFilm.Genres[1].Id);
                 if (genreTwo != null) SelectedGenreTwo = genreTwo;
             }
+            else SelectedGenreTwo = null;
+
 
             if (selectedFilm.Genres.Count >= 3)
             {
                 var genreThree = GenreList?.FirstOrDefault(p => p.Id == SelectedFilm.Genres[2].Id);
                 if (genreThree != null) SelectedGenreThree = genreThree;
             }
+            else SelectedGenreThree = null;
+
 
             IsPopupOpen = true;
         }
@@ -287,9 +299,15 @@ namespace CineTrackFE.ViewModels.Admins
             get { return selectedFilm; }
             set
             {
-                SetProperty(ref selectedFilm, value);
-                if (value != null && value.Id > 0)
-                    OpenEditForm();
+                if (value != null)
+                {
+
+                    var filmCopy = ModelMappingService.CloneFilm(value);
+
+                    SetProperty(ref selectedFilm, filmCopy);
+                    if (value != null && value.Id > 0)
+                        OpenEditForm();
+                }
             }
         }
 
