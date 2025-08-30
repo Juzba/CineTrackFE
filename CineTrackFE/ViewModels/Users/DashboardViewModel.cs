@@ -50,7 +50,6 @@ namespace CineTrackFE.ViewModels.Users
             catch (Exception ex)
             {
                 ErrorMessage = ex.Message;
-                // chyba
             }
                 
 

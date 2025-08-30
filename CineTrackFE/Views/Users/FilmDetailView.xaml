@@ -137,8 +137,7 @@
             Grid.Column="1"
             Padding="30"
             VerticalAlignment="Bottom"
-            FontSize="16"
-            FontWeight="DemiBold"
+            FontSize="14"
             Foreground="Red"
             Text="{Binding ErrorMessage}"
             TextAlignment="Center"
@@ -269,7 +268,7 @@
             BorderThickness="1"
             CornerRadius="2">
             <ScrollViewer>
-                <ItemsControl ItemsSource="{Binding Comments}">
+                <ItemsControl ItemsSource="{Binding CommentsList}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Border BorderBrush="White" BorderThickness="0">
@@ -284,7 +283,7 @@
                                         <RowDefinition />
                                     </Grid.RowDefinitions>
 
-                                    <TextBlock FontWeight="Bold" Text="{Binding AuthorName}" />
+                                    <TextBlock FontWeight="Bold" Text="{Binding AutorName}" />
                                     <TextBlock
                                         Grid.Column="2"
                                         HorizontalAlignment="Right"

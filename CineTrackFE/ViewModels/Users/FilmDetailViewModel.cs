@@ -73,8 +73,8 @@ namespace CineTrackFE.ViewModels.Users
 
             try
             {
-                var resultComments = await _apiService.GetAsync<ICollection<Comment>>("/api/FilmApi/GetComments", id);
-                if (resultComments != null) Comments = new ObservableCollection<Comment>(resultComments);
+                var resultComments = await _apiService.GetAsync<ICollection<CommentWithRating>>("/api/FilmApi/GetComments", id);
+                if (resultComments != null) CommentsList = new ObservableCollection<CommentWithRating>(resultComments);
             }
             catch (Exception ex)
             {
@@ -91,7 +91,8 @@ namespace CineTrackFE.ViewModels.Users
             {
                 Film.IsMyFavorite = !Film.IsMyFavorite;
                 var result = await _apiService.GetAsync<bool>("/api/FilmApi/ToggleFavorite", Film.Id);
-                if (result) Film.IsMyFavorite = !Film.IsMyFavorite;
+                Film.IsMyFavorite = result;
+
             }
             catch (Exception ex)
             {
@@ -117,17 +118,28 @@ namespace CineTrackFE.ViewModels.Users
                 return;
             }
 
+
+            var newCommentWithRating = new CommentWithRating
+            {
+                FilmId = FilmId,
+                Text = CommentFormText,
+                Rating = ratingInt,
+                SendDate = DateTime.Now,
+            };
+
+
+
             try
             {
-                var IsCommentSend = await _apiService.PostAsync<bool, object>("/api/FilmApi/AddComment", new { FilmId, Text = commentFormText, Rating = ratingInt });
-                if (IsCommentSend)
+                var response = await _apiService.PostAsync<CommentWithRating, CommentWithRating>("/api/FilmApi/AddComment", newCommentWithRating);
+                if (response != null)
                 {
+                    CommentsList.Insert(0,response);
+
                     Rating = null;
                     CommentFormText = null;
 
-                    await GetCommentsFromApiAsyncCommand.Execute(FilmId);
                 }
-                else ErrorMessage = "Chyba, komentář nebyl uložen!";
             }
             catch (Exception ex)
             {
@@ -148,8 +160,6 @@ namespace CineTrackFE.ViewModels.Users
         }
 
 
-
-
         // FILM DETAILS //
         private Film film = new();
         public Film Film
@@ -160,11 +170,11 @@ namespace CineTrackFE.ViewModels.Users
 
 
         // COMMENTS //
-        private ObservableCollection<Comment> comments = [];
-        public ObservableCollection<Comment> Comments
+        private ObservableCollection<CommentWithRating> commentsList = [];
+        public ObservableCollection<CommentWithRating> CommentsList
         {
-            get { return comments; }
-            set { SetProperty(ref comments, value); }
+            get { return commentsList; }
+            set { SetProperty(ref commentsList, value); }
         }
 
 

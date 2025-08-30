@@ -89,7 +89,6 @@ public class CatalogViewModel : BindableBase, INavigationAware
         {
             var genreListDb = await _apiService.GetAsync<IEnumerable<Genre>>("/api/FilmApi/AllGenres");
             if (genreListDb != null) GenresList.AddRange(new ObservableCollection<Genre>(genreListDb));
-
         }
         catch (Exception ex)
         {
