@@ -19,29 +19,47 @@ public class LoginViewModel : BindableBase, INavigationAware
         _eventAggregator = eventAggregator;
         _authService = authService;
         _regionManager = regionManager;
-        LoginAsyncCommand = new AsyncDelegateCommand(() => LoginAsync(UserName, Password));
+        LoginAsyncCommand = new AsyncDelegateCommand(() => LoginAsync(Email, Password));
         InstaLoginAsyncCommand = new AsyncDelegateCommand(() => LoginAsync("Test@gmail.com", "123456"));
 
         _eventAggregator.GetEvent<MainViewTitleEvent>().Publish("Login Page");
     }
 
-    private async Task LoginAsync(string userName, string password )
+    private async Task LoginAsync(string Email, string password)
     {
-        ErrorMessage = ""; // Reset error message before login attempt
+        ErrorMessage = "";
 
-        if (string.IsNullOrWhiteSpace(userName) || string.IsNullOrWhiteSpace(password))
+        if (string.IsNullOrWhiteSpace(Email))
         {
-            ErrorMessage = "Username and password cannot be empty.";
+            ErrorMessage = "Email cannot be empty.";
+            return;
+        }
+
+        if (!Email.Contains('@') || !Email.Contains('.'))
+        {
+            ErrorMessage = "Please enter a valid email address.";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(password))
+        {
+            ErrorMessage = "Password cannot be empty.";
+            return;
+        }
+
+        if (password.Length < 6)
+        {
+            ErrorMessage = "Password must be at least 6 characters long.";
             return;
         }
 
         try
         {
-            var IsLoginSuccess = await _authService.LoginAsync(userName, password);
+            var IsLoginSuccess = await _authService.LoginAsync(Email, password);
             if (IsLoginSuccess) _regionManager.RequestNavigate(Const.MainRegion, nameof(DashboardView));
             else
             {
-                ErrorMessage = "Login failed. Please check your username and password.";
+                ErrorMessage = "Login failed. Please check your Email and Password.";
             }
         }
         catch (Exception ex)
@@ -58,16 +76,16 @@ public class LoginViewModel : BindableBase, INavigationAware
 
 
 
-    // USERNAME //
-    private string userName = "";
-    public string UserName
+    // EMAIL //
+    private string email = string.Empty;
+    public string Email
     {
-        get { return userName; }
-        set { SetProperty(ref userName, value); }
+        get { return email; }
+        set { SetProperty(ref email, value); }
     }
 
     // PASSWORD //
-    private string password = "";
+    private string password = string.Empty;
     public string Password
     {
         get { return password; }

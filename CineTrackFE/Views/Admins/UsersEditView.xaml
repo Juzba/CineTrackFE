@@ -12,6 +12,7 @@
     d:DesignHeight="505"
     d:DesignWidth="975"
     prism:ViewModelLocator.AutoWireViewModel="True"
+    FontSize="16"
     mc:Ignorable="d">
 
 
@@ -54,7 +55,7 @@
             Background="#293241"
             BorderBrush="Transparent"
             Command="{Binding OpenNewFormCommand}"
-            Content="Přidat nový Film"
+            Content="Přidat nového Uživatele"
             FontSize="20"
             Foreground="#DFFBFC" />
 
@@ -95,7 +96,7 @@
                 <DataGridTemplateColumn Header="Role">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ItemsControl DisplayMemberPath="Name" ItemsSource="{Binding Genres}">
+                            <ItemsControl ItemsSource="{Binding Roles}">
                                 <ItemsControl.ItemContainerStyle>
                                     <Style TargetType="ContentPresenter">
                                         <Setter Property="Margin" Value="0,0,15,0" />
@@ -247,10 +248,10 @@
                         Padding="10,5"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        Background="#293241"
-                        Foreground="#DFFBFC"
+                        Background="Transparent"
+                        Foreground="White"
                         IsChecked="{Binding SelectedUser.EmailConfirmed}"
-                        Style="{StaticResource MaterialDesignActionDarkCheckBox}" />
+                        Style="{StaticResource MaterialDesignFilterChipSecondaryCheckBox}" />
 
                     <TextBlock
                         Grid.Row="6"
@@ -309,7 +310,7 @@
                         MaxLength="200"
                         Text="{Binding SelectedUser.NewPassword}"
                         TextWrapping="Wrap" />
-                    
+
                     <TextBlock
                         Grid.Row="9"
                         Margin="0,0,30,0"

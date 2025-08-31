@@ -1,4 +1,5 @@
 ﻿using CineTrackFE.AppServises;
+using CineTrackFE.Common;
 using CineTrackFE.Models;
 using System.Collections.ObjectModel;
 using System.Windows;
@@ -60,60 +61,90 @@ namespace CineTrackFE.ViewModels.Admins
         private async Task EditUser()
         {
             ErrorMessage = null;
+            FormErrorMessage = null;
 
-            //if (SelectedFilm == null || SelectedFilm.Id <= 0)
-            //{
-            //    ErrorMessage = "Film is not selected.";
-            //    return;
-            //}
-            //if (string.IsNullOrWhiteSpace(SelectedFilm.Name))
-            //{
-            //    ErrorMessage = "Name cannot be empty.";
-            //    return;
-            //}
+            if (SelectedUser == null || string.IsNullOrEmpty(SelectedUser.Id))
+            {
+                FormErrorMessage = "Film is not selected.";
+                return;
+            }
 
-            //if (string.IsNullOrWhiteSpace(SelectedFilm.Director))
-            //{
-            //    FormErrorMessage = "New Director name is null!";
-            //    return;
-            //}
+            if (string.IsNullOrWhiteSpace(SelectedUser.Email))
+            {
+                FormErrorMessage = "Email cannot be empty.";
+                return;
+            }
 
-            //if (!(SelectedRoleOne?.Id > 0 || SelectedRoleTwo?.Id > 0 || SelectedGenreThree?.Id > 0))
-            //{
-            //    FormErrorMessage = "Genres count must be between 1 - 3";
-            //    return;
-            //}
+            if (SelectedUser.Email.Contains('@') == false || SelectedUser.Email.Contains('.') == false)
+            {
+                FormErrorMessage = "Email is not valid.";
+                return;
+            }
 
-            //// filter genres -> if they are same or null
-            //GenresFromComboboxToSelectedFilm();
 
-            //try
-            //{
-            //    var response = await _apiService.PutAsync<Film, Film>("/api/AdminApi/EditFilm", SelectedFilm.Id, SelectedFilm);
+            // if one password is not empty
+            if (!string.IsNullOrEmpty(SelectedUser?.NewPassword) || !string.IsNullOrEmpty(PasswordConfirmation!))
+            {
+                if (string.IsNullOrWhiteSpace(SelectedUser?.NewPassword) || string.IsNullOrWhiteSpace(PasswordConfirmation))
+                {
+                    FormErrorMessage = "Password or Password Confirmation is null or empty!";
+                    return;
+                }
+                if (SelectedUser?.NewPassword != PasswordConfirmation)
+                {
+                    FormErrorMessage = "Password and Password Confirmation are not the same!";
+                    return;
+                }
 
-            //    if (response != null)
-            //    {
-            //        var film = UserList.FirstOrDefault(p => p.Id == response.Id);
-            //        if (film != null)
-            //        {
-            //            UserList.Remove(film);
-            //            UserList.Add(response);
-            //            GenreList = new ObservableCollection<Genre>(GenreList);
-            //        }
+                if (string.IsNullOrWhiteSpace(SelectedUser?.NewPassword) || SelectedUser?.NewPassword.Length < 6)
+                {
+                    FormErrorMessage = "Password is null or less than 6 characters!";
+                    return;
+                }
+            }
 
-            //        SelectedFilm = new();
-            //        ErrorMessage = string.Empty;
-            //        IsPopupOpen = false;
-            //    }
-            //    else
-            //    {
-            //        FormErrorMessage = "Failed to update film.";
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    FormErrorMessage = $"Error: {ex.Message}";
-            //}
+            if (string.IsNullOrWhiteSpace(SelectedUser!.UserName))
+            {
+                SelectedUser.UserName = SelectedUser.Email;
+            }
+
+            // Clear roles and add new ones
+            SelectedUser.Roles.Clear();
+            // Combo box roles checks
+            if (SelectedRoleOne != null)
+                if (Const.OnlyLettersRegex.IsMatch(SelectedRoleOne)) SelectedUser.Roles.Add(SelectedRoleOne);
+
+            if (SelectedRoleTwo != null && SelectedRoleTwo != SelectedRoleOne)
+                if (Const.OnlyLettersRegex.IsMatch(SelectedRoleTwo)) SelectedUser.Roles.Add(SelectedRoleTwo);
+
+            try
+            {
+                var response = await _apiService.PutAsync<User, User>("/api/UsersApi/EditUser", SelectedUser.Id, SelectedUser);
+
+                if (response != null)
+                {
+                    var user = UserList.FirstOrDefault(p => p.Id == response.Id);
+                    if (user != null)
+                    {
+                        var userIndex = UserList.IndexOf(user);
+                        UserList.Remove(user);
+                        UserList.Insert(userIndex, response);
+                    }
+
+                    SelectedUser = new();
+                    PasswordConfirmation = null;
+                    ErrorMessage = string.Empty;
+                    IsPopupOpen = false;
+                }
+                else
+                {
+                    FormErrorMessage = "Failed to update user.";
+                }
+            }
+            catch (Exception ex)
+            {
+                FormErrorMessage = $"Error: {ex.Message}";
+            }
         }
 
 
@@ -121,46 +152,75 @@ namespace CineTrackFE.ViewModels.Admins
         private async Task AddUser()
         {
             ErrorMessage = null;
-            
 
-            //if (string.IsNullOrWhiteSpace(SelectedFilm.Name))
-            //{
-            //    FormErrorMessage = "New Genre name is null!";
-            //    return;
-            //}
+            if (SelectedUser == null)
+            {
+                FormErrorMessage = "Selected User is null!";
+                return;
+            }
 
-            //if (string.IsNullOrWhiteSpace(SelectedFilm.Director))
-            //{
-            //    FormErrorMessage = "New Director name is null!";
-            //    return;
-            //}
+            if (string.IsNullOrWhiteSpace(SelectedUser.Email))
+            {
+                FormErrorMessage = "Email is null or empty!";
+                return;
+            }
 
-            //if (!(SelectedRoleOne?.Id > 0 || SelectedRoleTwo?.Id > 0 || SelectedGenreThree?.Id > 0))
-            //{
-            //    FormErrorMessage = "Genres count must be between 1 - 3";
-            //    return;
-            //}
+            if (SelectedUser.Email.Contains('@') == false || SelectedUser.Email.Contains('.') == false)
+            {
+                FormErrorMessage = "Email is not valid!";
+                return;
+            }
 
-            //// filter genres -> if they are same or null
-            //GenresFromComboboxToSelectedFilm();
+            if (string.IsNullOrWhiteSpace(SelectedUser.NewPassword) || string.IsNullOrWhiteSpace(PasswordConfirmation))
+            {
+                FormErrorMessage = "Password or Password Confirmation is null or empty!";
+                return;
+            }
 
-            //try
-            //{
-            //    var response = await _apiService.PostAsync<Film, Film>("/api/AdminApi/AddFilm", SelectedFilm);
-            //    if (response != null)
-            //    {
-            //        IsPopupOpen = false;
-            //        UserList.Add(response);
-            //    }
-            //    else
-            //    {
-            //        ErrorMessage = "Failed to add film.";
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    FormErrorMessage = ex.Message;
-            //}
+            if (SelectedUser.NewPassword != PasswordConfirmation)
+            {
+                FormErrorMessage = "Password and Password Confirmation are not the same!";
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(SelectedUser.NewPassword) || SelectedUser.NewPassword.Length < 6)
+            {
+                FormErrorMessage = "Password is null or less than 6 characters!";
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(SelectedUser!.UserName))
+            {
+                SelectedUser.UserName = SelectedUser.Email;
+            }
+
+            // ComboBox roles check
+            if (SelectedRoleOne != null)
+                if (Const.OnlyLettersRegex.IsMatch(SelectedRoleOne)) SelectedUser.Roles.Add(SelectedRoleOne);
+
+            if (SelectedRoleTwo != null && SelectedRoleTwo != SelectedRoleOne)
+                if (Const.OnlyLettersRegex.IsMatch(SelectedRoleTwo)) SelectedUser.Roles.Add(SelectedRoleTwo);
+
+
+
+            try
+            {
+                var response = await _apiService.PostAsync<User, User>("/api/UsersApi/AddUser", SelectedUser!);
+                if (response != null)
+                {
+                    PasswordConfirmation = null;
+                    IsPopupOpen = false;
+                    UserList.Add(response);
+                }
+                else
+                {
+                    ErrorMessage = "Failed to add film.";
+                }
+            }
+            catch (Exception ex)
+            {
+                FormErrorMessage = ex.Message;
+            }
 
         }
 
@@ -170,36 +230,36 @@ namespace CineTrackFE.ViewModels.Admins
         {
             ErrorMessage = null;
 
-            //if (SelectedFilm == null || SelectedFilm.Id <= 0)
-            //{
-            //    ErrorMessage = "Selected film is null or wrong!";
-            //    return;
-            //}
+            if (SelectedUser == null || string.IsNullOrEmpty(SelectedUser.Id))
+            {
+                ErrorMessage = "Selected User is null or wrong!";
+                return;
+            }
 
-            //try
-            //{
-            //    var response = await _apiService.DeleteAsync("/api/AdminApi/RemoveFilm", SelectedFilm.Id);
-            //    if (response)
-            //    {
-            //        IsPopupOpen = false;
-            //        UserList.Remove(userList.First(p => p.Id == selectedUser.Id));
-            //    }
-            //    else
-            //    {
-            //        ErrorMessage = "Failed to Remove film.";
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    FormErrorMessage = ex.Message;
-            //}
+            try
+            {
+                var response = await _apiService.DeleteAsync("/api/UsersApi/RemoveUser", SelectedUser.Id);
+                if (response)
+                {
+                    UserList.Remove(userList.First(p => p.Id == SelectedUser.Id));
+                    IsPopupOpen = false;
+                }
+                else
+                {
+                    ErrorMessage = "Failed to Remove user.";
+                }
+            }
+            catch (Exception ex)
+            {
+                FormErrorMessage = ex.Message;
+            }
         }
 
 
         // OPEN NEW FORM //
-        private async void OpenNewForm()
+        private void OpenNewForm()
         {
-            SelectedUser = null;
+            SelectedUser = new();
             FormErrorMessage = null;
             EditVisibility = Visibility.Collapsed;
 
@@ -210,29 +270,27 @@ namespace CineTrackFE.ViewModels.Admins
         }
 
         // OPEN EDIT FORM //
-        private async void OpenEditForm()
+        private void OpenEditForm()
         {
             if (selectedUser == null) return;
-
-            //if (GenreList == null) await GetGenreAsync();
 
             FormErrorMessage = null;
             EditVisibility = Visibility.Visible;
 
+            // add selected genres to dropdowns
+            if (selectedUser.Roles.Count >= 1)
+            {
+                var roleOne = RoleList?.FirstOrDefault(p => p == SelectedUser?.Roles.ToList()[0]);
+                if (roleOne != null) SelectedRoleOne = roleOne;
+            }
+            else SelectedRoleOne = null;
 
-            //if (selectedUser.Genres.Count >= 1)
-            //{
-            //    var genreOne = UserList?.FirstOrDefault(p => p.Id == SelectedUser.Roles[0]);
-            //    if (genreOne != null) SelectedRoleOne = genreOne;
-            //}
-            //else SelectedRoleOne = null;
-
-            //if (selectedUser.Genres.Count >= 2)
-            //{
-            //    var genreTwo = GenreList?.FirstOrDefault(p => p.Id == SelectedFilm.Genres[1].Id);
-            //    if (genreTwo != null) SelectedRoleTwo = genreTwo;
-            //}
-            //else SelectedRoleTwo = null;
+            if (selectedUser.Roles.Count >= 2)
+            {
+                var roleTwo = RoleList?.FirstOrDefault(p => p == SelectedUser?.Roles.ToList()[1]);
+                if (roleTwo != null) SelectedRoleTwo = roleTwo;
+            }
+            else SelectedRoleTwo = null;
 
 
             IsPopupOpen = true;
@@ -259,8 +317,8 @@ namespace CineTrackFE.ViewModels.Admins
 
 
         // SELECTED USER //
-        private User? selectedUser;
-        public User? SelectedUser
+        private User selectedUser = new();
+        public User SelectedUser
         {
             get { return selectedUser; }
             set
@@ -275,7 +333,7 @@ namespace CineTrackFE.ViewModels.Admins
                 }
                 else
                 {
-                    SetProperty(ref selectedUser, value);
+                    SetProperty(ref selectedUser, new());
                 }
             }
         }

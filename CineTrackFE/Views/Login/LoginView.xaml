@@ -64,7 +64,7 @@
                 FontStyle="Oblique"
                 FontWeight="Bold"
                 Foreground="#293241"
-                Text="Jméno:" />
+                Text="Email:" />
 
 
             <TextBox
@@ -74,7 +74,7 @@
                 VerticalAlignment="Center"
                 Background="#DFFBFC"
                 Foreground="#293241"
-                Text="{Binding UserName}" />
+                Text="{Binding Email}" />
 
             <TextBlock
                 Grid.Row="1"

@@ -112,9 +112,15 @@ public class FilmEditViewModel : BindableBase, INavigationAware
                 var film = FilmList.FirstOrDefault(p => p.Id == response.Id);
                 if (film != null)
                 {
+                    var index = FilmList.IndexOf(film);
                     FilmList.Remove(film);
-                    FilmList.Add(response);
+                    FilmList.Insert(index,response);
+
+                    // refresh genre list
                     GenreList = new ObservableCollection<Genre>(GenreList);
+
+
+
                 }
 
                 SelectedFilm = new();

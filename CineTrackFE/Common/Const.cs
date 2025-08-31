@@ -1,4 +1,6 @@
-﻿namespace CineTrackFE.Common;
+﻿using System.Text.RegularExpressions;
+
+namespace CineTrackFE.Common;
 
 public static class Const
 {
@@ -8,7 +10,7 @@ public static class Const
 
     public const string FilmId = "FilmId";
 
-
+    public static readonly Regex OnlyLettersRegex = new("^[a-zA-Z]+$");
 
 
 

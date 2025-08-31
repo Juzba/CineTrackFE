@@ -32,11 +32,23 @@ public class RegisterViewModel : BindableBase, INavigationAware
 
     private async Task Register()
     {
-        ErrorMessage = ""; // Clear previous error message
+        ErrorMessage = ""; 
 
-        if (string.IsNullOrWhiteSpace(UserName) || string.IsNullOrWhiteSpace(Password) || string.IsNullOrWhiteSpace(ConfirmPassword))
+        if (string.IsNullOrWhiteSpace(Email))
         {
-            ErrorMessage = "All fields are required.";
+            ErrorMessage = "Email is required.";
+            return;
+        }
+
+        if (!Email.Contains('@') || !Email.Contains('.'))
+        {
+            ErrorMessage = "Invalid email format.";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(Password) || Password.Length < 6)
+        {
+            ErrorMessage = "Password must be at least 6 characters long.";
             return;
         }
 
@@ -48,13 +60,17 @@ public class RegisterViewModel : BindableBase, INavigationAware
 
         try
         {
-            CanRegister = false; // Disable the button to prevent multiple clicks
-            var result = await _authService.RegisterAsync(UserName, Password);
+            CanRegister = false; 
+            var result = await _authService.RegisterAsync(Email, Password);
 
             if (result)
+            {
                 _regionManager.RequestNavigate("MainRegion", "LoginView");
+            }
             else
+            {
                 ErrorMessage = "Registration failed. Please try again.";
+            }
 
         }
         catch (Exception ex)
@@ -64,17 +80,17 @@ public class RegisterViewModel : BindableBase, INavigationAware
 
         finally
         {
-            CanRegister = true; // Re-enable the button
+            CanRegister = true;
         }
     }
 
 
-    // USERNAME //
-    private string userName = "";
-    public string UserName
+    // EMAIL //
+    private string email = "";
+    public string Email
     {
-        get { return userName; }
-        set { SetProperty(ref userName, value); }
+        get { return email; }
+        set { SetProperty(ref email, value); }
     }
 
 

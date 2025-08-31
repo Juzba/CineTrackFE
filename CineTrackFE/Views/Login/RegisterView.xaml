@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:viewmodels="clr-namespace:CineTrackFE.ViewModels.Login"
+    d:DataContext="{d:DesignInstance Type=viewmodels:RegisterViewModel}"
     d:DesignHeight="720"
     d:DesignWidth="1280"
     prism:ViewModelLocator.AutoWireViewModel="True"
@@ -58,7 +59,7 @@
                 FontStyle="Oblique"
                 FontWeight="Bold"
                 Foreground="#293241"
-                Text="User Name:" />
+                Text="Email:" />
             <TextBlock
                 Grid.Row="1"
                 Margin="20,0"
@@ -76,7 +77,7 @@
                 FontStyle="Oblique"
                 FontWeight="Bold"
                 Foreground="#293241"
-                Text="PassWord:" />
+                Text="P. Confirm:" />
 
             <TextBox
                 Grid.Column="1"
@@ -85,7 +86,7 @@
                 VerticalAlignment="Center"
                 Background="#DFFBFC"
                 Foreground="#293241"
-                Text="{Binding UserName, Mode=TwoWay}" />
+                Text="{Binding Email, Mode=TwoWay}" />
 
             <TextBox
                 Grid.Row="1"

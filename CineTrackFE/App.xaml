@@ -14,7 +14,16 @@
                     SecondaryColor="Red" />
 
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign2.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.CheckBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.LightBlue.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <!--  Přidejte vlastní barvy pro vaši aplikaci  -->
+            <SolidColorBrush x:Key="PrimaryHueDarkBrush" Color="#293241" />
+            <SolidColorBrush x:Key="PrimaryHueLightBrush" Color="#DFFBFC" />
+            <SolidColorBrush x:Key="AccentHueMidBrush" Color="#EE6B4D" />
         </ResourceDictionary>
     </prism:PrismApplication.Resources>
 </prism:PrismApplication>
+
+
