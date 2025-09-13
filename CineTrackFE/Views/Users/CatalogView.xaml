@@ -8,6 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:user="clr-namespace:CineTrackFE.ViewModels.Users"
+    d:DataContext="{d:DesignInstance Type=user:CatalogViewModel}"
     d:DesignHeight="546"
     d:DesignWidth="975"
     prism:ViewModelLocator.AutoWireViewModel="True"

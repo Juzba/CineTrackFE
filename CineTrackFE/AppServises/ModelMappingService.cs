@@ -9,6 +9,8 @@ public static class ModelMappingService
     public static Film CloneFilm(Film source)
     {
 
+        ArgumentNullException.ThrowIfNull(source);
+
         var clone = new Film
         {
             Id = source.Id,
@@ -28,6 +30,8 @@ public static class ModelMappingService
 
     public static Genre CloneGenre(Genre source)
     {
+        ArgumentNullException.ThrowIfNull(source);
+
         var clone = new Genre
         {
             Id = source.Id,
@@ -40,6 +44,8 @@ public static class ModelMappingService
 
     public static User CloneUser(User source)
     {
+        ArgumentNullException.ThrowIfNull(source);
+
         source.Roles ??= [];
 
         var clone = new User

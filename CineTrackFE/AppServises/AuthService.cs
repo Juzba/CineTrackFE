@@ -15,11 +15,11 @@ public interface IAuthService
 }
 
 
-public class AuthService(HttpClient httpClient, UserStore userStore) : IAuthService
+public class AuthService(HttpClient httpClient, IUserStore userStore) : IAuthService
 {
     private string? _token;
     private readonly HttpClient _httpClient = httpClient;
-    private readonly UserStore _userStore = userStore;
+    private readonly IUserStore _userStore = userStore;
 
     public bool IsAuthenticated => !string.IsNullOrEmpty(_token);
 

@@ -35,9 +35,7 @@ public class CatalogViewModel : BindableBase, INavigationAware
         OpenFilmDetailsCommand = new DelegateCommand<Film>(film =>
         {
             if (film != null)
-            {
                 _regionManager.RequestNavigate(Const.MainRegion, nameof(FilmDetailView), new NavigationParameters() { {Const.FilmId, film.Id } });
-            }
         });
         SearchFilterResetCommand = new DelegateCommand(() => _regionManager.RequestNavigate(Const.MainRegion, nameof(CatalogView)));
 

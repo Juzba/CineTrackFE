@@ -1,8 +1,10 @@
 ﻿using CineTrackFE.AppServises;
+using CineTrackFE.Common;
 using CineTrackFE.Common.Events;
 using CineTrackFE.Models;
+using CineTrackFE.Models.DTO;
+using CineTrackFE.Views.Users;
 using System.Collections.ObjectModel;
-using System.Numerics;
 
 namespace CineTrackFE.ViewModels.Users
 {
@@ -10,16 +12,25 @@ namespace CineTrackFE.ViewModels.Users
     {
         private readonly IApiService _apiService;
         private readonly IEventAggregator _eventAggregator;
-        
+        private readonly IRegionManager _regionManager;
+
 
         private readonly AsyncDelegateCommand OnInitializeAsyncCommand;
+        public DelegateCommand<Film> OpenFilmDetailsCommand { get; }
 
 
-        public DashboardViewModel(IApiService apiService, IEventAggregator eventAggregator)
+        public DashboardViewModel(IApiService apiService, IEventAggregator eventAggregator, IRegionManager regionManager)
         {
             _apiService = apiService;
             _eventAggregator = eventAggregator;
-            
+            _regionManager = regionManager;
+
+            OpenFilmDetailsCommand = new DelegateCommand<Film>(film =>
+            {
+                if (film != null)
+                    _regionManager.RequestNavigate(Const.MainRegion, nameof(FilmDetailView), new NavigationParameters() { { Const.FilmId, film.Id } });
+            });
+
 
             OnInitializeAsyncCommand = new AsyncDelegateCommand(OnInitializeAsync);
             OnInitializeAsyncCommand.Execute();
@@ -43,26 +54,33 @@ namespace CineTrackFE.ViewModels.Users
 
             try
             {
-                var filmListDb = await _apiService.GetAsync<IEnumerable<Film>>("/api/FilmApi/LatestFilms");
-                if (filmListDb != null) FilmList = new ObservableCollection<Film>(filmListDb);
+                var dashBoardDto = await _apiService.GetAsync<DashBoardDto>("/api/FilmApi/DashBoardFilms");
+                if (dashBoardDto != null)
+                {
+                    LatestsFilmList = new ObservableCollection<Film>(dashBoardDto.LatestFilms);
+                    FavoriteFilms = new ObservableCollection<Film>(dashBoardDto.FavoriteFilms);
+                }
 
             }
             catch (Exception ex)
             {
                 ErrorMessage = ex.Message;
             }
-                
-
-
-
         }
 
 
-        private ObservableCollection<Film> filmList = [];
-        public ObservableCollection<Film> FilmList
+        private ObservableCollection<Film> latestsFilmList = [];
+        public ObservableCollection<Film> LatestsFilmList
         {
-            get { return filmList; }
-            set { SetProperty(ref filmList, value); }
+            get { return latestsFilmList; }
+            set { SetProperty(ref latestsFilmList, value); }
+        }
+
+        private ObservableCollection<Film> favoriteFilms = [];
+        public ObservableCollection<Film> FavoriteFilms
+        {
+            get { return favoriteFilms; }
+            set { SetProperty(ref favoriteFilms, value); }
         }
 
 

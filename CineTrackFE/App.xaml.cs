@@ -23,7 +23,7 @@ public partial class App : PrismApplication
     {
         containerRegistry.Register<MainWindow>();
         containerRegistry.Register<MainViewModel>();
-        containerRegistry.RegisterSingleton<UserStore>();
+        containerRegistry.RegisterSingleton<IUserStore, UserStore>();
 
 
 
