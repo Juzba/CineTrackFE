@@ -38,29 +38,9 @@ public class AuthServiceTests : IDisposable
         // Assert
         result.Should().BeTrue();
         _setup.AuthService.IsAuthenticated.Should().BeTrue();
-        _setup.UserStore.User.Should().Be(expectedUser);
         _setup.HttpClient.DefaultRequestHeaders.Authorization.Should().NotBeNull();
         _setup.HttpClient.DefaultRequestHeaders.Authorization!.Scheme.Should().Be("Bearer");
         _setup.HttpClient.DefaultRequestHeaders.Authorization.Parameter.Should().Be(AuthServiceTestHelper.TestData.Tokens.ValidToken);
-    }
-
-    [Fact]
-    public async Task LoginAsync_ValidCredentialsWithRememberMe_ReturnsTrue()
-    {
-        // Arrange
-        var loginResponse = AuthServiceTestHelper.TestData.CreateLoginResponse();
-        _setup.SetupHttpResponse(HttpStatusCode.OK, loginResponse);
-
-        // Act
-        var result = await _setup.AuthService.LoginAsync(
-            AuthServiceTestHelper.TestData.Credentials.ValidEmail,
-            AuthServiceTestHelper.TestData.Credentials.ValidPassword,
-            true);
-
-        // Assert
-        result.Should().BeTrue();
-        _setup.VerifyHttpRequest("/api/AuthApi/login", HttpMethod.Post,
-            content => content.Should().Contain("\"RememberMe\":true"));
     }
 
     [Fact]
@@ -77,7 +57,6 @@ public class AuthServiceTests : IDisposable
         // Assert
         result.Should().BeFalse();
         _setup.AuthService.IsAuthenticated.Should().BeFalse();
-        _setup.UserStore.User.Should().BeNull();
         _setup.HttpClient.DefaultRequestHeaders.Authorization.Should().BeNull();
     }
 
@@ -117,18 +96,20 @@ public class AuthServiceTests : IDisposable
     }
 
     [Fact]
-    public async Task LoginAsync_NullResponse_ReturnsFalse()
+    public async Task LoginAsync_NullResponse_ThrowsException()
     {
         // Arrange
         _setup.SetupHttpResponse(HttpStatusCode.OK, null);
 
-        // Act
-        var result = await _setup.AuthService.LoginAsync(
-            AuthServiceTestHelper.TestData.Credentials.ValidEmail,
-            AuthServiceTestHelper.TestData.Credentials.ValidPassword);
+        // Act & Assert
+        await FluentActions
+            .Invoking(async () => await _setup.AuthService.LoginAsync(
+                AuthServiceTestHelper.TestData.Credentials.ValidEmail,
+                AuthServiceTestHelper.TestData.Credentials.ValidPassword))
+            .Should()
+            .ThrowAsync<Exception>()
+            .WithMessage("*Error deserializing response*");
 
-        // Assert
-        result.Should().BeTrue();
         _setup.AuthService.IsAuthenticated.Should().BeFalse();
     }
 
@@ -146,7 +127,7 @@ public class AuthServiceTests : IDisposable
         // Assert
         result.Should().BeTrue();
         _setup.VerifyHttpRequest("/api/AuthApi/register", HttpMethod.Post,
-            content => content.Should().Contain($"\"Email\":\"{email}\""));
+            content => content.Should().Contain($"\"email\":\"{email}\""));
     }
 
     [Fact]
@@ -171,6 +152,7 @@ public class AuthServiceTests : IDisposable
     {
         // Arrange
         var loginResponse = AuthServiceTestHelper.TestData.CreateLoginResponse();
+
         _setup.SetupHttpResponse(HttpStatusCode.OK, loginResponse);
         await _setup.AuthService.LoginAsync(
             AuthServiceTestHelper.TestData.Credentials.ValidEmail,

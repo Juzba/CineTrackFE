@@ -13,7 +13,7 @@ public class AuthServiceTestHelper : IDisposable
 {
     public Mock<HttpMessageHandler> MockHttpMessageHandler { get; }
     public HttpClient HttpClient { get; }
-    public UserStore UserStore { get; }
+    public Mock<IUserStore> MockUserStore { get; }
     public AuthService AuthService { get; }
 
     public AuthServiceTestHelper()
@@ -23,8 +23,11 @@ public class AuthServiceTestHelper : IDisposable
         {
             BaseAddress = new Uri("https://api.example.com/")
         };
-        UserStore = new UserStore(new Mock<IEventAggregator>().Object);
-        AuthService = new AuthService(HttpClient, UserStore);
+
+        MockUserStore = new Mock<IUserStore>(); 
+        MockUserStore.SetupAllProperties();      
+
+        AuthService = new AuthService(HttpClient, MockUserStore.Object); 
     }
 
     public void Dispose()

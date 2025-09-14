@@ -1,5 +1,4 @@
 ﻿using CineTrackFE.Models;
-using CineTrackFE.Models.DTO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -38,6 +37,12 @@ public class AuthService(HttpClient httpClient, IUserStore userStore) : IAuthSer
 
             if (response.IsSuccessStatusCode)
             {
+                var content = await response.Content.ReadAsStringAsync();
+                if (string.IsNullOrWhiteSpace(content))
+                {
+                    throw new Exception("Error deserializing response: Response content is empty or null.");
+                }
+
                 var result = await response.Content.ReadFromJsonAsync<LoginResponse>();
                 _token = result?.Token;
                 _userStore.User = result?.User;
@@ -63,7 +68,7 @@ public class AuthService(HttpClient httpClient, IUserStore userStore) : IAuthSer
 
         try
         {
-            var response = await _httpClient.PostAsJsonAsync("/api/AuthApi/register", new { Email = email, Password = password}  );
+            var response = await _httpClient.PostAsJsonAsync("/api/AuthApi/register", new { Email = email, Password = password });
 
             if (response.IsSuccessStatusCode) return true;
             else if (response.StatusCode == System.Net.HttpStatusCode.Conflict)
