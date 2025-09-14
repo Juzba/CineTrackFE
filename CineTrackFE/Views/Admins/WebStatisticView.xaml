@@ -2,15 +2,229 @@
     x:Class="CineTrackFE.Views.Admins.WebStatisticView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:admins="clr-namespace:CineTrackFE.ViewModels.Admins"
+    xmlns:convertors="clr-namespace:CineTrackFE.Common.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:CineTrackFE.Views.Admins"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
+    d:DataContext="{d:DesignInstance Type=admins:WebStatisticViewModel}"
     d:DesignHeight="505"
     d:DesignWidth="975"
     prism:ViewModelLocator.AutoWireViewModel="True"
+    FontSize="18"
     mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <convertors:ImagePathConverter x:Key="ImgPathConvertor" />
+    </UserControl.Resources>
+
+
+
+
     <Grid>
-        <Button Content="Web Statistics View" />
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition Width="20" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+
+        <Border
+            Grid.Column="1"
+            Margin="5"
+            BorderBrush="Black"
+            BorderThickness="0.2"
+            CornerRadius="20">
+            <Grid
+                Margin="15,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <TextBlock Margin="5" Text="Total Movies:" />
+                <TextBlock
+                    Grid.Row="1"
+                    Margin="5"
+                    Text="Total Users:" />
+                <TextBlock
+                    Grid.Row="2"
+                    Margin="5"
+                    Text="Total Ratings:" />
+                <TextBlock
+                    Grid.Row="3"
+                    Margin="5"
+                    Text="Total Comments:" />
+                <TextBlock
+                    Grid.Row="4"
+                    Margin="5"
+                    Text="Average Rating:" />
+                <TextBlock
+                    Grid.Row="5"
+                    Margin="5"
+                    Text="Comments per user:" />
+
+                <TextBlock
+                    Grid.Column="1"
+                    Margin="5"
+                    Text="{Binding Statistics.Overview.TotalMovies}" />
+                <TextBlock
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Margin="5"
+                    Text="{Binding Statistics.Overview.TotalUsers}" />
+                <TextBlock
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Margin="5"
+                    Text="{Binding Statistics.Overview.TotalRatings}" />
+                <TextBlock
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    Margin="5"
+                    Text="{Binding Statistics.Overview.TotalComments}" />
+                <TextBlock
+                    Grid.Row="4"
+                    Grid.Column="1"
+                    Margin="5"
+                    Text="{Binding Statistics.Overview.AverageRating, StringFormat={}{0:0.0}}" />
+                <TextBlock
+                    Grid.Row="5"
+                    Grid.Column="1"
+                    Margin="5"
+                    Text="{Binding Statistics.UserActivity.AverageCommentsPerUser}" />
+            </Grid>
+        </Border>
+
+
+        <Border
+            Grid.Column="2"
+            Margin="5"
+            BorderBrush="Black"
+            BorderThickness="0.2"
+            CornerRadius="20">
+
+            <StackPanel
+                Grid.Column="2"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+                <TextBlock
+                    Margin="5"
+                    Text="Nejoblíbenější Filmy"
+                    TextAlignment="Center" />
+
+                <ItemsControl ItemsSource="{Binding MostPopularFilms}">
+
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Margin="10">
+                                <Image
+                                    Height="160"
+                                    Source="{Binding ImageFileName, Converter={StaticResource ImgPathConvertor}}"
+                                    Stretch="UniformToFill" />
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+
+                </ItemsControl>
+            </StackPanel>
+
+        </Border>
+
+
+        <Border
+            Grid.Row="1"
+            Grid.Column="1"
+            Margin="5"
+            BorderBrush="Black"
+            BorderThickness="0.2"
+            CornerRadius="20">
+
+            <StackPanel
+                Grid.Column="2"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+                <TextBlock
+                    Margin="5"
+                    Text="Nejlíp Hodnocené Filmy"
+                    TextAlignment="Center" />
+
+                <ItemsControl ItemsSource="{Binding TopRatedFilms}">
+
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Margin="10">
+                                <Image
+                                    Height="160"
+                                    Source="{Binding ImageFileName, Converter={StaticResource ImgPathConvertor}}"
+                                    Stretch="UniformToFill" />
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+
+                </ItemsControl>
+            </StackPanel>
+
+        </Border>
+
+
+        <Border
+            Grid.Row="1"
+            Grid.Column="2"
+            Margin="5"
+            BorderBrush="Black"
+            BorderThickness="0.2"
+            CornerRadius="20">
+
+
+
+            <DataGrid
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                AutoGenerateColumns="False"
+                Background="#3D5B81"
+                CanUserAddRows="False"
+                CanUserDeleteRows="False"
+                FontSize="18"
+                IsReadOnly="True"
+                ItemsSource="{Binding Statistics.UserActivity.MostActiveUsers}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding UserName}" Header="Nejaktivnější uživatelé:" />
+                </DataGrid.Columns>
+
+
+
+            </DataGrid>
+
+
+        </Border>
+
     </Grid>
 </UserControl>
